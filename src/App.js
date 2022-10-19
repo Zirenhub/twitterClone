@@ -1,5 +1,13 @@
+import WelcomePage from './components/WelcomePage';
+import GlobalStyle from './styles/Global.styled';
+
 function App() {
-  return <div className="App"></div>;
+  return (
+    <>
+      <GlobalStyle />
+      <WelcomePage />
+    </>
+  );
 }
 
 export default App;
