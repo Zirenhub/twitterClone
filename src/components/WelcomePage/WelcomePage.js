@@ -11,16 +11,24 @@ import {
   LineSeperator,
   ExisitngAccountTitle,
   ExistingAccountContainer,
-  TwitterBird,
-} from '../styles/WelcomePage.styled';
-import googleIcon from '../assets/images/2991148.png';
-import appleIcon from '../assets/images/154870.png';
+} from '../../styles/WelcomePageStyles/WelcomePage.styled';
+import googleIcon from '../../assets/images/2991148.png';
+import appleIcon from '../../assets/images/154870.png';
+import twitterLogo from '../../assets/images/iconmonstr-twitter-1.svg';
+import { useState } from 'react';
+import SignUp from './SignUp';
 
 const WelcomePage = () => {
+  const [showSignUp, setShowSignUp] = useState(false);
+
+  const handleSignUp = () => {
+    setShowSignUp(true);
+  };
+
   return (
     <MainContainer>
       <SideImage>
-        <TwitterBird></TwitterBird>
+        <img src={twitterLogo} alt="twitter logo"></img>
       </SideImage>
       <MainContent>
         <MainContentContainer>
@@ -35,7 +43,7 @@ const WelcomePage = () => {
                 Sign up with Apple
               </Button>
               <LineSeperator>or</LineSeperator>
-              <Button bg="#1d9bf0" color="#ffffff">
+              <Button bg="#1d9bf0" color="#ffffff" onClick={handleSignUp}>
                 Sign up with phone or email
               </Button>
             </ButtonsContainer>
@@ -50,6 +58,7 @@ const WelcomePage = () => {
           </InteractionsContainer>
         </MainContentContainer>
       </MainContent>
+      {showSignUp && <SignUp></SignUp>}
     </MainContainer>
   );
 };

@@ -1,8 +1,7 @@
 import styled from 'styled-components';
-import twitterSideImage from '../assets/images/lohp_en_1302x955.png';
-import twitterBird from '../assets/images/twitter_icon_white.png';
+import twitterSideImage from '../../assets/images/lohp_en_1302x955.png';
 
-const MainContainer = styled.div`
+export const MainContainer = styled.div`
   display: flex;
 
   flex-direction: column-reverse;
@@ -13,7 +12,7 @@ const MainContainer = styled.div`
   }
 `;
 
-const SideImage = styled.div`
+export const SideImage = styled.div`
   background-image: url(${twitterSideImage});
   background-size: cover;
   background-position: center center;
@@ -23,23 +22,20 @@ const SideImage = styled.div`
 
   flex-grow: 1;
   min-height: 500px;
+
+  img {
+    width: 382px;
+    height: 382px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(31deg)
+      brightness(110%) contrast(102%);
+  }
 `;
 
-const TwitterBird = styled.div`
-  background-image: url(${twitterBird});
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
-
-  position: absolute;
-  top: 50%;
-  left: 50%;
-
-  width: 150px;
-  height: 150px;
-`;
-
-const MainContent = styled.div`
+export const MainContent = styled.div`
   background-color: #000000;
   display: flex;
   align-items: center;
@@ -52,7 +48,7 @@ const MainContent = styled.div`
   }
 `;
 
-const MainContentContainer = styled.div`
+export const MainContentContainer = styled.div`
   max-width: 600px;
   max-height: 820px;
   padding: 20px;
@@ -64,18 +60,18 @@ const MainContentContainer = styled.div`
   }
 `;
 
-const MainTitle = styled.h1`
+export const MainTitle = styled.h1`
   font-size: 4rem;
   margin-bottom: 100px;
   color: #e7e9ea;
 
   @media (max-width: 900px) {
     text-align: center;
-    width: 450px;
+    max-width: 450px;
   }
 `;
 
-const InteractionsContainer = styled.div`
+export const InteractionsContainer = styled.div`
   display: flex;
   flex-direction: column;
   max-width: 300px;
@@ -83,18 +79,18 @@ const InteractionsContainer = styled.div`
   min-height: 100%;
 `;
 
-const InteractionsTitle = styled.h1`
+export const InteractionsTitle = styled.h1`
   color: #e7e9ea;
   margin-bottom: 30px;
 `;
 
-const ButtonsContainer = styled.div`
+export const ButtonsContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
 `;
 
-const LineSeperator = styled.div`
+export const LineSeperator = styled.div`
   display: flex;
   flex-basis: 100%;
   align-items: center;
@@ -113,7 +109,7 @@ const LineSeperator = styled.div`
   }
 `;
 
-const Button = styled.button`
+export const Button = styled.button`
   width: 300px;
   height: 44px;
   outline: none;
@@ -124,7 +120,7 @@ const Button = styled.button`
   color: ${(props) => props.color};
   background-image: url(${(props) => props.icon});
   background-repeat: no-repeat;
-  background-position: 42px center;
+  background-position: 10px center;
   background-size: 24px;
   font-weight: 700;
 
@@ -133,28 +129,12 @@ const Button = styled.button`
   }
 `;
 
-const ExisitngAccountTitle = styled.p`
+export const ExisitngAccountTitle = styled.p`
   color: #ffffff;
   font-weight: 700;
   margin-bottom: 10px;
 `;
 
-const ExistingAccountContainer = styled.div`
+export const ExistingAccountContainer = styled.div`
   margin-top: 50px;
 `;
-
-export {
-  MainContainer,
-  SideImage,
-  MainContent,
-  MainTitle,
-  MainContentContainer,
-  InteractionsContainer,
-  InteractionsTitle,
-  ButtonsContainer,
-  Button,
-  LineSeperator,
-  ExisitngAccountTitle,
-  ExistingAccountContainer,
-  TwitterBird,
-};
