@@ -10,7 +10,15 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     box-sizing: border-box;
   }
+
+  #root {
+    height: 100vh;
+    width: 100vw;
+  }
+
   body {
+    height: 100vh;
+    width: 100vw;
     margin: 0;
     padding: 0;
     box-sizing: border-box;

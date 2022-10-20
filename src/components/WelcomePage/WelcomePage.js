@@ -21,8 +21,43 @@ import SignUp from './SignUp';
 const WelcomePage = () => {
   const [showSignUp, setShowSignUp] = useState(false);
 
-  const handleSignUp = () => {
+  const handleShowSignUp = () => {
     setShowSignUp(true);
+  };
+
+  const handleClose = () => {
+    setShowSignUp(false);
+  };
+
+  const Welcome = () => {
+    return (
+      <MainContentContainer>
+        <MainTitle>Happening now</MainTitle>
+        <InteractionsContainer>
+          <InteractionsTitle>Join Twitter today.</InteractionsTitle>
+          <ButtonsContainer>
+            <Button bg="#ffffff" color="#0f1419" icon={googleIcon}>
+              Sign up with Google
+            </Button>
+            <Button bg="#ffffff" color="#0f1419" icon={appleIcon}>
+              Sign up with Apple
+            </Button>
+            <LineSeperator>or</LineSeperator>
+            <Button bg="#1d9bf0" color="#ffffff" onClick={handleShowSignUp}>
+              Sign up with phone or email
+            </Button>
+          </ButtonsContainer>
+          <ExistingAccountContainer>
+            <ExisitngAccountTitle>
+              Already have an account?
+            </ExisitngAccountTitle>
+            <Button bg="transparent" color="#1d9bf0">
+              Sign In
+            </Button>
+          </ExistingAccountContainer>
+        </InteractionsContainer>
+      </MainContentContainer>
+    );
   };
 
   return (
@@ -31,34 +66,8 @@ const WelcomePage = () => {
         <img src={twitterLogo} alt="twitter logo"></img>
       </SideImage>
       <MainContent>
-        <MainContentContainer>
-          <MainTitle>Happening now</MainTitle>
-          <InteractionsContainer>
-            <InteractionsTitle>Join Twitter today.</InteractionsTitle>
-            <ButtonsContainer>
-              <Button bg="#ffffff" color="#0f1419" icon={googleIcon}>
-                Sign up with Google
-              </Button>
-              <Button bg="#ffffff" color="#0f1419" icon={appleIcon}>
-                Sign up with Apple
-              </Button>
-              <LineSeperator>or</LineSeperator>
-              <Button bg="#1d9bf0" color="#ffffff" onClick={handleSignUp}>
-                Sign up with phone or email
-              </Button>
-            </ButtonsContainer>
-            <ExistingAccountContainer>
-              <ExisitngAccountTitle>
-                Already have an account?
-              </ExisitngAccountTitle>
-              <Button bg="transparent" color="#1d9bf0">
-                Sign In
-              </Button>
-            </ExistingAccountContainer>
-          </InteractionsContainer>
-        </MainContentContainer>
+        {showSignUp ? <SignUp handleClose={handleClose}></SignUp> : Welcome()}
       </MainContent>
-      {showSignUp && <SignUp></SignUp>}
     </MainContainer>
   );
 };

@@ -3,12 +3,15 @@ import twitterSideImage from '../../assets/images/lohp_en_1302x955.png';
 
 export const MainContainer = styled.div`
   display: flex;
-
   flex-direction: column-reverse;
+
   @media (min-width: 900px) {
     height: 100vh;
     width: 100vw;
     flex-direction: row;
+  }
+  @media (min-height: 810px) {
+    height: 100%;
   }
 `;
 
@@ -21,7 +24,7 @@ export const SideImage = styled.div`
   position: relative;
 
   flex-grow: 1;
-  min-height: 500px;
+  min-height: 400px;
 
   img {
     width: 382px;
@@ -40,8 +43,10 @@ export const MainContent = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 800px;
+  min-height: 400px;
   flex-shrink: 0;
+  position: relative;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 1), 0 4px 6px -4px rgb(0 0 0 / 1);
 
   @media (min-width: 900px) {
     min-width: 45vw;
@@ -57,12 +62,13 @@ export const MainContentContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    max-height: 820px;
   }
 `;
 
 export const MainTitle = styled.h1`
   font-size: 4rem;
-  margin-bottom: 100px;
+  margin-bottom: 50px;
   color: #e7e9ea;
 
   @media (max-width: 900px) {
