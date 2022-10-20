@@ -6,11 +6,12 @@ export const MainContainer = styled.div`
   flex-direction: column-reverse;
 
   @media (min-width: 900px) {
-    height: 100vh;
-    width: 100vw;
+    width: 100%;
+    height: 100%;
     flex-direction: row;
   }
-  @media (min-height: 810px) {
+
+  @media (min-height: 1080px) {
     height: 100%;
   }
 `;
@@ -139,6 +140,7 @@ export const ExisitngAccountTitle = styled.p`
   color: #ffffff;
   font-weight: 700;
   margin-bottom: 10px;
+  margin-left: 10px;
 `;
 
 export const ExistingAccountContainer = styled.div`
