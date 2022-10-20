@@ -20,7 +20,7 @@ export const MainContent = styled.div`
 `;
 
 export const CloseButtonContainer = styled.div`
-  padding-top: 15px;
+  padding: 15px;
   display: flex;
   justify-content: flex-end;
 `;
@@ -41,24 +41,6 @@ export const FormContainer = styled.form`
   display: flex;
   flex-direction: column;
   gap: 20px;
-  align-items: center;
-
-  > * {
-    &:last-child {
-      width: 100%;
-      background-color: #eff3f4;
-      outline: none;
-      border: none;
-      border-radius: 20px;
-      padding: 10px;
-      cursor: pointer;
-      font-size: 1rem;
-
-      &:hover {
-        opacity: 0.9;
-      }
-    }
-  }
 
   label {
     width: 100%;
@@ -77,5 +59,25 @@ export const FormContainer = styled.form`
     input:focus {
       border: 1px solid #1d9bf0;
     }
+  }
+`;
+
+export const ErrorMessage = styled.div`
+  font-weight: bold;
+  color: #cf3838;
+`;
+
+export const SubmitButton = styled.input`
+  width: 100%;
+  background-color: ${(props) => props.color};
+  outline: none;
+  border: none;
+  border-radius: 20px;
+  padding: 10px;
+  cursor: pointer;
+  font-size: 1rem;
+
+  &:hover {
+    opacity: 0.9;
   }
 `;
