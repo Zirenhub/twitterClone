@@ -4,7 +4,7 @@ import X from '../../assets/images/211652_close_icon.svg';
 export const MainContainer = styled.div`
   display: flex;
   flex-direction: column;
-  min-width: 80%;
+  min-width: 100%;
 `;
 
 export const MainContent = styled.div`
@@ -12,15 +12,19 @@ export const MainContent = styled.div`
   flex-direction: column;
   color: #ffffff;
   padding: 15px 20px;
+  height: 100%;
+  max-width: fit-content;
+  align-self: center;
+  min-width: 80%;
 
   h1 {
     font-size: 1.5rem;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
+    color: #e7e9ea;
   }
 `;
 
 export const CloseButtonContainer = styled.div`
-  padding: 15px;
   display: flex;
   justify-content: flex-end;
 `;

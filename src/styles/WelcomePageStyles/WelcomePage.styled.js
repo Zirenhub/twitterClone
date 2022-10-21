@@ -4,15 +4,12 @@ import twitterSideImage from '../../assets/images/lohp_en_1302x955.png';
 export const MainContainer = styled.div`
   display: flex;
   flex-direction: column-reverse;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
 
   @media (min-width: 900px) {
-    width: 100%;
-    height: 100%;
     flex-direction: row;
-  }
-
-  @media (min-height: 1080px) {
-    height: 100%;
   }
 `;
 
@@ -99,7 +96,6 @@ export const ButtonsContainer = styled.div`
 
 export const LineSeperator = styled.div`
   display: flex;
-  flex-basis: 100%;
   align-items: center;
   color: #ffffff;
   font-size: 1rem;
