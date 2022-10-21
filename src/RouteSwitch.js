@@ -1,12 +1,19 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import App from './App';
+import WelcomePage from './components/WelcomePage/WelcomePage';
+import HomePage from './components/HomePage/HomePage';
+import GlobalStyle from './styles/Global.styled';
+import { AuthContextProvider } from './context/authContext';
 
 const RouteSwitch = () => {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<App />} />
-      </Routes>
+      <GlobalStyle />
+      <AuthContextProvider>
+        <Routes>
+          <Route path="/" element={<WelcomePage />} />
+          <Route path="/homepage" element={<HomePage />} />
+        </Routes>
+      </AuthContextProvider>
     </BrowserRouter>
   );
 };

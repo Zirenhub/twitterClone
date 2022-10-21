@@ -8,8 +8,10 @@ import {
   ErrorMessage,
   SubmitButton,
 } from '../../styles/WelcomePageStyles/SignUp.styled';
-import validator from 'validator';
-import createUser from './signUpUser';
+import validateEmail from './validateEmail';
+import validatePassword from './validatePassword';
+import { UserAuth } from '../../context/authContext';
+import { useNavigate } from 'react-router-dom';
 
 const SignUp = (props) => {
   const { handleClose } = props;
@@ -20,6 +22,9 @@ const SignUp = (props) => {
   const [isNameValid, setIsNameValid] = useState(false);
   const [isPasswordValid, setIsPasswordValid] = useState(false);
   const [isEmailValid, setIsEmailValid] = useState(false);
+
+  const { createUser } = UserAuth();
+  const navigate = useNavigate();
 
   const handleNameChange = (e) => {
     setName(e.target.value);
@@ -38,7 +43,7 @@ const SignUp = (props) => {
   };
 
   useEffect(() => {
-    if (password.length <= 16 && password.length >= 6) {
+    if (validatePassword(password)) {
       setIsPasswordValid(true);
     } else {
       setIsPasswordValid(false);
@@ -50,14 +55,23 @@ const SignUp = (props) => {
   };
 
   useEffect(() => {
-    const checkIfValidEmail = validator.isEmail(email);
-    if (checkIfValidEmail && email !== '') setIsEmailValid(checkIfValidEmail);
+    if (validateEmail(email) && email !== '') {
+      setIsEmailValid(true);
+    } else {
+      setIsEmailValid(false);
+    }
   }, [email]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (isNameValid && isPasswordValid && isEmailValid)
-      createUser(email, password);
+    if (isNameValid && isPasswordValid && isEmailValid) {
+      try {
+        await createUser(email, password, name);
+        navigate('/homepage');
+      } catch (error) {
+        console.log(error);
+      }
+    }
   };
 
   const getSubmitButton = (color) => {
@@ -72,11 +86,11 @@ const SignUp = (props) => {
 
   return (
     <MainContainer>
-      <CloseButtonContainer>
-        <CloseButton onClick={handleClose}></CloseButton>
-      </CloseButtonContainer>
-
       <MainContent>
+        <CloseButtonContainer>
+          <CloseButton onClick={handleClose}></CloseButton>
+        </CloseButtonContainer>
+
         <h1>Create your account</h1>
 
         <FormContainer onSubmit={handleSubmit}>
