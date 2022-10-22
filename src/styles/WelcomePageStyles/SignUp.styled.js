@@ -71,7 +71,7 @@ export const ErrorMessage = styled.div`
   color: #cf3838;
 `;
 
-export const SubmitButton = styled.input`
+export const SubmitButton = styled.button`
   width: 100%;
   background-color: ${(props) => props.color};
   outline: none;
@@ -80,6 +80,10 @@ export const SubmitButton = styled.input`
   padding: 10px;
   cursor: pointer;
   font-size: 1rem;
+
+  &:disabled {
+    cursor: not-allowed;
+  }
 
   &:hover {
     opacity: 0.9;

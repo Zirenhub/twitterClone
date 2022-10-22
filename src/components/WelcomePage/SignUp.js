@@ -12,6 +12,7 @@ import validateEmail from './validateEmail';
 import validatePassword from './validatePassword';
 import { UserAuth } from '../../context/authContext';
 import { useNavigate } from 'react-router-dom';
+import getSubmitButton from './getSubmitButton';
 
 const SignUp = (props) => {
   const { handleClose } = props;
@@ -74,21 +75,18 @@ const SignUp = (props) => {
     }
   };
 
-  const getSubmitButton = (color) => {
-    return (
-      <SubmitButton
-        type="submit"
-        value="Create Account"
-        color={color}
-      ></SubmitButton>
-    );
+  const submitButton = (color, status) => {
+    return getSubmitButton(color, 'Create Account', status);
   };
 
   return (
     <MainContainer>
       <MainContent>
         <CloseButtonContainer>
-          <CloseButton onClick={handleClose}></CloseButton>
+          <CloseButton
+            data-testid="closeButton"
+            onClick={handleClose}
+          ></CloseButton>
         </CloseButtonContainer>
 
         <h1>Create your account</h1>
@@ -100,7 +98,7 @@ const SignUp = (props) => {
           </label>
           {name.length < 5 && (
             <ErrorMessage>
-              <p>Name has to be longer than 5 characters</p>
+              <p>Name has to be longer than 5 or 5 characters</p>
             </ErrorMessage>
           )}
           {name.length > 12 && (
@@ -114,7 +112,7 @@ const SignUp = (props) => {
           </label>
           {password.length < 6 && (
             <ErrorMessage>
-              <p>Password has to be longer than 6 characters</p>
+              <p>Password has to be longer than 6 or 6 characters</p>
             </ErrorMessage>
           )}
           {password.length > 16 && (
@@ -132,8 +130,8 @@ const SignUp = (props) => {
             </ErrorMessage>
           )}
           {isNameValid && isEmailValid && isPasswordValid
-            ? getSubmitButton('#eff3f4')
-            : getSubmitButton('#505050f0')}
+            ? submitButton('#eff3f4', false)
+            : submitButton('#505050f0', true)}
         </FormContainer>
       </MainContent>
     </MainContainer>
