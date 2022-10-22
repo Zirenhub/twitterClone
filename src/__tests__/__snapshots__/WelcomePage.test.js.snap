@@ -1,0 +1,82 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`WelcomePage renders Matches snapshot 1`] = `
+<div
+  className="sc-bcXHqe fuxYUk"
+>
+  <div
+    className="sc-gswNZR gxhXOa"
+  >
+    <img
+      alt="twitter logo"
+      src="iconmonstr-twitter-1.svg"
+    />
+  </div>
+  <div
+    className="sc-dkrFOg iFTCfC"
+  >
+    <div
+      className="sc-hLBbgP kwRa-DG"
+    >
+      <h1
+        className="sc-eDvSVe gcHYeJ"
+      >
+        Happening now
+      </h1>
+      <div
+        className="sc-jSUZER fRZfL"
+      >
+        <h1
+          className="sc-gKPRtg cLgLpW"
+        >
+          Join Twitter today.
+        </h1>
+        <div
+          className="sc-iBYQkv iLdIPl"
+        >
+          <button
+            className="sc-pyfCe cGWgFA"
+            color="#0f1419"
+          >
+            Sign up with Google
+          </button>
+          <button
+            className="sc-pyfCe jZSVON"
+            color="#0f1419"
+          >
+            Sign up with Apple
+          </button>
+          <div
+            className="sc-ftTHYK hIifYD"
+          >
+            or
+          </div>
+          <button
+            className="sc-pyfCe hrkuLO"
+            color="#ffffff"
+            onClick={[Function]}
+          >
+            Sign up with phone or email
+          </button>
+        </div>
+        <div
+          className="sc-kDvujY kFtFth"
+        >
+          <p
+            className="sc-jrcTuL bmqUfd"
+          >
+            Already have an account?
+          </p>
+          <button
+            className="sc-pyfCe bxtpT"
+            color="#1d9bf0"
+            onClick={[Function]}
+          >
+            Sign In
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
