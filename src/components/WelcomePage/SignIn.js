@@ -3,7 +3,6 @@ import {
   CloseButtonContainer,
   FormContainer,
   MainContent,
-  SubmitButton,
   MainContainer,
   ErrorMessage,
 } from '../../styles/WelcomePageStyles/SignUp.styled.js';
@@ -18,18 +17,18 @@ import {
 } from '../../styles/WelcomePageStyles/WelcomePage.styled.js';
 import { useState } from 'react';
 import { UserAuth } from '../../context/authContext.js';
+import { useNavigate } from 'react-router-dom';
 import SignUp from './SignUp.js';
+import getSubmitButton from './getSubmitButton.js';
 import googleIcon from '../../assets/images/2991148.png';
 import appleIcon from '../../assets/images/154870.png';
-import { useNavigate } from 'react-router-dom';
 
 const SignIn = (props) => {
-  const { handleClose } = props;
+  const { handleClose, setLoading, currentError, setCurrentError } = props;
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showSingUp, setShowSingUp] = useState(false);
-  const [currentError, setCurrentError] = useState(null);
 
   const { signIn } = UserAuth();
   const navigate = useNavigate();
@@ -42,22 +41,22 @@ const SignIn = (props) => {
     setPassword(e.target.value);
   };
 
-  const getSubmitButton = (color) => {
-    return (
-      <SubmitButton type="submit" value="Log In" color={color}></SubmitButton>
-    );
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (email !== '' && password !== '') {
       try {
+        setLoading(true);
         await signIn(email, password);
         navigate('/homepage');
       } catch (error) {
         setCurrentError(error.code);
       }
     }
+    setLoading(false);
+  };
+
+  const submitButton = (color, status) => {
+    return getSubmitButton(color, 'Log In', status);
   };
 
   const handleSignUp = () => {
@@ -72,7 +71,10 @@ const SignIn = (props) => {
         <MainContainer style={{ padding: 20 }}>
           <MainContent>
             <CloseButtonContainer>
-              <CloseButton onClick={handleClose}></CloseButton>
+              <CloseButton
+                data-testid="closeButton"
+                onClick={handleClose}
+              ></CloseButton>
             </CloseButtonContainer>
 
             <h1>Sign in to Twitter</h1>
@@ -96,8 +98,8 @@ const SignIn = (props) => {
                 <input type="password" onChange={handlePasswordChange}></input>
               </label>
               {email && password
-                ? getSubmitButton('#eff3f4')
-                : getSubmitButton('#505050f0')}
+                ? submitButton('#eff3f4', false)
+                : submitButton('#505050f0', true)}
             </FormContainer>
             <ExtraInformation>
               <ResponsiveSignUp>

@@ -18,10 +18,13 @@ import twitterLogo from '../../assets/images/iconmonstr-twitter-1.svg';
 import { useState } from 'react';
 import SignUp from './SignUp';
 import SignIn from './SignIn';
+import { LoadingStyled } from '../../styles/WelcomePageStyles/Loading.styled';
 
 const WelcomePage = () => {
   const [showSignUp, setShowSignUp] = useState(false);
   const [showSignIn, setShowSignIn] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [currentError, setCurrentError] = useState(null);
 
   const handleShowSignUp = () => {
     setShowSignUp(true);
@@ -68,16 +71,34 @@ const WelcomePage = () => {
   };
 
   return (
-    <MainContainer>
-      <SideImage>
-        <img src={twitterLogo} alt="twitter logo"></img>
-      </SideImage>
-      <MainContent>
-        {showSignUp && <SignUp handleClose={handleClose}></SignUp>}
-        {showSignIn && <SignIn handleClose={handleClose}></SignIn>}
-        {!showSignUp && !showSignIn && Welcome()}
-      </MainContent>
-    </MainContainer>
+    <>
+      {loading ? (
+        <LoadingStyled>Loading</LoadingStyled>
+      ) : (
+        <MainContainer>
+          <SideImage>
+            <img src={twitterLogo} alt="twitter logo"></img>
+          </SideImage>
+          <MainContent>
+            {showSignUp && (
+              <SignUp
+                handleClose={handleClose}
+                setLoading={setLoading}
+              ></SignUp>
+            )}
+            {showSignIn && (
+              <SignIn
+                handleClose={handleClose}
+                setLoading={setLoading}
+                currentError={currentError}
+                setCurrentError={setCurrentError}
+              ></SignIn>
+            )}
+            {!showSignUp && !showSignIn && Welcome()}
+          </MainContent>
+        </MainContainer>
+      )}
+    </>
   );
 };
 
