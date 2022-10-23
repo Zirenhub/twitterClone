@@ -66,7 +66,12 @@ const SignIn = (props) => {
   return (
     <>
       {showSingUp ? (
-        <SignUp handleClose={handleClose}></SignUp>
+        <SignUp
+          handleClose={handleClose}
+          setLoading={setLoading}
+          currentError={currentError}
+          setCurrentError={setCurrentError}
+        ></SignUp>
       ) : (
         <MainContainer style={{ padding: 20 }}>
           <MainContent>
