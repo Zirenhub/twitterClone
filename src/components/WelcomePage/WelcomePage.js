@@ -15,7 +15,7 @@ import {
 import googleIcon from '../../assets/images/2991148.png';
 import appleIcon from '../../assets/images/154870.png';
 import twitterLogo from '../../assets/images/iconmonstr-twitter-1.svg';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import SignUp from './SignUp';
 import SignIn from './SignIn';
 import { LoadingStyled } from '../../styles/WelcomePageStyles/Loading.styled';
@@ -38,6 +38,13 @@ const WelcomePage = () => {
     setShowSignUp(false);
     setShowSignIn(false);
   };
+
+  useEffect(() => {
+    // clear error message when signin or signup page is closed
+    return () => {
+      setCurrentError(null);
+    };
+  }, [showSignIn, showSignUp]);
 
   const Welcome = () => {
     return (
@@ -84,6 +91,8 @@ const WelcomePage = () => {
               <SignUp
                 handleClose={handleClose}
                 setLoading={setLoading}
+                currentError={currentError}
+                setCurrentError={setCurrentError}
               ></SignUp>
             )}
             {showSignIn && (

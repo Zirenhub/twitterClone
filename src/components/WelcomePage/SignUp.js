@@ -6,7 +6,6 @@ import {
   CloseButtonContainer,
   CloseButton,
   ErrorMessage,
-  SubmitButton,
 } from '../../styles/WelcomePageStyles/SignUp.styled';
 import validateEmail from './validateEmail';
 import validatePassword from './validatePassword';
@@ -15,7 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import getSubmitButton from './getSubmitButton';
 
 const SignUp = (props) => {
-  const { handleClose } = props;
+  const { handleClose, setLoading, currentError, setCurrentError } = props;
 
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
@@ -67,12 +66,14 @@ const SignUp = (props) => {
     e.preventDefault();
     if (isNameValid && isPasswordValid && isEmailValid) {
       try {
+        setLoading(true);
         await createUser(email, password, name);
         navigate('/homepage');
       } catch (error) {
-        console.log(error);
+        setCurrentError(error.code);
       }
     }
+    setLoading(false);
   };
 
   const submitButton = (color, status) => {
@@ -133,6 +134,11 @@ const SignUp = (props) => {
             ? submitButton('#eff3f4', false)
             : submitButton('#505050f0', true)}
         </FormContainer>
+        {currentError && (
+          <ErrorMessage style={{ marginLeft: 'auto' }}>
+            {currentError}
+          </ErrorMessage>
+        )}
       </MainContent>
     </MainContainer>
   );
