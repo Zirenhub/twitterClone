@@ -18,14 +18,18 @@ export const TweetHeader = styled.div`
 `;
 
 export const TweetButton = styled.button`
-  background-color: #0e4e78;
-  color: #9bbecd;
+  background-color: ${(props) => props.bgColor};
+  color: ${(props) => props.color};
   font-weight: bold;
   padding: 8px 15px;
   cursor: pointer;
   border-radius: 20px;
   border: none;
   outline: none;
+
+  &:disabled {
+    cursor: not-allowed;
+  }
 `;
 
 export const TweetContent = styled.div`
@@ -50,9 +54,11 @@ export const TweetForm = styled.div`
   flex-direction: column;
   color: #71767b;
   font-size: 1.2rem;
+  height: 100%;
 
   textarea {
     background-color: transparent;
+    height: 50%;
     outline: none;
     color: #efefef;
     font-size: 1.2rem;
