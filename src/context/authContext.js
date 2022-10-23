@@ -55,4 +55,4 @@ const UserAuth = () => {
   return useContext(UserContext);
 };
 
-export { AuthContextProvider, UserAuth };
+export { AuthContextProvider, UserAuth, UserContext };
