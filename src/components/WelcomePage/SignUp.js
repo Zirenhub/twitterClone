@@ -12,6 +12,7 @@ import validatePassword from './validatePassword';
 import { UserAuth } from '../../context/authContext';
 import { useNavigate } from 'react-router-dom';
 import getSubmitButton from './getSubmitButton';
+import writeUserToFirestore from './writeUserToFirestore';
 
 const SignUp = (props) => {
   const { handleClose, setLoading, currentError, setCurrentError } = props;
@@ -67,7 +68,12 @@ const SignUp = (props) => {
     if (isNameValid && isPasswordValid && isEmailValid) {
       try {
         setLoading(true);
-        await createUser(email, password, name);
+        const newUser = await createUser(email, password, name);
+
+        const userID = newUser.user.uid;
+        const displayName = newUser.user.displayName;
+
+        await writeUserToFirestore(userID, displayName);
         navigate('/homepage');
       } catch (error) {
         setCurrentError(error.code);
