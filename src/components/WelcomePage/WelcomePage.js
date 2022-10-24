@@ -19,12 +19,21 @@ import { useEffect, useState } from 'react';
 import SignUp from './SignUp';
 import SignIn from './SignIn';
 import { LoadingStyled } from '../../styles/WelcomePageStyles/Loading.styled';
+import { UserAuth } from '../../context/authContext';
+import { useNavigate } from 'react-router-dom';
 
 const WelcomePage = () => {
   const [showSignUp, setShowSignUp] = useState(false);
   const [showSignIn, setShowSignIn] = useState(false);
   const [loading, setLoading] = useState(false);
   const [currentError, setCurrentError] = useState(null);
+
+  const { user } = UserAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) navigate('/homepage');
+  }, []);
 
   const handleShowSignUp = () => {
     setShowSignUp(true);
