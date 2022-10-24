@@ -12,7 +12,7 @@ import validatePassword from './validatePassword';
 import { UserAuth } from '../../context/authContext';
 import { useNavigate } from 'react-router-dom';
 import getSubmitButton from './getSubmitButton';
-import writeUserToFirestore from './writeUserToFirestore';
+import writeUserToDB from './writeUserToDB';
 
 const SignUp = (props) => {
   const { handleClose, setLoading, currentError, setCurrentError } = props;
@@ -73,7 +73,7 @@ const SignUp = (props) => {
         const userID = newUser.user.uid;
         const displayName = newUser.user.displayName;
 
-        await writeUserToFirestore(userID, displayName);
+        await writeUserToDB(userID, displayName);
         navigate('/homepage');
       } catch (error) {
         setCurrentError(error.code);
