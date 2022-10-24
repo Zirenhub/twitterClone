@@ -3,13 +3,13 @@ import {
   HomepageFooterContainer,
   HomepageHeader,
   HomepageMain,
-  HomepageStar,
+  HomepageSignout,
   HomepageTestPP,
   HomepageTweetsContainer,
   HomepageTweetContainer,
 } from '../../styles/HomePageStyles/HomePage.styled';
 import { UserAuth } from '../../context/authContext';
-import starSVG from '../../assets/images/star-svg.svg';
+import signOut from '../../assets/images/sign-out-svg.svg';
 import homeButton from '../../assets/images/home-svg.svg';
 import searchButton from '../../assets/images/search-svg.svg';
 import notificationButton from '../../assets/images/bell-svg.svg';
@@ -18,37 +18,39 @@ import tweetButton from '../../assets/images/pencil-svg.svg';
 import { useNavigate } from 'react-router-dom';
 
 const HomePage = () => {
-  const { user, logout } = UserAuth();
+  const { logout } = UserAuth();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {
       await logout();
-      // navigate
+      navigate('/');
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const handleSwitchToProfile = () => {
+    navigate('/profile');
   };
 
   const navigateToTweet = () => {
     navigate('/tweet');
   };
 
-  // return <h1>Hello {user ? user.displayName : 'Guest'}</h1>;
-
   return (
     <HomepageMain>
       <HomepageHeader>
         <div style={{ display: 'flex', alignItems: 'center' }}>
-          <HomepageTestPP></HomepageTestPP>
+          <HomepageTestPP onClick={handleSwitchToProfile}></HomepageTestPP>
           <div style={{ marginLeft: 15 }}>
             <p style={{ fontSize: 15, fontWeight: 'bold' }}>Latest Tweets</p>
           </div>
         </div>
 
-        <HomepageStar>
-          <img src={starSVG} alt="tweet options button"></img>
-        </HomepageStar>
+        <HomepageSignout onClick={handleLogout}>
+          <img src={signOut} alt="sign out button"></img>
+        </HomepageSignout>
       </HomepageHeader>
       <HomepageTweetsContainer>
         <HomepageTweetContainer onClick={navigateToTweet}>
