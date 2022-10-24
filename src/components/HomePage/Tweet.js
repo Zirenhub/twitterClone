@@ -11,19 +11,28 @@ import {
 } from '../../styles/HomePageStyles/Tweet.styled';
 import { useEffect, useState } from 'react';
 import { UserAuth } from '../../context/authContext';
+import writeTweetToDB from './writeTweetToDB';
+import { useNavigate } from 'react-router-dom';
 
 const Tweet = () => {
   const [text, setText] = useState('');
   const [canTweet, setCanTweet] = useState(false);
 
   const { user } = UserAuth();
+  const navigate = useNavigate();
 
   const handleText = (e) => {
     setText(e.target.value);
   };
 
-  const handleSubmitTweet = () => {
-    console.log(user);
+  const handleSubmitTweet = async () => {
+    const userID = user.uid;
+
+    await writeTweetToDB(userID, text);
+  };
+
+  const handleCloseTweet = () => {
+    navigate('/homepage');
   };
 
   useEffect(() => {
@@ -33,7 +42,7 @@ const Tweet = () => {
   return (
     <TweetMain>
       <TweetHeader>
-        <CloseButton></CloseButton>
+        <CloseButton onClick={handleCloseTweet}></CloseButton>
         <TweetButton
           bgColor={canTweet ? '#5dbaec' : '#579bbd'}
           color={canTweet ? '#ffffff' : '#9bbecd'}
