@@ -26,12 +26,13 @@ export const HomepageTestPP = styled.div`
   background-size: contain;
   background-position: center center;
   background-repeat: no-repeat;
+  cursor: pointer;
 
   height: 32px;
   width: 32px;
 `;
 
-export const HomepageStar = styled.div`
+export const HomepageSignout = styled.div`
   height: 32px;
   width: 32px;
   cursor: pointer;
@@ -39,6 +40,8 @@ export const HomepageStar = styled.div`
   img {
     filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(31deg)
       brightness(110%) contrast(102%);
+    height: 100%;
+    width: 100%;
   }
 `;
 
