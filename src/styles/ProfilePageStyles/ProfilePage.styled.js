@@ -31,7 +31,7 @@ export const ProfileBackground = styled.div`
   background-image: url(${background});
   background-position: center center;
   background-repeat: no-repeat;
-  background-size: contain;
+  background-size: cover;
   height: 150px;
   width: 100%;
 `;
@@ -42,6 +42,7 @@ export const ProfileEditContainer = styled.div`
   justify-content: flex-end;
   align-items: center;
   padding-right: 5px;
+  padding-top: 10px;
 `;
 
 export const ProfileEditButton = styled.button`
@@ -63,4 +64,27 @@ export const ProfileContentInfo = styled.div`
   display: flex;
   flex-direction: column;
   padding: 10px;
+  color: #71767b;
+`;
+
+export const ProfileFollowsContainer = styled.div`
+  display: flex;
+  gap: 15px;
+`;
+
+export const ProfileTweetFeedContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+`;
+
+export const ProfileTweetContainer = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  height: 100px;
+`;
+
+export const ProfileTweetContent = styled.div`
+  margin-left: 10px;
 `;
