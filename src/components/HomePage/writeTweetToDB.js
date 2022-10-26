@@ -1,4 +1,10 @@
-import { doc, increment, setDoc, updateDoc } from 'firebase/firestore';
+import {
+  doc,
+  increment,
+  serverTimestamp,
+  setDoc,
+  updateDoc,
+} from 'firebase/firestore';
 import { v4 as uuidv4 } from 'uuid';
 import { db } from '../../Firebase';
 
@@ -11,6 +17,7 @@ const writeTweetToDB = async (userID, tweet) => {
       {
         [key]: {
           tweet: tweet,
+          firestoreDate: serverTimestamp(),
         },
       },
       { merge: true }
