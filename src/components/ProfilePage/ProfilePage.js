@@ -14,23 +14,38 @@ import {
   ProfileTweetFeedContainer,
   ProfileTweetContainer,
   ProfileTweetContent,
+  ProfileWhiteBold,
+  ProfileGrayText,
+  ProfileWhite,
+  ProfileTweetInteractContainer,
+  ProfileCommentButton,
+  ProfileRetweetButton,
+  ProfileLikeButton,
 } from '../../styles/ProfilePageStyles/ProfilePage.styled';
 import { LoadingStyled } from '../../styles/WelcomePageStyles/Loading.styled';
 import { CloseButton } from '../../styles/WelcomePageStyles/SignUp.styled';
 import Footer from '../HomePage/Footer';
 import getUserInfo from './getUserInfo';
 import getUserTweets from './getUserTweets';
+import commentIcon from '../../assets/images/comment-svgrepo-com.svg';
+import retweetIcon from '../../assets/images/retweet-svgrepo-com.svg';
+import likeIcon from '../../assets/images/like-svgrepo-com.svg';
+import { useNavigate } from 'react-router-dom';
 
 const ProfilePage = () => {
   const [tweetsCount, setTweetsCount] = useState(null);
   const [joinDate, setJoinDate] = useState(null);
   const [loading, setLoading] = useState(false);
   const [tweets, setTweets] = useState(null);
+  const [followers, setFollowers] = useState(null);
+  const [following, setFollowing] = useState(null);
   // should be protected route.
   const { user } = UserAuth();
+  const navigate = useNavigate();
 
   const fetchUserInfo = useCallback(async () => {
     setLoading(true);
+
     const res = await getUserInfo(user.uid);
     // tweetsNum and joinDate are returned
     // fetched data from getUserInfo
@@ -38,17 +53,26 @@ const ProfilePage = () => {
     // until user loads it's not.
     if (res) {
       setTweetsCount(res.tweetsNum);
-      setJoinDate(res.joinDate);
-      setLoading(false);
+      setJoinDate(res.joinDate.toLocaleDateString());
+      // setFollowers(res.followers);
+      // setFollowing(res.following)
     }
   }, [user]);
 
   const fetchUserTweets = useCallback(async () => {
     const res = await getUserTweets(user.uid);
     if (res) {
-      setTweets(res.tweets);
+      const sortedTweets = Object.entries(res.tweets).sort((a, b) => {
+        return new Date(a[1].firestoreDate) - new Date(b[1].firestoreDate);
+      });
+      setTweets(sortedTweets);
     }
+    setLoading(false);
   }, [user]);
+
+  const handleCloseProfile = () => {
+    navigate('/homepage');
+  };
 
   useEffect(() => {
     fetchUserInfo();
@@ -62,7 +86,7 @@ const ProfilePage = () => {
       ) : (
         <ProfileMain>
           <ProfileHeader>
-            <CloseButton></CloseButton>
+            <CloseButton onClick={handleCloseProfile}></CloseButton>
             <ProfileHeaderDetails>
               <p>{user.displayName}</p>
               <p>{tweetsCount} Tweets</p>
@@ -104,22 +128,45 @@ const ProfilePage = () => {
           </ProfileVisuals>
           <ProfileTweetFeedContainer>
             {tweets &&
-              Object.keys(tweets).map((key) => (
-                <ProfileTweetContainer key={key}>
-                  <HomepageTestPP
-                    style={{
-                      border: '1px solid red',
-                      backgroundColor: '#ffffff',
-                    }}
-                  ></HomepageTestPP>
-                  <ProfileTweetContent>
-                    <p style={{ color: '#eff3f4', fontWeight: '700' }}>
-                      {user.displayName}
-                    </p>
-                    <p style={{ color: '#eff3f4' }}>{tweets[key].tweet}</p>
-                  </ProfileTweetContent>
-                </ProfileTweetContainer>
-              ))}
+              tweets.map((tweet) => {
+                return (
+                  <ProfileTweetContainer key={tweet[0]}>
+                    <div style={{ display: 'flex' }}>
+                      <HomepageTestPP
+                        style={{
+                          border: '1px solid red',
+                          backgroundColor: '#ffffff',
+                          minHeight: 48,
+                          minWidth: 48,
+                          flexGrow: 1,
+                        }}
+                      ></HomepageTestPP>
+                      <ProfileTweetContent>
+                        <div style={{ display: 'flex' }}>
+                          <ProfileWhiteBold>
+                            {user.displayName}
+                          </ProfileWhiteBold>
+                          <ProfileGrayText style={{ marginLeft: 10 }}>
+                            {tweet[1].firestoreDate.slice(0, 21)}
+                          </ProfileGrayText>
+                        </div>
+
+                        <ProfileWhite>{tweet[1].tweet}</ProfileWhite>
+                      </ProfileTweetContent>
+                    </div>
+
+                    <ProfileTweetInteractContainer>
+                      <ProfileCommentButton
+                        src={commentIcon}
+                      ></ProfileCommentButton>
+                      <ProfileRetweetButton
+                        src={retweetIcon}
+                      ></ProfileRetweetButton>
+                      <ProfileLikeButton src={likeIcon}></ProfileLikeButton>
+                    </ProfileTweetInteractContainer>
+                  </ProfileTweetContainer>
+                );
+              })}
           </ProfileTweetFeedContainer>
           <Footer></Footer>
         </ProfileMain>
