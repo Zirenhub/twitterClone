@@ -4,15 +4,19 @@ import {
   HomepageSignout,
   HomepageTestPP,
   HomepageTweetsContainer,
-  HomepageTweetContainer,
+  HomepageWriteTweet,
 } from '../../styles/HomePageStyles/HomePage.styled';
 import { UserAuth } from '../../context/authContext';
 import signOut from '../../assets/images/sign-out-svg.svg';
 import tweetButton from '../../assets/images/pencil-svg.svg';
 import { useNavigate } from 'react-router-dom';
 import Footer from './Footer';
+import { useEffect, useState } from 'react';
+import getAllTweets from './getAllTweets';
 
 const HomePage = () => {
+  const [allTweets, setAllTweets] = useState(null);
+
   const { logout } = UserAuth();
   const navigate = useNavigate();
 
@@ -33,6 +37,18 @@ const HomePage = () => {
     navigate('/tweet');
   };
 
+  useEffect(() => {
+    const allTweetsRes = async () => {
+      return await getAllTweets();
+    };
+
+    setAllTweets(allTweetsRes);
+  }, []);
+
+  useEffect(() => {
+    console.log(allTweets);
+  }, [allTweets]);
+
   return (
     <HomepageMain>
       <HomepageHeader>
@@ -48,9 +64,9 @@ const HomePage = () => {
         </HomepageSignout>
       </HomepageHeader>
       <HomepageTweetsContainer>
-        <HomepageTweetContainer onClick={navigateToTweet}>
+        <HomepageWriteTweet onClick={navigateToTweet}>
           <img src={tweetButton} alt="write tweet button"></img>
-        </HomepageTweetContainer>
+        </HomepageWriteTweet>
       </HomepageTweetsContainer>
       <Footer></Footer>
     </HomepageMain>
