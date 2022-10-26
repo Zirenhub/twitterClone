@@ -13,8 +13,10 @@ const getUserInfo = async (userID) => {
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      returnData.joinDate = docSnap.data().joinDate;
+      returnData.joinDate = docSnap.data().firestoreDate.toDate();
       returnData.tweetsNum = docSnap.data().tweetsNum;
+      returnData.following = docSnap.data().following;
+      returnData.followers = docSnap.data().followers;
     }
     return returnData;
   }

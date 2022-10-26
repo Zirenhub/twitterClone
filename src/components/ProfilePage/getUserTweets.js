@@ -10,6 +10,14 @@ const getUserTweets = async (userID) => {
 
     if (docSnap.exists()) {
       returnData.tweets = docSnap.data();
+      Object.keys(returnData.tweets).forEach((key) => {
+        returnData.tweets[key].firestoreDate = returnData.tweets[
+          key
+        ].firestoreDate
+          .toDate()
+          .toString();
+        return key;
+      });
     }
     return returnData;
   }
