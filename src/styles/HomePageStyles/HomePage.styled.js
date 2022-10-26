@@ -79,7 +79,7 @@ export const HomepageFooterContainer = styled.div`
   }
 `;
 
-export const HomepageTweetContainer = styled.div`
+export const HomepageWriteTweet = styled.div`
   cursor: pointer;
   position: absolute;
   right: 3%;

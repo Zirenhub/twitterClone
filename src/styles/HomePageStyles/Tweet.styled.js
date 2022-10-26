@@ -34,6 +34,7 @@ export const TweetButton = styled.button`
 
 export const TweetContent = styled.div`
   display: flex;
+  flex-direction: column;
   margin-top: 20px;
   min-height: 30%;
 `;

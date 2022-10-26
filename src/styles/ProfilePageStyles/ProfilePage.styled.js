@@ -80,11 +80,59 @@ export const ProfileTweetFeedContainer = styled.div`
 
 export const ProfileTweetContainer = styled.div`
   display: flex;
-  align-items: center;
-  padding: 20px;
-  height: 100px;
+  flex-direction: column;
+  justify-content: center;
+  padding: 10px;
+  border-top: 1px solid #71767b;
+  border-bottom: 1px solid #71767b;
+  transition: ease-in-out 100ms;
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
 `;
 
 export const ProfileTweetContent = styled.div`
   margin-left: 10px;
+  width: 100%;
+`;
+
+export const ProfileWhite = styled.p`
+  color: #eff3f4;
+`;
+
+export const ProfileWhiteBold = styled.p`
+  color: #eff3f4;
+  font-weight: 700;
+`;
+
+export const ProfileGrayText = styled.p`
+  color: #71767b;
+`;
+
+export const ProfileTweetInteractContainer = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+  gap: 20px;
+  margin-top: 10px;
+
+  img {
+    filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(31deg)
+      brightness(110%) contrast(102%);
+
+    height: 24px;
+    width: 24px;
+
+    cursor: pointer;
+  }
+`;
+
+export const ProfileCommentButton = styled.img``;
+
+export const ProfileRetweetButton = styled.img``;
+
+export const ProfileLikeButton = styled.img`
+  // for some reason like svg is bigger than the others
+  width: 18px !important;
 `;
