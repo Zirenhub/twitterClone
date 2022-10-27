@@ -63,8 +63,9 @@ const ProfilePage = () => {
     const res = await getUserTweets(user.uid);
     if (res) {
       const sortedTweets = Object.entries(res.tweets).sort((a, b) => {
-        return new Date(a[1].firestoreDate) - new Date(b[1].firestoreDate);
+        return new Date(b[1].firestoreDate) - new Date(a[1].firestoreDate);
       });
+
       setTweets(sortedTweets);
     }
     setLoading(false);
@@ -88,7 +89,10 @@ const ProfilePage = () => {
           <ProfileHeader>
             <CloseButton onClick={handleCloseProfile}></CloseButton>
             <ProfileHeaderDetails>
-              <p>{user.displayName}</p>
+              <p>
+                {/* user.display is the name that the user registered with  */}
+                {user.displayName}
+              </p>
               <p>{tweetsCount} Tweets</p>
             </ProfileHeaderDetails>
           </ProfileHeader>

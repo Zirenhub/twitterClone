@@ -17,6 +17,7 @@ const getUserInfo = async (userID) => {
       returnData.tweetsNum = docSnap.data().tweetsNum;
       returnData.following = docSnap.data().following;
       returnData.followers = docSnap.data().followers;
+      returnData.userName = docSnap.data().userName;
     }
     return returnData;
   }
