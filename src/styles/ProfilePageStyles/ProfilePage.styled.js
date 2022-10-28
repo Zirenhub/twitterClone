@@ -7,6 +7,7 @@ export const ProfileMain = styled.div`
   background-color: #000000;
   display: flex;
   flex-direction: column;
+  overflow: auto;
 
   @media (min-width: 500px) {
     flex-direction: row-reverse;
@@ -80,7 +81,7 @@ export const ProfileTweetFeedContainer = styled.div`
   display: flex;
   flex-direction: column;
   overflow: auto;
-  /* position: relative; */
+  flex-grow: 1;
 `;
 
 export const ProfileTweetContainer = styled.div`
@@ -118,8 +119,8 @@ export const ProfileGrayText = styled.p`
 
 export const ProfileTweetInteractContainer = styled.div`
   display: flex;
-  justify-content: space-evenly;
-  gap: 20px;
+  justify-content: flex-start;
+  gap: 90px;
   margin-top: 10px;
 
   img {

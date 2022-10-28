@@ -89,6 +89,12 @@ export const HomepageWriteTweet = styled.div`
     opacity: 0.5;
   }
 
+  @media (min-width: 500px) {
+    position: inherit;
+    width: 46px;
+    height: 46px;
+  }
+
   img {
     filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(31deg)
       brightness(110%) contrast(102%);
