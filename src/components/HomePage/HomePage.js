@@ -14,9 +14,24 @@ import Footer from './Footer';
 import { useEffect, useState } from 'react';
 import getAllTweets from './getAllTweets';
 import { LoadingStyled } from '../../styles/WelcomePageStyles/Loading.styled';
+import {
+  ProfileTweetFeedContainer,
+  ProfileTweetContainer,
+  ProfileTweetContent,
+  ProfileWhiteBold,
+  ProfileGrayText,
+  ProfileWhite,
+  ProfileTweetInteractContainer,
+  ProfileCommentButton,
+  ProfileLikeButton,
+  ProfileRetweetButton,
+} from '../../styles/ProfilePageStyles/ProfilePage.styled';
+import commentIcon from '../../assets/images/comment-svgrepo-com.svg';
+import retweetIcon from '../../assets/images/retweet-svgrepo-com.svg';
+import likeIcon from '../../assets/images/like-svgrepo-com.svg';
 
 const HomePage = () => {
-  const [allTweets, setAllTweets] = useState(null);
+  const [allTweets, setAllTweets] = useState([]);
   const [mergedData, setMergedData] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -40,38 +55,38 @@ const HomePage = () => {
     navigate('/tweet');
   };
 
-  const fetchAllTweets = async () => {
-    setLoading(true);
-    try {
-      const res = await getAllTweets();
-      if (res) {
-        setAllTweets(res);
-        console.log('got tweets');
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
+    const fetchAllTweets = async () => {
+      try {
+        const res = await getAllTweets();
+        if (res) {
+          setAllTweets(res);
+          setLoading(false);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    setLoading(true);
     fetchAllTweets();
   }, []);
 
   useEffect(() => {
-    const mergeTweets = () => {
-      console.log('merging');
-      allTweets.forEach((userTweets) => {
-        userTweets.forEach((tweet) => {
-          const convertToArray = Object.entries(tweet);
-          setMergedData((prevVal) => [...prevVal, convertToArray]);
-          console.log('yes sir');
-        });
+    allTweets.forEach((userTweets) => {
+      userTweets.forEach((tweet) => {
+        const convertToArray = Object.entries(tweet);
+        setMergedData((prevVal) => [...prevVal, convertToArray]);
       });
-      setLoading(false);
-    };
-
-    if (allTweets) mergeTweets();
+    });
   }, [allTweets]);
+
+  useEffect(() => {
+    const sortedTweets = mergedData.sort((a, b) => {
+      return new Date(b[0][1].firestoreDate) - new Date(a[0][1].firestoreDate);
+    });
+    setMergedData(sortedTweets);
+  }, [mergedData]);
 
   return (
     <>
@@ -97,16 +112,48 @@ const HomePage = () => {
             <HomepageWriteTweet onClick={navigateToTweet}>
               <img src={tweetButton} alt="write tweet button"></img>
             </HomepageWriteTweet>
-            {/* {mergedData &&
-              mergedData.map((tweet) => {
-                return (
-                  <div key={tweet[0][0]}>
-                    <p>{tweet[0][1].tweet}</p>
-                    <p>{tweet[0][1].firestoreDate}</p>
-                    <p>{tweet[1][1].userName}</p>
-                  </div>
-                );
-              })} */}
+            <ProfileTweetFeedContainer>
+              {mergedData &&
+                mergedData.map((tweet) => {
+                  return (
+                    <ProfileTweetContainer key={tweet[0][0]}>
+                      <div style={{ display: 'flex' }}>
+                        <HomepageTestPP
+                          style={{
+                            border: '1px solid red',
+                            backgroundColor: '#ffffff',
+                            minHeight: 48,
+                            minWidth: 48,
+                            flexGrow: 1,
+                          }}
+                        ></HomepageTestPP>
+                        <ProfileTweetContent>
+                          <div style={{ display: 'flex' }}>
+                            <ProfileWhiteBold>
+                              {tweet[1][1].userName}
+                            </ProfileWhiteBold>
+                            <ProfileGrayText style={{ marginLeft: 10 }}>
+                              {tweet[0][1].firestoreDate.slice(0, 21)}
+                            </ProfileGrayText>
+                          </div>
+
+                          <ProfileWhite>{tweet[0][1].tweet}</ProfileWhite>
+                        </ProfileTweetContent>
+                      </div>
+
+                      <ProfileTweetInteractContainer>
+                        <ProfileCommentButton
+                          src={commentIcon}
+                        ></ProfileCommentButton>
+                        <ProfileRetweetButton
+                          src={retweetIcon}
+                        ></ProfileRetweetButton>
+                        <ProfileLikeButton src={likeIcon}></ProfileLikeButton>
+                      </ProfileTweetInteractContainer>
+                    </ProfileTweetContainer>
+                  );
+                })}
+            </ProfileTweetFeedContainer>
           </HomepageTweetsContainer>
           <Footer></Footer>
         </HomepageMain>
