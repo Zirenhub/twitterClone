@@ -2,13 +2,11 @@ import {
   HomepageHeader,
   HomepageSignout,
   HomepageTestPP,
-  HomepageWriteTweet,
 } from '../../styles/HomePageStyles/HomePage.styled';
 import { UserAuth } from '../../context/authContext';
 import signOut from '../../assets/images/sign-out-svg.svg';
-import tweetButton from '../../assets/images/pencil-svg.svg';
 import { useNavigate } from 'react-router-dom';
-import Footer from './Footer';
+import Footer from '../../utils/Footer';
 import { useEffect, useState } from 'react';
 import getAllTweets from './getAllTweets';
 import { LoadingStyled } from '../../styles/WelcomePageStyles/Loading.styled';
@@ -19,15 +17,9 @@ import {
   ProfileWhiteBold,
   ProfileGrayText,
   ProfileWhite,
-  ProfileTweetInteractContainer,
-  ProfileCommentButton,
-  ProfileLikeButton,
-  ProfileRetweetButton,
   ProfileMain,
 } from '../../styles/ProfilePageStyles/ProfilePage.styled';
-import commentIcon from '../../assets/images/comment-svgrepo-com.svg';
-import retweetIcon from '../../assets/images/retweet-svgrepo-com.svg';
-import likeIcon from '../../assets/images/like-svgrepo-com.svg';
+import TweetInteractions from '../../utils/TweetInteractions';
 
 const HomePage = () => {
   const [allTweets, setAllTweets] = useState([]);
@@ -94,9 +86,6 @@ const HomePage = () => {
         <LoadingStyled>Loading</LoadingStyled>
       ) : (
         <ProfileMain>
-          <HomepageWriteTweet onClick={navigateToTweet}>
-            <img src={tweetButton} alt="write tweet button"></img>
-          </HomepageWriteTweet>
           <ProfileTweetFeedContainer>
             <HomepageHeader>
               <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -139,23 +128,14 @@ const HomePage = () => {
                         </div>
 
                         <ProfileWhite>{tweet[0][1].tweet}</ProfileWhite>
+                        <TweetInteractions></TweetInteractions>
                       </ProfileTweetContent>
                     </div>
-
-                    <ProfileTweetInteractContainer>
-                      <ProfileCommentButton
-                        src={commentIcon}
-                      ></ProfileCommentButton>
-                      <ProfileRetweetButton
-                        src={retweetIcon}
-                      ></ProfileRetweetButton>
-                      <ProfileLikeButton src={likeIcon}></ProfileLikeButton>
-                    </ProfileTweetInteractContainer>
                   </ProfileTweetContainer>
                 );
               })}
           </ProfileTweetFeedContainer>
-          <Footer></Footer>
+          <Footer navigateToTweet={navigateToTweet}></Footer>
         </ProfileMain>
       )}
     </>
