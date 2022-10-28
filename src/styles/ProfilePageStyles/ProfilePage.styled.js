@@ -7,6 +7,10 @@ export const ProfileMain = styled.div`
   background-color: #000000;
   display: flex;
   flex-direction: column;
+
+  @media (min-width: 500px) {
+    flex-direction: row-reverse;
+  }
 `;
 
 export const ProfileHeader = styled.div`
@@ -75,7 +79,8 @@ export const ProfileFollowsContainer = styled.div`
 export const ProfileTweetFeedContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100%;
+  overflow: auto;
+  /* position: relative; */
 `;
 
 export const ProfileTweetContainer = styled.div`

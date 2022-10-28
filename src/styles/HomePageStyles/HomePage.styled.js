@@ -1,14 +1,6 @@
 import styled from 'styled-components';
 import profiepic from '../../assets/images/testpp.png';
 
-export const HomepageMain = styled.div`
-  display: flex;
-  flex-direction: column;
-  background-color: #efefef;
-  width: 100%;
-  height: 100%;
-`;
-
 export const HomepageHeader = styled.div`
   display: flex;
   max-height: 50px;
@@ -45,14 +37,6 @@ export const HomepageSignout = styled.div`
   }
 `;
 
-export const HomepageTweetsContainer = styled.div`
-  display: flex;
-  flex-direction: column-reverse;
-  height: 100%;
-  background-color: #1f1f1f;
-  position: relative;
-`;
-
 export const HomepageFooter = styled.div`
   display: flex;
   justify-content: space-between;
@@ -61,6 +45,15 @@ export const HomepageFooter = styled.div`
   padding-bottom: 8px;
   height: 65px;
   background-color: #000000;
+
+  @media (min-width: 500px) {
+    flex-direction: column;
+    height: 100%;
+    justify-content: flex-start;
+    padding: 25px 10px;
+    border-right: 1px solid gray;
+    gap: 20px;
+  }
 `;
 
 export const HomepageFooterContainer = styled.div`
@@ -81,9 +74,9 @@ export const HomepageFooterContainer = styled.div`
 
 export const HomepageWriteTweet = styled.div`
   cursor: pointer;
-  position: absolute;
-  right: 3%;
-  bottom: 2%;
+  position: fixed;
+  right: 5%;
+  bottom: 10%;
   border-radius: 100%;
   background-color: #1d9bf0;
   width: 56px;
