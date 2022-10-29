@@ -2,16 +2,16 @@ import {
   HomepageHeader,
   HomepageSignout,
   HomepageTestPP,
+  HomepageTweetFeedContainer,
 } from '../../styles/HomePageStyles/HomePage.styled';
 import { UserAuth } from '../../context/authContext';
 import signOut from '../../assets/images/sign-out-svg.svg';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Footer from '../../utils/Footer';
 import { useEffect, useState } from 'react';
 import getAllTweets from './getAllTweets';
 import { LoadingStyled } from '../../styles/WelcomePageStyles/Loading.styled';
 import {
-  ProfileTweetFeedContainer,
   ProfileTweetContainer,
   ProfileTweetContent,
   ProfileWhiteBold,
@@ -28,6 +28,7 @@ const HomePage = () => {
 
   const { logout } = UserAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogout = async () => {
     try {
@@ -42,8 +43,12 @@ const HomePage = () => {
     navigate('/profile');
   };
 
-  const navigateToTweet = () => {
-    navigate('/tweet');
+  const handleSwitchToTweet = () => {
+    navigate('/tweet', { state: { background: location } });
+  };
+
+  const handleScrollUp = () => {
+    document.getElementById('scroll').scrollTo(0, 0);
   };
 
   useEffect(() => {
@@ -86,23 +91,28 @@ const HomePage = () => {
         <LoadingStyled>Loading</LoadingStyled>
       ) : (
         <ProfileMain>
-          <ProfileTweetFeedContainer>
-            <HomepageHeader>
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <HomepageTestPP
-                  onClick={handleSwitchToProfile}
-                ></HomepageTestPP>
-                <div style={{ marginLeft: 15 }}>
-                  <p style={{ fontSize: 15, fontWeight: 'bold' }}>
-                    Latest Tweets
-                  </p>
-                </div>
+          <HomepageHeader>
+            <div
+              onClick={handleScrollUp}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                cursor: 'pointer',
+              }}
+            >
+              <HomepageTestPP onClick={handleSwitchToProfile}></HomepageTestPP>
+              <div style={{ marginLeft: 15 }}>
+                <p style={{ fontSize: 15, fontWeight: 'bold' }}>
+                  Latest Tweets
+                </p>
               </div>
+            </div>
 
-              <HomepageSignout onClick={handleLogout}>
-                <img src={signOut} alt="sign out button"></img>
-              </HomepageSignout>
-            </HomepageHeader>
+            <HomepageSignout onClick={handleLogout}>
+              <img src={signOut} alt="sign out button"></img>
+            </HomepageSignout>
+          </HomepageHeader>
+          <HomepageTweetFeedContainer id="scroll">
             {mergedData &&
               mergedData.map((tweet) => {
                 return (
@@ -134,8 +144,8 @@ const HomePage = () => {
                   </ProfileTweetContainer>
                 );
               })}
-          </ProfileTweetFeedContainer>
-          <Footer navigateToTweet={navigateToTweet}></Footer>
+          </HomepageTweetFeedContainer>
+          <Footer navigateToTweet={handleSwitchToTweet}></Footer>
         </ProfileMain>
       )}
     </>

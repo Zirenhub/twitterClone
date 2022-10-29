@@ -6,6 +6,7 @@ import {
   TweetForm,
   TweetHeader,
   TweetMain,
+  TweetModalBackground,
   TweetPPContainer,
   TweetTextContainer,
 } from '../../styles/HomePageStyles/Tweet.styled';
@@ -40,7 +41,7 @@ const Tweet = () => {
   };
 
   const handleCloseTweet = () => {
-    navigate('/homepage');
+    navigate(-1);
   };
 
   useEffect(() => {
@@ -56,6 +57,8 @@ const Tweet = () => {
 
   return (
     <>
+      <TweetModalBackground onClick={handleCloseTweet}></TweetModalBackground>
+
       {loading ? (
         <LoadingStyled>Loading</LoadingStyled>
       ) : (

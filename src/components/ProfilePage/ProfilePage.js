@@ -17,13 +17,14 @@ import {
   ProfileWhiteBold,
   ProfileGrayText,
   ProfileWhite,
+  ProfilePageResponsiveContainer,
 } from '../../styles/ProfilePageStyles/ProfilePage.styled';
 import { LoadingStyled } from '../../styles/WelcomePageStyles/Loading.styled';
 import { CloseButton } from '../../styles/WelcomePageStyles/SignUp.styled';
 import Footer from '../../utils/Footer';
 import getUserInfo from './getUserInfo';
 import getUserTweets from './getUserTweets';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import TweetInteractions from '../../utils/TweetInteractions';
 
 const ProfilePage = () => {
@@ -36,6 +37,7 @@ const ProfilePage = () => {
   // should be protected route.
   const { user } = UserAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const fetchUserInfo = useCallback(async () => {
     setLoading(true);
@@ -65,12 +67,16 @@ const ProfilePage = () => {
     setLoading(false);
   }, [user]);
 
-  const navigateToTweet = () => {
-    navigate('/tweet');
+  const handleSwitchToTweet = () => {
+    navigate('/tweet', { state: { background: location } });
   };
 
   const handleCloseProfile = () => {
     navigate('/homepage');
+  };
+
+  const handleScrollUp = () => {
+    document.getElementById('scroll').scrollTo(0, 0);
   };
 
   useEffect(() => {
@@ -84,8 +90,8 @@ const ProfilePage = () => {
         <LoadingStyled>Loading</LoadingStyled>
       ) : (
         <ProfileMain>
-          <div style={{ overflow: 'auto', flexGrow: '1' }}>
-            <ProfileHeader>
+          <ProfilePageResponsiveContainer id="scroll">
+            <ProfileHeader onClick={handleScrollUp}>
               <CloseButton onClick={handleCloseProfile}></CloseButton>
               <ProfileHeaderDetails>
                 <p>
@@ -95,76 +101,78 @@ const ProfilePage = () => {
                 <p>{tweetsCount} Tweets</p>
               </ProfileHeaderDetails>
             </ProfileHeader>
-            <ProfileVisuals>
-              <div
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  position: 'relative',
-                }}
-              >
-                <ProfileBackground></ProfileBackground>
-                <ProfileEditContainer>
-                  <ProfileEditButton>Edit Profile</ProfileEditButton>
-                </ProfileEditContainer>
-                <HomepageTestPP
+            <div style={{ marginTop: 50 }}>
+              <ProfileVisuals>
+                <div
                   style={{
-                    height: 90,
-                    width: 90,
-                    position: 'absolute',
-                    left: 15,
-                    bottom: 0,
-                    backgroundColor: '#ffffff',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    position: 'relative',
                   }}
-                ></HomepageTestPP>
-              </div>
-              <ProfileContentInfo>
-                <p style={{ fontWeight: 'bold', color: '#e7e9ea' }}>
-                  {user.displayName}
-                </p>
-                <p>Joined {joinDate}</p>
-                <ProfileFollowsContainer>
-                  <p>Following</p>
-                  <p>Follwers</p>
-                </ProfileFollowsContainer>
-              </ProfileContentInfo>
-            </ProfileVisuals>
-            <ProfileTweetFeedContainer>
-              {tweets &&
-                tweets.map((tweet) => {
-                  return (
-                    <ProfileTweetContainer key={tweet[0]}>
-                      <div style={{ display: 'flex' }}>
-                        <HomepageTestPP
-                          style={{
-                            border: '1px solid red',
-                            backgroundColor: '#ffffff',
-                            minHeight: 48,
-                            minWidth: 48,
-                            flexGrow: 1,
-                          }}
-                        ></HomepageTestPP>
-                        <ProfileTweetContent>
-                          <div style={{ display: 'flex' }}>
-                            <ProfileWhiteBold>
-                              {user.displayName}
-                            </ProfileWhiteBold>
-                            <ProfileGrayText style={{ marginLeft: 10 }}>
-                              {tweet[1].firestoreDate.slice(0, 21)}
-                            </ProfileGrayText>
-                          </div>
+                >
+                  <ProfileBackground></ProfileBackground>
+                  <ProfileEditContainer>
+                    <ProfileEditButton>Edit Profile</ProfileEditButton>
+                  </ProfileEditContainer>
+                  <HomepageTestPP
+                    style={{
+                      height: 90,
+                      width: 90,
+                      position: 'absolute',
+                      left: 15,
+                      bottom: 0,
+                      backgroundColor: '#ffffff',
+                    }}
+                  ></HomepageTestPP>
+                </div>
+                <ProfileContentInfo>
+                  <p style={{ fontWeight: 'bold', color: '#e7e9ea' }}>
+                    {user.displayName}
+                  </p>
+                  <p>Joined {joinDate}</p>
+                  <ProfileFollowsContainer>
+                    <p>Following</p>
+                    <p>Follwers</p>
+                  </ProfileFollowsContainer>
+                </ProfileContentInfo>
+              </ProfileVisuals>
+              <ProfileTweetFeedContainer>
+                {tweets &&
+                  tweets.map((tweet) => {
+                    return (
+                      <ProfileTweetContainer key={tweet[0]}>
+                        <div style={{ display: 'flex' }}>
+                          <HomepageTestPP
+                            style={{
+                              border: '1px solid red',
+                              backgroundColor: '#ffffff',
+                              minHeight: 48,
+                              minWidth: 48,
+                              flexGrow: 1,
+                            }}
+                          ></HomepageTestPP>
+                          <ProfileTweetContent>
+                            <div style={{ display: 'flex' }}>
+                              <ProfileWhiteBold>
+                                {user.displayName}
+                              </ProfileWhiteBold>
+                              <ProfileGrayText style={{ marginLeft: 10 }}>
+                                {tweet[1].firestoreDate.slice(0, 21)}
+                              </ProfileGrayText>
+                            </div>
 
-                          <ProfileWhite>{tweet[1].tweet}</ProfileWhite>
-                          <TweetInteractions></TweetInteractions>
-                        </ProfileTweetContent>
-                      </div>
-                    </ProfileTweetContainer>
-                  );
-                })}
-            </ProfileTweetFeedContainer>
-          </div>
+                            <ProfileWhite>{tweet[1].tweet}</ProfileWhite>
+                            <TweetInteractions></TweetInteractions>
+                          </ProfileTweetContent>
+                        </div>
+                      </ProfileTweetContainer>
+                    );
+                  })}
+              </ProfileTweetFeedContainer>
+            </div>
+          </ProfilePageResponsiveContainer>
 
-          <Footer navigateToTweet={navigateToTweet}></Footer>
+          <Footer navigateToTweet={handleSwitchToTweet}></Footer>
         </ProfileMain>
       )}
     </>
