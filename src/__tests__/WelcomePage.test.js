@@ -4,21 +4,46 @@ import userEvent from '@testing-library/user-event';
 import { BrowserRouter } from 'react-router-dom';
 import renderer from 'react-test-renderer';
 import WelcomePage from '../components/WelcomePage/WelcomePage';
-import { AuthContextProvider } from '../context/authContext';
+import { AuthContextProvider, UserContext } from '../context/authContext';
 
 afterEach(cleanup);
 
 const user = userEvent.setup();
+const mockedUsedNavigate = jest.fn();
+
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: () => mockedUsedNavigate,
+}));
 
 describe('WelcomePage renders', () => {
   test('Matches snapshot', () => {
-    const dom = renderer.create(<WelcomePage />).toJSON();
+    const user = null;
+
+    const dom = renderer
+      .create(
+        <AuthContextProvider>
+          <UserContext.Provider value={{ user }}>
+            <WelcomePage />
+          </UserContext.Provider>
+        </AuthContextProvider>
+      )
+      .toJSON();
 
     expect(dom).toMatchSnapshot();
+    expect(mockedUsedNavigate).toHaveBeenCalledTimes(0);
   });
 
   test('Main content renders', () => {
-    render(<WelcomePage />);
+    const user = null;
+
+    render(
+      <AuthContextProvider>
+        <UserContext.Provider value={{ user }}>
+          <WelcomePage />
+        </UserContext.Provider>
+      </AuthContextProvider>
+    );
 
     const signUp = screen.getByRole('button', {
       name: 'Sign up with phone or email',
@@ -27,6 +52,7 @@ describe('WelcomePage renders', () => {
       name: 'Sign In',
     });
 
+    expect(mockedUsedNavigate).toHaveBeenCalledTimes(0);
     expect(screen.getByText('Happening now')).toBeInTheDocument();
     expect(signUp).toBeInTheDocument();
     expect(signIn).toBeInTheDocument();
