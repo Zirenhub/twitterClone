@@ -1,8 +1,8 @@
 import {
-  HomepageFooter,
-  HomepageFooterContainer,
-  HomepageWriteTweet,
-} from '../styles/HomePageStyles/HomePage.styled';
+  FooterContainer,
+  FooterButtonContainer,
+  FooterWriteTweet,
+} from '../styles/utilsStyles/Footer.styled';
 import homeButton from '../assets/images/home-svg.svg';
 import searchButton from '../assets/images/search-svg.svg';
 import notificationButton from '../assets/images/bell-svg.svg';
@@ -13,24 +13,24 @@ const Footer = (props) => {
   const { navigateToTweet } = props;
 
   return (
-    <HomepageFooter>
-      <HomepageFooterContainer>
+    <FooterContainer>
+      <FooterButtonContainer>
         <img src={homeButton} alt="home button"></img>
-      </HomepageFooterContainer>
-      <HomepageFooterContainer>
+      </FooterButtonContainer>
+      <FooterButtonContainer>
         <img src={searchButton} alt="search button"></img>
-      </HomepageFooterContainer>
-      <HomepageFooterContainer>
+      </FooterButtonContainer>
+      <FooterButtonContainer>
         <img src={notificationButton} alt="notification button"></img>
-      </HomepageFooterContainer>
-      <HomepageFooterContainer>
+      </FooterButtonContainer>
+      <FooterButtonContainer>
         <img src={messagesButton} alt="messages button"></img>
-      </HomepageFooterContainer>
+      </FooterButtonContainer>
 
-      <HomepageWriteTweet onClick={navigateToTweet}>
+      <FooterWriteTweet onClick={navigateToTweet}>
         <img src={tweetButton} alt="write tweet button"></img>
-      </HomepageWriteTweet>
-    </HomepageFooter>
+      </FooterWriteTweet>
+    </FooterContainer>
   );
 };
 
