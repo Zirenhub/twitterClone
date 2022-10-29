@@ -7,10 +7,19 @@ export const ProfileMain = styled.div`
   background-color: #000000;
   display: flex;
   flex-direction: column;
-  overflow: auto;
+  /* overflow: auto; */
 
   @media (min-width: 500px) {
     flex-direction: row-reverse;
+  }
+`;
+
+export const ProfilePageResponsiveContainer = styled.div`
+  overflow: auto;
+  flex-grow: 1;
+
+  @media (min-width: 500px) {
+    border-left: 1px solid gray;
   }
 `;
 
@@ -20,6 +29,11 @@ export const ProfileHeader = styled.div`
   padding: 0px 15px;
   display: flex;
   align-items: center;
+  position: fixed;
+  background-color: #000 !important;
+  z-index: 99999;
+  top: 0;
+  cursor: pointer;
 `;
 
 export const ProfileHeaderDetails = styled.div`
@@ -89,7 +103,6 @@ export const ProfileTweetContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   padding: 10px;
-  border-top: 1px solid #71767b;
   border-bottom: 1px solid #71767b;
   transition: ease-in-out 100ms;
   cursor: pointer;

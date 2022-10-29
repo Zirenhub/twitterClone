@@ -3,12 +3,28 @@ import profiepic from '../../assets/images/testpp.png';
 
 export const HomepageHeader = styled.div`
   display: flex;
+  position: fixed;
+  top: 0;
+  z-index: 99999;
   max-height: 50px;
-  background-color: #000000;
+  width: 100%;
+  background-color: #000000 !important;
   align-items: center;
   color: #e7e9ea;
   padding: 15px;
   justify-content: space-between;
+`;
+
+export const HomepageTweetFeedContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  flex-grow: 1;
+  margin-top: 50px;
+
+  @media (min-width: 500px) {
+    border-left: 1px solid gray;
+  }
 `;
 
 export const HomepageTestPP = styled.div`
@@ -48,10 +64,10 @@ export const HomepageFooter = styled.div`
 
   @media (min-width: 500px) {
     flex-direction: column;
-    height: 100%;
+    height: fit-content;
+    margin-top: 50px;
     justify-content: flex-start;
-    padding: 25px 10px;
-    border-right: 1px solid gray;
+    padding: 05px 10px;
     gap: 20px;
   }
 `;
