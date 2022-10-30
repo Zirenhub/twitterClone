@@ -10,6 +10,7 @@ import messagesButton from '../assets/images/email-svg.svg';
 import tweetButton from '../assets/images/pencil-svg.svg';
 
 const Footer = (props) => {
+  // navigateToHomePage, navigateToExplore
   const { navigateToTweet } = props;
 
   return (
