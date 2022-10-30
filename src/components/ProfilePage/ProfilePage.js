@@ -56,11 +56,12 @@ const ProfilePage = () => {
   const fetchUserTweets = useCallback(async () => {
     const res = await getUserTweets(user.uid);
     if (res) {
-      const sortedTweets = Object.entries(res.tweets).sort((a, b) => {
-        return new Date(b[1].firestoreDate) - new Date(a[1].firestoreDate);
-      });
+      console.log(res);
+      // const sortedTweets = res.sort((a, b) => {
+      //   return new Date(b[0].date) - new Date(a[0].date);
+      // });
 
-      setTweets(sortedTweets);
+      // setTweets(sortedTweets);
     }
     setLoading(false);
   }, [user]);
@@ -77,6 +78,10 @@ const ProfilePage = () => {
     fetchUserInfo();
     fetchUserTweets();
   }, [fetchUserInfo, fetchUserTweets, location]);
+
+  useEffect(() => {
+    console.log(tweets);
+  }, [tweets]);
 
   if (loading) {
     return <LoadingStyled>Loading</LoadingStyled>;
@@ -129,38 +134,7 @@ const ProfilePage = () => {
             </ProfileFollowsContainer>
           </ProfileContentInfo>
         </ProfileVisuals>
-        <ProfileTweetFeedContainer>
-          {tweets &&
-            tweets.map((tweet) => {
-              return (
-                <ProfileTweetContainer key={tweet[0]}>
-                  <div style={{ display: 'flex' }}>
-                    <HomepageTestPP
-                      style={{
-                        border: '1px solid red',
-                        backgroundColor: '#ffffff',
-                        minHeight: 48,
-                        minWidth: 48,
-                        flexGrow: 1,
-                      }}
-                    ></HomepageTestPP>
-                    <ProfileTweetContent>
-                      <div style={{ display: 'flex' }}>
-                        <ProfileWhiteBold>{user.displayName}</ProfileWhiteBold>
-                        <ProfileGrayText style={{ marginLeft: 10 }}>
-                          {tweet[1].firestoreDate.slice(0, 21)}
-                        </ProfileGrayText>
-                        <ProfileTweetOptions></ProfileTweetOptions>
-                      </div>
-
-                      <ProfileWhite>{tweet[1].tweet}</ProfileWhite>
-                      <TweetInteractions></TweetInteractions>
-                    </ProfileTweetContent>
-                  </div>
-                </ProfileTweetContainer>
-              );
-            })}
-        </ProfileTweetFeedContainer>
+        <ProfileTweetFeedContainer></ProfileTweetFeedContainer>
       </div>
     </ProfilePageResponsiveContainer>
   );

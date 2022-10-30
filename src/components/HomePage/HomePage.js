@@ -79,6 +79,10 @@ const HomePage = () => {
     setMergedData(sortedTweets);
   }, [allTweets]);
 
+  useEffect(() => {
+    console.log(mergedData);
+  }, [mergedData]);
+
   if (loading) {
     return <LoadingStyled>Loading</LoadingStyled>;
   }
