@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import background from '../../assets/images/Background.png';
+import optionsSVG from '../../assets/images/options-svgrepo-com.svg';
 
 export const ProfileMain = styled.div`
   height: 100%;
@@ -115,6 +116,21 @@ export const ProfileTweetContainer = styled.div`
   @media (min-width: 600px) {
     border-right: 1px solid gray;
   }
+`;
+
+export const ProfileTweetOptions = styled.div`
+  background-image: url(${optionsSVG});
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: contain;
+
+  margin-left: auto;
+
+  width: 32px;
+  height: 23px;
+
+  filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(31deg)
+    brightness(110%) contrast(102%);
 `;
 
 export const ProfileTweetContent = styled.div`

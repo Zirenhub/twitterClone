@@ -17,6 +17,7 @@ import {
   ProfileGrayText,
   ProfileWhite,
   ProfilePageResponsiveContainer,
+  ProfileTweetOptions,
 } from '../../styles/ProfilePageStyles/ProfilePage.styled';
 import { CloseButton } from '../../styles/WelcomePageStyles/SignUp.styled';
 import getUserInfo from './getUserInfo';
@@ -149,6 +150,7 @@ const ProfilePage = () => {
                         <ProfileGrayText style={{ marginLeft: 10 }}>
                           {tweet[1].firestoreDate.slice(0, 21)}
                         </ProfileGrayText>
+                        <ProfileTweetOptions></ProfileTweetOptions>
                       </div>
 
                       <ProfileWhite>{tweet[1].tweet}</ProfileWhite>
