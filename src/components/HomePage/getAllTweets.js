@@ -1,4 +1,4 @@
-import { collection, getDocs, QuerySnapshot } from 'firebase/firestore';
+import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../Firebase';
 import getUserInfo from '../ProfilePage/getUserInfo';
 
