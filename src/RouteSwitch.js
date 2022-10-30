@@ -3,7 +3,7 @@ import WelcomePage from './components/WelcomePage/WelcomePage';
 import HomePage from './components/HomePage/HomePage';
 import GlobalStyle from './styles/Global.styled';
 import { AuthContextProvider } from './context/authContext';
-import Tweet from './components/HomePage/Tweet';
+import Tweet from './utils/Tweet';
 import ProfilePage from './components/ProfilePage/ProfilePage';
 import ProtectedRoute from './utils/ProtectedRoute';
 
