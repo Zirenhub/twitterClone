@@ -6,29 +6,27 @@ import {
 } from '../../styles/HomePageStyles/HomePage.styled';
 import { UserAuth } from '../../context/authContext';
 import signOut from '../../assets/images/sign-out-svg.svg';
-import { useLocation, useNavigate } from 'react-router-dom';
-import Footer from '../../utils/Footer';
+import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import getAllTweets from './getAllTweets';
-import { LoadingStyled } from '../../styles/WelcomePageStyles/Loading.styled';
 import {
   ProfileTweetContainer,
   ProfileTweetContent,
   ProfileWhiteBold,
   ProfileGrayText,
   ProfileWhite,
-  ProfileMain,
 } from '../../styles/ProfilePageStyles/ProfilePage.styled';
 import TweetInteractions from '../../utils/TweetInteractions';
+import WithFooter from '../HOC/WithFooter';
+import { LoadingStyled } from '../../styles/WelcomePageStyles/Loading.styled';
 
 const HomePage = () => {
+  const [loading, setLoading] = useState(true);
   const [allTweets, setAllTweets] = useState([]);
   const [mergedData, setMergedData] = useState([]);
-  const [loading, setLoading] = useState(false);
 
   const { logout } = UserAuth();
   const navigate = useNavigate();
-  const location = useLocation();
 
   const handleLogout = async () => {
     try {
@@ -43,10 +41,6 @@ const HomePage = () => {
     navigate('/profile');
   };
 
-  const handleSwitchToTweet = () => {
-    navigate('/tweet', { state: { background: location } });
-  };
-
   const handleScrollUp = () => {
     document.getElementById('scroll').scrollTo(0, 0);
   };
@@ -57,14 +51,13 @@ const HomePage = () => {
         const res = await getAllTweets();
         if (res) {
           setAllTweets(res);
-          setLoading(false);
         }
+        setLoading(false);
       } catch (error) {
         console.log(error);
       }
     };
 
-    setLoading(true);
     fetchAllTweets();
   }, []);
 
@@ -85,71 +78,62 @@ const HomePage = () => {
     setMergedData(sortedTweets);
   }, [allTweets]);
 
+  if (loading) {
+    return <LoadingStyled>Loading</LoadingStyled>;
+  }
+
   return (
-    <>
-      {loading ? (
-        <LoadingStyled>Loading</LoadingStyled>
-      ) : (
-        <ProfileMain>
-          <HomepageHeader>
-            <div
-              onClick={handleScrollUp}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                cursor: 'pointer',
-              }}
-            >
-              <HomepageTestPP onClick={handleSwitchToProfile}></HomepageTestPP>
-              <div style={{ marginLeft: 15 }}>
-                <p style={{ fontSize: 15, fontWeight: 'bold' }}>
-                  Latest Tweets
-                </p>
+    <HomepageTweetFeedContainer id="scroll">
+      <HomepageHeader>
+        <div
+          onClick={handleScrollUp}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            cursor: 'pointer',
+          }}
+        >
+          <HomepageTestPP onClick={handleSwitchToProfile}></HomepageTestPP>
+          <div style={{ marginLeft: 15 }}>
+            <p style={{ fontSize: 15, fontWeight: 'bold' }}>Latest Tweets</p>
+          </div>
+        </div>
+
+        <HomepageSignout onClick={handleLogout}>
+          <img src={signOut} alt="sign out button"></img>
+        </HomepageSignout>
+      </HomepageHeader>
+      {mergedData &&
+        mergedData.map((tweet) => {
+          return (
+            <ProfileTweetContainer key={tweet[0][0]}>
+              <div style={{ display: 'flex' }}>
+                <HomepageTestPP
+                  style={{
+                    border: '1px solid red',
+                    backgroundColor: '#ffffff',
+                    minHeight: 48,
+                    minWidth: 48,
+                    flexGrow: 1,
+                  }}
+                ></HomepageTestPP>
+                <ProfileTweetContent>
+                  <div style={{ display: 'flex' }}>
+                    <ProfileWhiteBold>{tweet[1][1].userName}</ProfileWhiteBold>
+                    <ProfileGrayText style={{ marginLeft: 10 }}>
+                      {tweet[0][1].firestoreDate.slice(0, 21)}
+                    </ProfileGrayText>
+                  </div>
+
+                  <ProfileWhite>{tweet[0][1].tweet}</ProfileWhite>
+                  <TweetInteractions></TweetInteractions>
+                </ProfileTweetContent>
               </div>
-            </div>
-
-            <HomepageSignout onClick={handleLogout}>
-              <img src={signOut} alt="sign out button"></img>
-            </HomepageSignout>
-          </HomepageHeader>
-          <HomepageTweetFeedContainer id="scroll">
-            {mergedData &&
-              mergedData.map((tweet) => {
-                return (
-                  <ProfileTweetContainer key={tweet[0][0]}>
-                    <div style={{ display: 'flex' }}>
-                      <HomepageTestPP
-                        style={{
-                          border: '1px solid red',
-                          backgroundColor: '#ffffff',
-                          minHeight: 48,
-                          minWidth: 48,
-                          flexGrow: 1,
-                        }}
-                      ></HomepageTestPP>
-                      <ProfileTweetContent>
-                        <div style={{ display: 'flex' }}>
-                          <ProfileWhiteBold>
-                            {tweet[1][1].userName}
-                          </ProfileWhiteBold>
-                          <ProfileGrayText style={{ marginLeft: 10 }}>
-                            {tweet[0][1].firestoreDate.slice(0, 21)}
-                          </ProfileGrayText>
-                        </div>
-
-                        <ProfileWhite>{tweet[0][1].tweet}</ProfileWhite>
-                        <TweetInteractions></TweetInteractions>
-                      </ProfileTweetContent>
-                    </div>
-                  </ProfileTweetContainer>
-                );
-              })}
-          </HomepageTweetFeedContainer>
-          <Footer navigateToTweet={handleSwitchToTweet}></Footer>
-        </ProfileMain>
-      )}
-    </>
+            </ProfileTweetContainer>
+          );
+        })}
+    </HomepageTweetFeedContainer>
   );
 };
 
-export default HomePage;
+export default WithFooter(HomePage);
