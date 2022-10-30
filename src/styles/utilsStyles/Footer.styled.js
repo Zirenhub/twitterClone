@@ -13,7 +13,7 @@ export const FooterContainer = styled.div`
   @media (min-width: 500px) {
     flex-direction: column;
     height: fit-content;
-    margin-top: 50px;
+    border-top: none;
     justify-content: flex-start;
     padding: 05px 10px;
     gap: 20px;

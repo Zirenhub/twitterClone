@@ -3,12 +3,12 @@ import profiepic from '../../assets/images/testpp.png';
 
 export const HomepageHeader = styled.div`
   display: flex;
-  position: fixed;
+  position: sticky;
+  backdrop-filter: blur(5px);
   top: 0;
   z-index: 99999;
   max-height: 50px;
   width: 100%;
-  background-color: #000000 !important;
   align-items: center;
   color: #e7e9ea;
   padding: 15px;
@@ -20,7 +20,6 @@ export const HomepageTweetFeedContainer = styled.div`
   flex-direction: column;
   overflow: auto;
   flex-grow: 1;
-  margin-top: 50px;
 
   @media (min-width: 500px) {
     border-left: 1px solid gray;

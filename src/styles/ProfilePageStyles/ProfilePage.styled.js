@@ -30,7 +30,7 @@ export const ProfileHeader = styled.div`
   display: flex;
   align-items: center;
   position: fixed;
-  background-color: #000 !important;
+  backdrop-filter: blur(5px);
   z-index: 99999;
   top: 0;
   cursor: pointer;
@@ -106,9 +106,14 @@ export const ProfileTweetContainer = styled.div`
   border-bottom: 1px solid #71767b;
   transition: ease-in-out 100ms;
   cursor: pointer;
+  max-width: 600px;
 
   &:hover {
     background-color: rgba(255, 255, 255, 0.05);
+  }
+
+  @media (min-width: 600px) {
+    border-right: 1px solid gray;
   }
 `;
 
