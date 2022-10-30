@@ -12,7 +12,7 @@ import {
 } from '../styles/utilsStyles/Tweet.styled';
 import { useEffect, useState } from 'react';
 import { UserAuth } from '../context/authContext';
-import writeTweetToDB from '../components/HomePage/writeTweetToDB';
+import writeTweetToDB from './writeTweetToDB';
 import { useNavigate } from 'react-router-dom';
 import { LoadingStyled } from '../styles/WelcomePageStyles/Loading.styled';
 
@@ -38,12 +38,12 @@ const Tweet = () => {
       } catch (error) {
         console.log(error);
       }
+      setLoading(false);
     }
     handleCloseTweet();
   };
 
   const handleCloseTweet = () => {
-    setLoading(false);
     navigate(-1);
   };
 
