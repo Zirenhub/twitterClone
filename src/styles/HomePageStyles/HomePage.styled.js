@@ -28,7 +28,7 @@ export const HomepageTweetFeedContainer = styled.div`
 
 export const HomepageTestPP = styled.div`
   background-image: url(${profiepic});
-  border: 1px solid black;
+  border: 1px solid #ffff;
   border-radius: 50%;
   background-size: contain;
   background-position: center center;
@@ -37,6 +37,10 @@ export const HomepageTestPP = styled.div`
 
   height: 32px;
   width: 32px;
+
+  &:hover {
+    border: 1px solid rgba(255, 255, 255, 0.5);
+  }
 `;
 
 export const HomepageSignout = styled.div`
