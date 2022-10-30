@@ -21,7 +21,7 @@ import {
 import { CloseButton } from '../../styles/WelcomePageStyles/SignUp.styled';
 import getUserInfo from './getUserInfo';
 import getUserTweets from './getUserTweets';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import TweetInteractions from '../../utils/TweetInteractions';
 import WithFooter from '../HOC/WithFooter';
 import { LoadingStyled } from '../../styles/WelcomePageStyles/Loading.styled';
@@ -36,6 +36,7 @@ const ProfilePage = () => {
 
   const { user } = UserAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const fetchUserInfo = useCallback(async () => {
     const res = await getUserInfo(user.uid);
@@ -74,7 +75,7 @@ const ProfilePage = () => {
   useEffect(() => {
     fetchUserInfo();
     fetchUserTweets();
-  }, [fetchUserInfo, fetchUserTweets]);
+  }, [fetchUserInfo, fetchUserTweets, location]);
 
   if (loading) {
     return <LoadingStyled>Loading</LoadingStyled>;

@@ -6,7 +6,7 @@ import {
 } from '../../styles/HomePageStyles/HomePage.styled';
 import { UserAuth } from '../../context/authContext';
 import signOut from '../../assets/images/sign-out-svg.svg';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import getAllTweets from './getAllTweets';
 import {
@@ -27,6 +27,7 @@ const HomePage = () => {
 
   const { logout } = UserAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogout = async () => {
     try {
@@ -59,7 +60,7 @@ const HomePage = () => {
     };
 
     fetchAllTweets();
-  }, []);
+  }, [location]);
 
   useEffect(() => {
     const tweetsArr = [];
