@@ -32,8 +32,8 @@ const WelcomePage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user) navigate('/homepage');
-  }, []);
+    if (user?.auth) navigate('/homepage');
+  }, [user]);
 
   const handleShowSignUp = () => {
     setShowSignUp(true);
