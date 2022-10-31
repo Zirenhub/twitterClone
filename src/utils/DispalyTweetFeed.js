@@ -10,13 +10,13 @@ import { HomepageTestPP } from '../styles/HomePageStyles/HomePage.styled';
 import TweetInteractions from './TweetInteractions';
 
 const DispalyTweetFeed = (props) => {
-  const { tweets, user } = props;
+  const { tweets } = props;
 
   return (
     <>
       {tweets.map((tweet) => {
         return (
-          <ProfileTweetContainer key={tweet[0]}>
+          <ProfileTweetContainer key={tweet.key}>
             <div style={{ display: 'flex' }}>
               <HomepageTestPP
                 style={{
@@ -29,14 +29,14 @@ const DispalyTweetFeed = (props) => {
               ></HomepageTestPP>
               <ProfileTweetContent>
                 <div style={{ display: 'flex' }}>
-                  <ProfileWhiteBold>{user.displayName}</ProfileWhiteBold>
+                  <ProfileWhiteBold>{tweet.user.userName}</ProfileWhiteBold>
                   <ProfileGrayText style={{ marginLeft: 10 }}>
-                    {tweet[1].firestoreDate.slice(0, 21)}
+                    {tweet.date.toString().slice(0, 21)}
                   </ProfileGrayText>
                   <ProfileTweetOptions></ProfileTweetOptions>
                 </div>
 
-                <ProfileWhite>{tweet[1].tweet}</ProfileWhite>
+                <ProfileWhite>{tweet.tweet}</ProfileWhite>
                 <TweetInteractions></TweetInteractions>
               </ProfileTweetContent>
             </div>

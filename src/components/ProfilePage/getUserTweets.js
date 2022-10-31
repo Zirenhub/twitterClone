@@ -13,18 +13,12 @@ const getUserTweets = async (userID) => {
       const dataArr = Object.entries(rawData);
 
       dataArr.forEach((tweet) => {
-        const formatedData = [];
-
         const tweetArr = Object.values(tweet);
         const key = tweetArr[0];
         const dataTweet = tweetArr[1].tweet;
-        const date = tweetArr[1].firestoreDate.toDate().toString();
+        const date = tweetArr[1].firestoreDate.toDate();
 
-        formatedData[key] = {};
-        formatedData[key].tweet = dataTweet;
-        formatedData[key].date = date;
-
-        returnData.push(formatedData);
+        returnData.push({ key: key, tweet: dataTweet, date: date });
       });
     }
 

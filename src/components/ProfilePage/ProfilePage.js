@@ -11,26 +11,19 @@ import {
   ProfileContentInfo,
   ProfileFollowsContainer,
   ProfileTweetFeedContainer,
-  ProfileTweetContainer,
-  ProfileTweetContent,
-  ProfileWhiteBold,
-  ProfileGrayText,
-  ProfileWhite,
   ProfilePageResponsiveContainer,
-  ProfileTweetOptions,
 } from '../../styles/ProfilePageStyles/ProfilePage.styled';
 import { CloseButton } from '../../styles/WelcomePageStyles/SignUp.styled';
 import getUserInfo from './getUserInfo';
 import getUserTweets from './getUserTweets';
 import { useLocation, useNavigate } from 'react-router-dom';
-import TweetInteractions from '../../utils/TweetInteractions';
 import WithFooter from '../HOC/WithFooter';
 import { LoadingStyled } from '../../styles/WelcomePageStyles/Loading.styled';
+import DispalyTweetFeed from '../../utils/DispalyTweetFeed';
 
 const ProfilePage = () => {
   const [loading, setLoading] = useState(true);
-  const [tweetsCount, setTweetsCount] = useState(null);
-  const [joinDate, setJoinDate] = useState(null);
+  const [userInfo, setUserInfo] = useState(null);
   const [tweets, setTweets] = useState(null);
   // const [followers, setFollowers] = useState(null);
   // const [following, setFollowing] = useState(null);
@@ -40,31 +33,36 @@ const ProfilePage = () => {
   const location = useLocation();
 
   const fetchUserInfo = useCallback(async () => {
-    const res = await getUserInfo(user.uid);
-    // tweetsNum and joinDate are returned
-    // fetched data from getUserInfo
-    // only set state if res is available
-    // until user loads it's not.
-    if (res) {
-      setTweetsCount(res.tweetsNum);
-      setJoinDate(res.joinDate.toLocaleDateString());
-      // setFollowers(res.followers);
-      // setFollowing(res.following)
+    try {
+      const res = await getUserInfo(user.uid);
+      if (res) {
+        res.joinDate = res.joinDate.toLocaleDateString();
+        setUserInfo(res);
+      }
+    } catch (error) {
+      console.log(error);
     }
   }, [user]);
 
-  const fetchUserTweets = useCallback(async () => {
-    const res = await getUserTweets(user.uid);
-    if (res) {
-      console.log(res);
-      // const sortedTweets = res.sort((a, b) => {
-      //   return new Date(b[0].date) - new Date(a[0].date);
-      // });
-
-      // setTweets(sortedTweets);
-    }
-    setLoading(false);
-  }, [user]);
+  const fetchUserTweets = useCallback(
+    async (userInfo) => {
+      try {
+        const res = await getUserTweets(user.uid);
+        if (res) {
+          const sortedTweets = [...res].sort((a, b) => b.date - a.date);
+          const insertUserInfo = sortedTweets.map((tweet) => ({
+            ...tweet,
+            user: userInfo,
+          }));
+          setTweets(insertUserInfo);
+          setLoading(false);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    [user]
+  );
 
   const handleCloseProfile = () => {
     navigate('/homepage');
@@ -76,12 +74,11 @@ const ProfilePage = () => {
 
   useEffect(() => {
     fetchUserInfo();
-    fetchUserTweets();
-  }, [fetchUserInfo, fetchUserTweets, location]);
+  }, [fetchUserInfo, location]);
 
   useEffect(() => {
-    console.log(tweets);
-  }, [tweets]);
+    if (userInfo !== null) fetchUserTweets(userInfo);
+  }, [fetchUserTweets, userInfo]);
 
   if (loading) {
     return <LoadingStyled>Loading</LoadingStyled>;
@@ -96,7 +93,7 @@ const ProfilePage = () => {
             {/* user.display is the name that the user registered with  */}
             {user.displayName}
           </p>
-          <p>{tweetsCount} Tweets</p>
+          <p>{userInfo.tweetsNum} Tweets</p>
         </ProfileHeaderDetails>
       </ProfileHeader>
       <div style={{ marginTop: 50 }}>
@@ -127,14 +124,16 @@ const ProfilePage = () => {
             <p style={{ fontWeight: 'bold', color: '#e7e9ea' }}>
               {user.displayName}
             </p>
-            <p>Joined {joinDate}</p>
+            <p>Joined {userInfo.joinDate}</p>
             <ProfileFollowsContainer>
               <p>Following</p>
               <p>Follwers</p>
             </ProfileFollowsContainer>
           </ProfileContentInfo>
         </ProfileVisuals>
-        <ProfileTweetFeedContainer></ProfileTweetFeedContainer>
+        <ProfileTweetFeedContainer>
+          <DispalyTweetFeed tweets={tweets}></DispalyTweetFeed>
+        </ProfileTweetFeedContainer>
       </div>
     </ProfilePageResponsiveContainer>
   );

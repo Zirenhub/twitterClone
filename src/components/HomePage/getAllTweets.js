@@ -28,20 +28,23 @@ const getAllTweets = async () => {
   // });
 
   for (const doc of querySnapshot.docs) {
-    const data = doc.data();
-    const arrayFromData = Object.entries(data);
-    arrayFromData.forEach((tweet) => {
-      const tweetContent = tweet[1];
-      const date = tweetContent.firestoreDate.toDate().toString();
-      tweetContent.firestoreDate = date;
-    });
-
+    const rawData = doc.data();
+    const dataArr = Object.entries(rawData);
     const userInfo = await getUserInfo(doc.id);
-    const convertedData = Object.entries(data).map((entry) => {
-      return { [entry[0]]: entry[1], userInfo };
-    });
 
-    returnData.push(convertedData);
+    dataArr.forEach((tweet) => {
+      const tweetArr = Object.values(tweet);
+      const key = tweetArr[0];
+      const dataTweet = tweetArr[1].tweet;
+      const date = tweetArr[1].firestoreDate.toDate();
+
+      returnData.push({
+        key: key,
+        tweet: dataTweet,
+        date: date,
+        user: userInfo,
+      });
+    });
   }
 
   return returnData;
