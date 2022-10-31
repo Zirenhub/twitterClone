@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import background from '../../assets/images/Background.png';
-import optionsSVG from '../../assets/images/options-svgrepo-com.svg';
 
 export const ProfileMain = styled.div`
   height: 100%;
@@ -97,56 +96,4 @@ export const ProfileTweetFeedContainer = styled.div`
   flex-direction: column;
   overflow: auto;
   flex-grow: 1;
-`;
-
-export const ProfileTweetContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 10px;
-  border-bottom: 1px solid #71767b;
-  transition: ease-in-out 100ms;
-  cursor: pointer;
-  max-width: 600px;
-
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.05);
-  }
-
-  @media (min-width: 600px) {
-    border-right: 1px solid gray;
-  }
-`;
-
-export const ProfileTweetOptions = styled.div`
-  background-image: url(${optionsSVG});
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: contain;
-
-  margin-left: auto;
-
-  width: 32px;
-  height: 23px;
-
-  filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(31deg)
-    brightness(110%) contrast(102%);
-`;
-
-export const ProfileTweetContent = styled.div`
-  margin-left: 10px;
-  width: 100%;
-`;
-
-export const ProfileWhite = styled.p`
-  color: #eff3f4;
-`;
-
-export const ProfileWhiteBold = styled.p`
-  color: #eff3f4;
-  font-weight: 700;
-`;
-
-export const ProfileGrayText = styled.p`
-  color: #71767b;
 `;

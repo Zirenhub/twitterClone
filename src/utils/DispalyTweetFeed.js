@@ -1,22 +1,25 @@
 import {
-  ProfileGrayText,
-  ProfileTweetContainer,
-  ProfileTweetContent,
-  ProfileTweetOptions,
-  ProfileWhite,
-  ProfileWhiteBold,
-} from '../styles/ProfilePageStyles/ProfilePage.styled';
+  TweetGrayText,
+  TweetContainer,
+  TweetContent,
+  TweetOptions,
+  TweetWhite,
+  TweetWhiteBold,
+  TweetDropdown,
+} from '../styles/utilsStyles/DisplayTweetFeed.styled';
 import { HomepageTestPP } from '../styles/HomePageStyles/HomePage.styled';
 import TweetInteractions from './TweetInteractions';
+import { UserAuth } from '../context/authContext';
 
 const DispalyTweetFeed = (props) => {
   const { tweets } = props;
+  const { user } = UserAuth();
 
   return (
     <>
       {tweets.map((tweet) => {
         return (
-          <ProfileTweetContainer key={tweet.key}>
+          <TweetContainer key={tweet.key}>
             <div style={{ display: 'flex' }}>
               <HomepageTestPP
                 style={{
@@ -27,20 +30,27 @@ const DispalyTweetFeed = (props) => {
                   flexGrow: 1,
                 }}
               ></HomepageTestPP>
-              <ProfileTweetContent>
+              <TweetContent>
                 <div style={{ display: 'flex' }}>
-                  <ProfileWhiteBold>{tweet.user.userName}</ProfileWhiteBold>
-                  <ProfileGrayText style={{ marginLeft: 10 }}>
+                  <TweetWhiteBold>{tweet.user.userName}</TweetWhiteBold>
+                  <TweetGrayText style={{ marginLeft: 10 }}>
                     {tweet.date.toString().slice(0, 21)}
-                  </ProfileGrayText>
-                  <ProfileTweetOptions></ProfileTweetOptions>
+                  </TweetGrayText>
+                  {user.displayName === tweet.user.userName && (
+                    <TweetOptions>
+                      <TweetDropdown>
+                        <ul>
+                          <li>Delete</li>
+                        </ul>
+                      </TweetDropdown>
+                    </TweetOptions>
+                  )}
                 </div>
-
-                <ProfileWhite>{tweet.tweet}</ProfileWhite>
+                <TweetWhite>{tweet.tweet}</TweetWhite>
                 <TweetInteractions></TweetInteractions>
-              </ProfileTweetContent>
+              </TweetContent>
             </div>
-          </ProfileTweetContainer>
+          </TweetContainer>
         );
       })}
     </>
