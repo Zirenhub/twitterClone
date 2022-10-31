@@ -13,6 +13,8 @@ import { UserAuth } from '../../context/authContext';
 import { useNavigate } from 'react-router-dom';
 import getSubmitButton from './getSubmitButton';
 import writeUserToDB from './writeUserToDB';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../../Firebase';
 
 const SignUp = (props) => {
   const { handleClose, setLoading, currentError, setCurrentError } = props;
@@ -32,7 +34,7 @@ const SignUp = (props) => {
   };
 
   useEffect(() => {
-    if (name.length <= 12 && name.length >= 5) {
+    if (name.length <= 12 && name.length >= 5 && name.toLowerCase() === name) {
       setIsNameValid(true);
     } else {
       setIsNameValid(false);
@@ -63,11 +65,24 @@ const SignUp = (props) => {
     }
   }, [email]);
 
+  const checkIfUserNameIsValid = async () => {
+    const docRef = doc(db, 'usernames', name);
+    const docSnap = await getDoc(docRef);
+
+    return docSnap.exists();
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (isNameValid && isPasswordValid && isEmailValid) {
+      setLoading(true);
       try {
-        setLoading(true);
+        const usernameExists = await checkIfUserNameIsValid();
+        if (usernameExists) {
+          const error = new Error('Username already exists');
+          error.code = 'Username already exists';
+          throw error;
+        }
         const newUser = await createUser(email, password, name);
 
         const userID = newUser.user.uid;
@@ -111,6 +126,11 @@ const SignUp = (props) => {
           {name.length > 12 && (
             <ErrorMessage>
               <p>Name can't be longer than 12 characters</p>
+            </ErrorMessage>
+          )}
+          {name.toLowerCase() !== name && (
+            <ErrorMessage>
+              <p>Name has to be lowercase</p>
             </ErrorMessage>
           )}
           <label>
