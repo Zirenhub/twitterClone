@@ -47,10 +47,6 @@ export const TweetOptions = styled.div`
   margin-left: auto;
 
   width: 32px;
-  height: 23px;
-
-  filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(31deg)
-    brightness(110%) contrast(102%);
 `;
 
 export const TweetDropdown = styled.div`
@@ -58,20 +54,25 @@ export const TweetDropdown = styled.div`
   top: 100%;
   right: 5%;
   z-index: 2;
-  border: 1px solid rgba(0, 0, 0, 0.04);
-  box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #eff3f4;
+  background-color: #000000;
 
   ul {
     list-style: none;
+    outline: none;
     padding: 0;
     margin: 0;
+
+    border-radius: 5px;
   }
 
   li {
-    padding: 8px 12px;
+    padding: 4px 12px;
+    transition: ease-in-out 100ms;
 
     &:hover {
-      background-color: rgba(0, 0, 0, 0.14);
+      background-color: #d90e0a;
       cursor: pointer;
     }
   }
