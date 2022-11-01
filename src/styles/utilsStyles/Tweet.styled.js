@@ -1,19 +1,16 @@
 import styled from 'styled-components';
 
 export const TweetMain = styled.div`
-  display: flex;
-  flex-direction: column;
   position: absolute;
-  height: 100%;
+  height: 99.9%; // strange bug with 100% height
   width: 100%;
   top: 0%;
   left: 0%;
-  background-color: #000000;
+  background: #000000;
   padding: 20px;
-  z-index: 9999999; // should be top priority
+  z-index: 300; // should be top priority
 
   @media (min-width: 655px) {
-    position: absolute;
     height: 50%;
     width: 70%;
     top: 50%;
@@ -28,8 +25,8 @@ export const TweetModalBackground = styled.div`
   position: absolute;
   top: 0%;
   left: 0%;
-  background-color: rgba(255, 255, 255, 0.5);
-  z-index: 999999;
+  background: rgba(255, 255, 255, 0.5);
+  z-index: 200;
   cursor: pointer;
 `;
 

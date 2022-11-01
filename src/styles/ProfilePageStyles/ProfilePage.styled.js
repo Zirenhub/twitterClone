@@ -31,7 +31,7 @@ export const ProfileHeader = styled.div`
   align-items: center;
   position: fixed;
   backdrop-filter: blur(5px);
-  z-index: 99999;
+  z-index: 20;
   top: 0;
   cursor: pointer;
 `;

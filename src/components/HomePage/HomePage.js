@@ -5,12 +5,12 @@ import {
   HomepageTweetFeedContainer,
 } from '../../styles/HomePageStyles/HomePage.styled';
 import { UserAuth } from '../../context/authContext';
-import signOut from '../../assets/images/sign-out-svg.svg';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { LoadingStyled } from '../../styles/WelcomePageStyles/Loading.styled';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import signOut from '../../assets/images/sign-out-svg.svg';
 import getAllTweets from './getAllTweets';
 import WithFooter from '../HOC/WithFooter';
-import { LoadingStyled } from '../../styles/WelcomePageStyles/Loading.styled';
 import DispalyTweetFeed from '../../utils/DispalyTweetFeed';
 
 const HomePage = () => {
@@ -19,7 +19,6 @@ const HomePage = () => {
 
   const { logout } = UserAuth();
   const navigate = useNavigate();
-  const location = useLocation();
 
   const handleLogout = async () => {
     try {
@@ -38,22 +37,23 @@ const HomePage = () => {
     document.getElementById('scroll').scrollTo(0, 0);
   };
 
-  useEffect(() => {
-    const fetchAllTweets = async () => {
-      try {
-        const res = await getAllTweets();
-        if (res) {
-          const sortedTweets = [...res].sort((a, b) => b.date - a.date);
-          setAllTweets(sortedTweets);
-        }
-      } catch (error) {
-        console.log(error);
+  const fetchAllTweets = async () => {
+    try {
+      const res = await getAllTweets();
+      if (res) {
+        const sortedTweets = [...res].sort((a, b) => b.date - a.date);
+        setAllTweets(sortedTweets);
       }
-      setLoading(false);
-    };
+    } catch (error) {
+      console.log(error);
+    }
+    setLoading(false);
+  };
 
+  useEffect(() => {
+    console.log('render homepage');
     fetchAllTweets();
-  }, [location]);
+  }, []);
 
   if (loading) {
     return <LoadingStyled>Loading</LoadingStyled>;
@@ -80,7 +80,7 @@ const HomePage = () => {
           <img src={signOut} alt="sign out button"></img>
         </HomepageSignout>
       </HomepageHeader>
-      <DispalyTweetFeed tweets={allTweets}></DispalyTweetFeed>
+      <DispalyTweetFeed initialTweets={allTweets}></DispalyTweetFeed>
     </HomepageTweetFeedContainer>
   );
 };

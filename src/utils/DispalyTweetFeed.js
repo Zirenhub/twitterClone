@@ -11,15 +11,35 @@ import { HomepageTestPP } from '../styles/HomePageStyles/HomePage.styled';
 import TweetInteractions from './TweetInteractions';
 import { UserAuth } from '../context/authContext';
 import { useState } from 'react';
+import deleteTweet from './deleteTweet';
 
 const DispalyTweetFeed = (props) => {
+  const { initialTweets } = props;
+  const { user } = UserAuth();
   const [dropdown, setDropdown] = useState('');
 
-  const { tweets } = props;
-  const { user } = UserAuth();
+  // doing this to prevent fetching data everytime user deletes a tweet,
+  // this way we just delete the tweet from the tweet array,
+  // updating the tweet feed only with the remaining tweets.
+  const [tweets, setTweets] = useState(initialTweets);
 
   const handleToggleDropdown = (key) => {
     dropdown === key ? setDropdown('') : setDropdown(key);
+  };
+
+  const handleDeleteTweet = () => {
+    const initialize = async () => {
+      try {
+        await deleteTweet(user.uid, dropdown);
+        const updatedTweets = tweets.filter((tweet) => {
+          return tweet.key !== dropdown;
+        });
+        setTweets(updatedTweets);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    initialize();
   };
 
   return (
@@ -50,7 +70,7 @@ const DispalyTweetFeed = (props) => {
                       {dropdown === tweet.key && (
                         <TweetDropdown>
                           <ul>
-                            <li>Delete</li>
+                            <li onClick={handleDeleteTweet}>Delete</li>
                           </ul>
                         </TweetDropdown>
                       )}

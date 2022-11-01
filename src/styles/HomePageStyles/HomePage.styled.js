@@ -6,7 +6,7 @@ export const HomepageHeader = styled.div`
   position: sticky;
   backdrop-filter: blur(5px);
   top: 0;
-  z-index: 99999;
+  z-index: 20;
   max-height: 50px;
   width: 100%;
   align-items: center;

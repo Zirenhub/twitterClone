@@ -48,7 +48,6 @@ export const FooterWriteTweet = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 5;
   transition: ease-in-out 100ms;
 
   &:hover {

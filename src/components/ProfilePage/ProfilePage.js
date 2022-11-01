@@ -16,7 +16,7 @@ import {
 import { CloseButton } from '../../styles/WelcomePageStyles/SignUp.styled';
 import getUserInfo from './getUserInfo';
 import getUserTweets from './getUserTweets';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import WithFooter from '../HOC/WithFooter';
 import { LoadingStyled } from '../../styles/WelcomePageStyles/Loading.styled';
 import DispalyTweetFeed from '../../utils/DispalyTweetFeed';
@@ -30,7 +30,6 @@ const ProfilePage = () => {
 
   const { user } = UserAuth();
   const navigate = useNavigate();
-  const location = useLocation();
 
   const fetchUserInfo = useCallback(async () => {
     try {
@@ -73,8 +72,9 @@ const ProfilePage = () => {
   };
 
   useEffect(() => {
+    console.log('render profilepage');
     fetchUserInfo();
-  }, [fetchUserInfo, location]);
+  }, [fetchUserInfo]);
 
   useEffect(() => {
     if (userInfo !== null) fetchUserTweets(userInfo);
@@ -132,7 +132,7 @@ const ProfilePage = () => {
           </ProfileContentInfo>
         </ProfileVisuals>
         <ProfileTweetFeedContainer>
-          <DispalyTweetFeed tweets={tweets}></DispalyTweetFeed>
+          <DispalyTweetFeed initialTweets={tweets}></DispalyTweetFeed>
         </ProfileTweetFeedContainer>
       </div>
     </ProfilePageResponsiveContainer>

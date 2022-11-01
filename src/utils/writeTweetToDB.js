@@ -10,10 +10,12 @@ import { db } from '../Firebase';
 
 const writeTweetToDB = async (userID, tweet) => {
   const key = uuidv4();
+  const userPostsRef = doc(db, 'posts', userID);
+  const userInfoRef = doc(db, 'users', userID);
 
   try {
     await setDoc(
-      doc(db, 'posts', userID),
+      userPostsRef,
       {
         [key]: {
           tweet: tweet,
@@ -22,7 +24,7 @@ const writeTweetToDB = async (userID, tweet) => {
       },
       { merge: true }
     );
-    await updateDoc(doc(db, 'users', userID), {
+    await updateDoc(userInfoRef, {
       tweetsNum: increment(1),
     });
   } catch (error) {

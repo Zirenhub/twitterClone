@@ -53,7 +53,7 @@ export const TweetDropdown = styled.div`
   position: absolute;
   top: 100%;
   right: 5%;
-  z-index: 2;
+  z-index: 1;
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: #eff3f4;
   background-color: #000000;

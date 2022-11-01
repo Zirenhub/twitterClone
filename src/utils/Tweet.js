@@ -31,14 +31,12 @@ const Tweet = () => {
 
   const handleSubmitTweet = async () => {
     if (canTweet && !tweetTooLong) {
-      setLoading(true);
       const userID = user.uid;
       try {
         await writeTweetToDB(userID, text);
       } catch (error) {
         console.log(error);
       }
-      setLoading(false);
     }
     handleCloseTweet();
   };
@@ -65,7 +63,6 @@ const Tweet = () => {
   return (
     <>
       <TweetModalBackground onClick={handleCloseTweet}></TweetModalBackground>
-
       <TweetMain>
         <TweetHeader>
           <CloseButton onClick={handleCloseTweet}></CloseButton>
