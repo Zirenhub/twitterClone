@@ -48,9 +48,11 @@ export const FooterWriteTweet = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 5;
+  transition: ease-in-out 100ms;
 
   &:hover {
-    opacity: 0.5;
+    background-color: #0047ab;
   }
 
   @media (min-width: 500px) {
