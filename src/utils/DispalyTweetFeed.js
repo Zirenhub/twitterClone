@@ -10,10 +10,17 @@ import {
 import { HomepageTestPP } from '../styles/HomePageStyles/HomePage.styled';
 import TweetInteractions from './TweetInteractions';
 import { UserAuth } from '../context/authContext';
+import { useState } from 'react';
 
 const DispalyTweetFeed = (props) => {
+  const [dropdown, setDropdown] = useState('');
+
   const { tweets } = props;
   const { user } = UserAuth();
+
+  const handleToggleDropdown = (key) => {
+    dropdown === key ? setDropdown('') : setDropdown(key);
+  };
 
   return (
     <>
@@ -37,12 +44,16 @@ const DispalyTweetFeed = (props) => {
                     {tweet.date.toString().slice(0, 21)}
                   </TweetGrayText>
                   {user.displayName === tweet.user.userName && (
-                    <TweetOptions>
-                      <TweetDropdown>
-                        <ul>
-                          <li>Delete</li>
-                        </ul>
-                      </TweetDropdown>
+                    <TweetOptions
+                      onClick={() => handleToggleDropdown(tweet.key)}
+                    >
+                      {dropdown === tweet.key && (
+                        <TweetDropdown>
+                          <ul>
+                            <li>Delete</li>
+                          </ul>
+                        </TweetDropdown>
+                      )}
                     </TweetOptions>
                   )}
                 </div>
