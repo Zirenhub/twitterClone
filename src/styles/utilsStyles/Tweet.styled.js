@@ -2,13 +2,14 @@ import styled from 'styled-components';
 
 export const TweetMain = styled.div`
   position: absolute;
-  height: 99.9%; // strange bug with 100% height
+  height: 99.99%; // strange bug with 100% height
   width: 100%;
   top: 0%;
   left: 0%;
   background: #000000;
   padding: 20px;
   z-index: 300; // should be top priority
+  border-radius: 20px;
 
   @media (min-width: 655px) {
     height: 50%;

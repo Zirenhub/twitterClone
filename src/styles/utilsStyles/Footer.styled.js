@@ -14,10 +14,24 @@ export const FooterContainer = styled.div`
     flex-direction: column;
     height: fit-content;
     border-top: none;
-    justify-content: flex-start;
     padding: 05px 10px;
     gap: 20px;
   }
+
+  @media (min-width: 840px) {
+    height: 100%;
+    max-width: 660px;
+    flex-grow: 1;
+    padding-left: 200px;
+  }
+`;
+
+export const FooterArrangeButtons = styled.div`
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  height: 100%;
 `;
 
 export const FooterButtonContainer = styled.div`
@@ -27,6 +41,23 @@ export const FooterButtonContainer = styled.div`
   cursor: pointer;
   height: 46px;
   width: 46px;
+
+  @media (min-width: 840px) {
+    &::after {
+      content: '${(props) => props.text}';
+      color: #eff3f4;
+      font-weight: 700;
+      margin-left: 10px;
+      /* margin-right: auto; */
+    }
+    width: 80%;
+    padding: 30px;
+    border-radius: 10px;
+    justify-content: flex-start;
+    &:hover {
+      background-color: #16181c;
+    }
+  }
 
   img {
     filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(31deg)
@@ -58,6 +89,23 @@ export const FooterWriteTweet = styled.div`
     position: inherit;
     width: 46px;
     height: 46px;
+  }
+
+  @media (min-width: 840px) {
+    border-radius: 5px;
+    width: 300px;
+    margin-top: auto;
+    margin-bottom: 10px;
+
+    &::after {
+      content: 'Tweet';
+      color: #eff3f4;
+      font-weight: 700;
+    }
+
+    & > img {
+      width: auto !important;
+    }
   }
 
   img {

@@ -20,6 +20,8 @@ export const HomepageTweetFeedContainer = styled.div`
   flex-direction: column;
   overflow: auto;
   flex-grow: 1;
+  flex-shrink: 0;
+  min-width: 60%;
 
   @media (min-width: 500px) {
     border-left: 1px solid gray;

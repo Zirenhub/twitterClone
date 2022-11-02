@@ -2,6 +2,7 @@ import {
   FooterContainer,
   FooterButtonContainer,
   FooterWriteTweet,
+  FooterArrangeButtons,
 } from '../../styles/utilsStyles/Footer.styled';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ProfileMain } from '../../styles/ProfilePageStyles/ProfilePage.styled';
@@ -28,20 +29,20 @@ const WithFooter = (OriginalComponent) => {
       <ProfileMain>
         <OriginalComponent />
         <FooterContainer>
-          <FooterButtonContainer onClick={navigateToHome}>
+          <FooterButtonContainer onClick={navigateToHome} text={'Home'}>
             <img src={homeButton} alt="home button"></img>
           </FooterButtonContainer>
-          <FooterButtonContainer>
+          <FooterButtonContainer text={'Search'}>
             <img src={searchButton} alt="search button"></img>
           </FooterButtonContainer>
-          <FooterButtonContainer>
+          <FooterButtonContainer text={'Notifications'}>
             <img src={notificationButton} alt="notification button"></img>
           </FooterButtonContainer>
-          <FooterButtonContainer>
+          <FooterButtonContainer text={'Messages'}>
             <img src={messagesButton} alt="messages button"></img>
           </FooterButtonContainer>
 
-          <FooterWriteTweet onClick={navigateToTweet}>
+          <FooterWriteTweet onClick={navigateToTweet} text={'Tweet'}>
             <img src={tweetButton} alt="write tweet button"></img>
           </FooterWriteTweet>
         </FooterContainer>
