@@ -25,7 +25,7 @@ const RouteSwitch = () => {
           }
         />
         <Route
-          path="/profile"
+          path="/:username"
           element={
             <ProtectedRoute>
               <ProfilePage />

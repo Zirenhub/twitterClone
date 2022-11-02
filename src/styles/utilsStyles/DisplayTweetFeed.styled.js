@@ -10,9 +10,13 @@ export const TweetWhite = styled.p`
   color: #eff3f4;
 `;
 
-export const TweetWhiteBold = styled.p`
+export const TweetOwnerName = styled.p`
   color: #eff3f4;
   font-weight: 700;
+
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 export const TweetGrayText = styled.p`

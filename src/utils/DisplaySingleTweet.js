@@ -6,18 +6,31 @@ import {
   TweetContent,
   TweetOptions,
   TweetWhite,
-  TweetWhiteBold,
+  TweetOwnerName,
   TweetDropdown,
 } from '../styles/utilsStyles/DisplayTweetFeed.styled';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import getUserID from './getUserID';
 
 const DisplaySingleTweet = (props) => {
   const { tweet, user, handleDeleteTweet } = props;
+
   const [dropdownActive, setDropDownActive] = useState(false);
+  const [idLink, setIdLink] = useState(null);
 
   const handleToggleDropdown = () => {
     setDropDownActive(!dropdownActive);
   };
+
+  useEffect(() => {
+    const link = async (username) => {
+      const userID = await getUserID(username);
+      setIdLink(userID.uid);
+    };
+
+    link(tweet.user.userName);
+  }, [tweet.user.userName]);
 
   return (
     <TweetContainer>
@@ -33,7 +46,11 @@ const DisplaySingleTweet = (props) => {
         ></HomepageTestPP>
         <TweetContent>
           <div style={{ display: 'flex' }}>
-            <TweetWhiteBold>{tweet.user.userName}</TweetWhiteBold>
+            {idLink && (
+              <Link to={`/${idLink}`}>
+                <TweetOwnerName>{tweet.user.userName}</TweetOwnerName>
+              </Link>
+            )}
             <TweetGrayText style={{ marginLeft: 10 }}>
               {tweet.date.toString().slice(0, 21)}
             </TweetGrayText>

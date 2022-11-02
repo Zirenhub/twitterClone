@@ -31,7 +31,7 @@ const writeUserToDB = async (userID, displayName) => {
       following: {},
     });
     batch.set(usernameRef, {
-      exists: true,
+      uid: userID,
     });
 
     await batch.commit();

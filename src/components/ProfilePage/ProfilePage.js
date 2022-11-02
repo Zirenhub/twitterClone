@@ -16,12 +16,13 @@ import {
 import { CloseButton } from '../../styles/WelcomePageStyles/SignUp.styled';
 import getUserInfo from './getUserInfo';
 import getUserTweets from './getUserTweets';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import WithFooter from '../HOC/WithFooter';
 import { LoadingStyled } from '../../styles/WelcomePageStyles/Loading.styled';
 import DispalyTweetFeed from '../../utils/DispalyTweetFeed';
 
 const ProfilePage = () => {
+  // if /sdaiad does not match db return error
   const [loading, setLoading] = useState(true);
   const [userInfo, setUserInfo] = useState(null);
   const [tweets, setTweets] = useState(null);
@@ -30,10 +31,11 @@ const ProfilePage = () => {
 
   const { user } = UserAuth();
   const navigate = useNavigate();
+  const { username } = useParams();
 
   const fetchUserInfo = useCallback(async () => {
     try {
-      const res = await getUserInfo(user.uid);
+      const res = await getUserInfo(username);
       if (res) {
         res.joinDate = res.joinDate.toLocaleDateString();
         setUserInfo(res);
@@ -41,12 +43,12 @@ const ProfilePage = () => {
     } catch (error) {
       console.log(error);
     }
-  }, [user]);
+  }, [username]);
 
   const fetchUserTweets = useCallback(
     async (userInfo) => {
       try {
-        const res = await getUserTweets(user.uid);
+        const res = await getUserTweets(username);
         if (res) {
           const sortedTweets = [...res].sort((a, b) => b.date - a.date);
           const insertUserInfo = sortedTweets.map((tweet) => ({
@@ -60,7 +62,7 @@ const ProfilePage = () => {
         console.log(error);
       }
     },
-    [user]
+    [username]
   );
 
   const handleCloseProfile = () => {
