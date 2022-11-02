@@ -31,14 +31,13 @@ const Tweet = () => {
 
   const handleSubmitTweet = async () => {
     if (canTweet && !tweetTooLong) {
-      const userID = user.uid;
       try {
-        await writeTweetToDB(userID, text);
+        await writeTweetToDB(user.uid, text);
       } catch (error) {
         console.log(error);
       }
+      handleCloseTweet();
     }
-    handleCloseTweet();
   };
 
   const handleCloseTweet = () => {
