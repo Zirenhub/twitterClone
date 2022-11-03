@@ -108,6 +108,7 @@ export const FooterWriteTweet = styled.div`
 `;
 
 export const FooterProfile = styled.div`
+  display: none;
   background-image: url(${profiepic});
   border: 1px solid #ffff;
   border-radius: 50%;
@@ -115,10 +116,9 @@ export const FooterProfile = styled.div`
   background-position: center center;
   background-repeat: no-repeat;
   cursor: pointer;
-  display: none;
 
-  height: 32px;
-  width: 32px;
+  height: 42px;
+  width: 42px;
 
   &:hover {
     border: 1px solid rgba(255, 255, 255, 0.5);
@@ -126,6 +126,34 @@ export const FooterProfile = styled.div`
 
   @media (min-width: 500px) {
     display: inline-block;
+    align-self: center;
+    margin-bottom: 10px;
     margin-top: auto;
+  }
+
+  @media (min-width: 840px) {
+    display: none;
+  }
+`;
+
+export const FooterProfileExtended = styled.div`
+  display: none;
+
+  @media (min-width: 840px) {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #eff3f4;
+    gap: 20px;
+    margin-top: auto;
+    width: 200px;
+    border-radius: 10px;
+    padding: 10px 0px;
+    font-weight: 700;
+
+    &:hover {
+      background-color: #16181c;
+    }
   }
 `;
