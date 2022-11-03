@@ -1,7 +1,7 @@
 import {
+  HeaderProfilePP,
   HomepageHeader,
   HomepageSignout,
-  HomepageTestPP,
   HomepageTweetFeedContainer,
 } from '../../styles/HomePageStyles/HomePage.styled';
 import { UserAuth } from '../../context/authContext';
@@ -17,7 +17,7 @@ const HomePage = () => {
   const [loading, setLoading] = useState(true);
   const [allTweets, setAllTweets] = useState([]);
 
-  const { logout } = UserAuth();
+  const { logout, user } = UserAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -31,7 +31,7 @@ const HomePage = () => {
   };
 
   const handleSwitchToProfile = () => {
-    navigate('/profile');
+    navigate(`/${user.uid}`);
   };
 
   const handleScrollUp = () => {
@@ -70,7 +70,7 @@ const HomePage = () => {
             cursor: 'pointer',
           }}
         >
-          <HomepageTestPP onClick={handleSwitchToProfile}></HomepageTestPP>
+          <HeaderProfilePP onClick={handleSwitchToProfile}></HeaderProfilePP>
           <div style={{ marginLeft: 15 }}>
             <p style={{ fontSize: 15, fontWeight: 'bold' }}>Latest Tweets</p>
           </div>

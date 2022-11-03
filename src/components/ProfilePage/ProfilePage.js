@@ -74,7 +74,6 @@ const ProfilePage = () => {
   };
 
   useEffect(() => {
-    console.log('render profilepage');
     fetchUserInfo();
   }, [fetchUserInfo]);
 
@@ -91,10 +90,7 @@ const ProfilePage = () => {
       <ProfileHeader onClick={handleScrollUp}>
         <CloseButton onClick={handleCloseProfile}></CloseButton>
         <ProfileHeaderDetails>
-          <p>
-            {/* user.display is the name that the user registered with  */}
-            {user.displayName}
-          </p>
+          <p>{userInfo.userName}</p>
           <p>{userInfo.tweetsNum} Tweets</p>
         </ProfileHeaderDetails>
       </ProfileHeader>
@@ -108,9 +104,11 @@ const ProfilePage = () => {
             }}
           >
             <ProfileBackground></ProfileBackground>
-            <ProfileEditContainer>
-              <ProfileEditButton>Edit Profile</ProfileEditButton>
-            </ProfileEditContainer>
+            {user.uid === username && (
+              <ProfileEditContainer>
+                <ProfileEditButton>Edit Profile</ProfileEditButton>
+              </ProfileEditContainer>
+            )}
             <HomepageTestPP
               style={{
                 height: 90,
@@ -124,7 +122,7 @@ const ProfilePage = () => {
           </div>
           <ProfileContentInfo>
             <p style={{ fontWeight: 'bold', color: '#e7e9ea' }}>
-              {user.displayName}
+              {userInfo.userName}
             </p>
             <p>Joined {userInfo.joinDate}</p>
             <ProfileFollowsContainer>

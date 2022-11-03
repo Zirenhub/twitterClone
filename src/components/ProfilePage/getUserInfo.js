@@ -1,14 +1,14 @@
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../Firebase';
 
-const getUserInfo = async (userID) => {
+const getUserInfo = async (username) => {
   const returnData = {};
 
   // user takes a second to load if you enter
-  // directly from /profile, check if userID is available
-  // don't do anything until userID is available
-  if (userID) {
-    const docRef = doc(db, 'users', userID);
+  // directly from /profile, check if username is available
+  // don't do anything until username is available
+  if (username) {
+    const docRef = doc(db, 'users', username);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
