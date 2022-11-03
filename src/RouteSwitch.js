@@ -6,6 +6,7 @@ import { AuthContextProvider } from './context/authContext';
 import Tweet from './utils/Tweet';
 import ProfilePage from './components/ProfilePage/ProfilePage';
 import ProtectedRoute from './utils/ProtectedRoute';
+import SingleTweetPage from './components/SingleTweetPage/SingleTweetPage';
 
 const RouteSwitch = () => {
   const location = useLocation();
@@ -40,9 +41,14 @@ const RouteSwitch = () => {
             </ProtectedRoute>
           }
         />
-        {/* <Route 
-          path='/'
-        /> */}
+        <Route
+          path="/:username/:tweet"
+          element={
+            <ProtectedRoute>
+              <SingleTweetPage />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
 
       {background && (

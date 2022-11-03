@@ -32,20 +32,16 @@ const DispalyTweetFeed = (props) => {
     initialize();
   };
 
-  const handleOpenTweet = (key) => {
-    console.log(key);
-  };
-
   return (
     <>
       {tweets.map((tweet) => {
         return (
           <DisplaySingleTweet
             key={tweet.key}
+            tweetLink={tweet.key}
             tweet={tweet}
             user={user}
             handleDeleteTweet={() => handleDeleteTweet(tweet.key)}
-            handleOpenTweet={() => handleOpenTweet(tweet.key)}
           ></DisplaySingleTweet>
         );
       })}
