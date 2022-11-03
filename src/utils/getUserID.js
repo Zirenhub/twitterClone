@@ -7,7 +7,7 @@ const getUserID = async (username) => {
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      return docSnap.data();
+      return docSnap.data().uid;
     }
   }
 };

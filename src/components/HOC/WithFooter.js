@@ -30,7 +30,7 @@ const WithFooter = (OriginalComponent) => {
     };
 
     const navigateToProfile = () => {
-      navigate(`/${user.uid}`);
+      navigate(`/${user.displayName}`);
     };
 
     return (

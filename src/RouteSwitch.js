@@ -40,6 +40,9 @@ const RouteSwitch = () => {
             </ProtectedRoute>
           }
         />
+        {/* <Route 
+          path='/'
+        /> */}
       </Routes>
 
       {background && (

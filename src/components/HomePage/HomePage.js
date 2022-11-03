@@ -31,7 +31,7 @@ const HomePage = () => {
   };
 
   const handleSwitchToProfile = () => {
-    navigate(`/${user.uid}`);
+    navigate(`/${user.displayName}`);
   };
 
   const handleScrollUp = () => {

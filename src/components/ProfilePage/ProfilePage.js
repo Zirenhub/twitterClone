@@ -20,6 +20,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import WithFooter from '../HOC/WithFooter';
 import { LoadingStyled } from '../../styles/WelcomePageStyles/Loading.styled';
 import DispalyTweetFeed from '../../utils/DispalyTweetFeed';
+import getUserID from '../../utils/getUserID';
 
 const ProfilePage = () => {
   // if /sdaiad does not match db return error
@@ -35,9 +36,11 @@ const ProfilePage = () => {
 
   const fetchUserInfo = useCallback(async () => {
     try {
-      const res = await getUserInfo(username);
+      const userID = await getUserID(username);
+      const res = await getUserInfo(userID);
       if (res) {
         res.joinDate = res.joinDate.toLocaleDateString();
+        res.ID = userID;
         setUserInfo(res);
       }
     } catch (error) {
@@ -45,25 +48,22 @@ const ProfilePage = () => {
     }
   }, [username]);
 
-  const fetchUserTweets = useCallback(
-    async (userInfo) => {
-      try {
-        const res = await getUserTweets(username);
-        if (res) {
-          const sortedTweets = [...res].sort((a, b) => b.date - a.date);
-          const insertUserInfo = sortedTweets.map((tweet) => ({
-            ...tweet,
-            user: userInfo,
-          }));
-          setTweets(insertUserInfo);
-          setLoading(false);
-        }
-      } catch (error) {
-        console.log(error);
+  const fetchUserTweets = useCallback(async (userInfo) => {
+    try {
+      const res = await getUserTweets(userInfo.ID);
+      if (res) {
+        const sortedTweets = [...res].sort((a, b) => b.date - a.date);
+        const insertUserInfo = sortedTweets.map((tweet) => ({
+          ...tweet,
+          user: userInfo,
+        }));
+        setTweets(insertUserInfo);
+        setLoading(false);
       }
-    },
-    [username]
-  );
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
 
   const handleCloseProfile = () => {
     navigate('/homepage');

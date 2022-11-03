@@ -14,7 +14,7 @@ import { Link } from 'react-router-dom';
 import getUserID from './getUserID';
 
 const DisplaySingleTweet = (props) => {
-  const { tweet, user, handleDeleteTweet } = props;
+  const { tweet, user, handleDeleteTweet, handleOpenTweet } = props;
 
   const [dropdownActive, setDropDownActive] = useState(false);
   const [idLink, setIdLink] = useState(null);
@@ -24,16 +24,15 @@ const DisplaySingleTweet = (props) => {
   };
 
   useEffect(() => {
-    const link = async (username) => {
-      const userID = await getUserID(username);
-      setIdLink(userID.uid);
+    const link = (username) => {
+      setIdLink(username);
     };
 
     link(tweet.user.userName);
   }, [tweet.user.userName]);
 
   return (
-    <TweetContainer>
+    <TweetContainer onClick={handleOpenTweet}>
       <div style={{ display: 'flex' }}>
         <HomepageTestPP
           style={{
