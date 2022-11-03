@@ -5,6 +5,7 @@ export const ProfileMain = styled.div`
   height: 100%;
   width: 100%;
   background-color: #000000;
+  overflow: auto;
   display: flex;
   flex-direction: column;
   /* overflow: auto; */
