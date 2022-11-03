@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import profiepic from '../../assets/images/testpp.png';
 
 export const FooterContainer = styled.div`
   display: flex;
@@ -9,29 +10,20 @@ export const FooterContainer = styled.div`
   height: 65px;
   background-color: #000000;
   border-top: 1px solid gray;
+  height: 100%;
 
   @media (min-width: 500px) {
     flex-direction: column;
-    height: fit-content;
     border-top: none;
     padding: 05px 10px;
     gap: 20px;
   }
 
   @media (min-width: 840px) {
-    height: 100%;
     max-width: 660px;
     flex-grow: 1;
     padding-left: 200px;
   }
-`;
-
-export const FooterArrangeButtons = styled.div`
-  width: 50%;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  height: 100%;
 `;
 
 export const FooterButtonContainer = styled.div`
@@ -50,9 +42,9 @@ export const FooterButtonContainer = styled.div`
       margin-left: 10px;
       /* margin-right: auto; */
     }
-    width: 80%;
-    padding: 30px;
+    width: 200px;
     border-radius: 10px;
+    /* padding-left: 10px; */
     justify-content: flex-start;
     &:hover {
       background-color: #16181c;
@@ -93,8 +85,7 @@ export const FooterWriteTweet = styled.div`
 
   @media (min-width: 840px) {
     border-radius: 5px;
-    width: 300px;
-    margin-top: auto;
+    width: 200px;
     margin-bottom: 10px;
 
     &::after {
@@ -104,7 +95,7 @@ export const FooterWriteTweet = styled.div`
     }
 
     & > img {
-      width: auto !important;
+      display: none;
     }
   }
 
@@ -113,5 +104,28 @@ export const FooterWriteTweet = styled.div`
       brightness(110%) contrast(102%);
     height: 60%;
     width: 60%;
+  }
+`;
+
+export const FooterProfile = styled.div`
+  background-image: url(${profiepic});
+  border: 1px solid #ffff;
+  border-radius: 50%;
+  background-size: contain;
+  background-position: center center;
+  background-repeat: no-repeat;
+  cursor: pointer;
+  display: none;
+
+  height: 32px;
+  width: 32px;
+
+  &:hover {
+    border: 1px solid rgba(255, 255, 255, 0.5);
+  }
+
+  @media (min-width: 500px) {
+    display: inline-block;
+    margin-top: auto;
   }
 `;

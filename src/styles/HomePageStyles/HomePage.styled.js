@@ -21,10 +21,31 @@ export const HomepageTweetFeedContainer = styled.div`
   overflow: auto;
   flex-grow: 1;
   flex-shrink: 0;
-  min-width: 60%;
+  min-width: 70%;
 
   @media (min-width: 500px) {
     border-left: 1px solid gray;
+  }
+`;
+
+export const HeaderProfilePP = styled.div`
+  background-image: url(${profiepic});
+  border: 1px solid #ffff;
+  border-radius: 50%;
+  background-size: contain;
+  background-position: center center;
+  background-repeat: no-repeat;
+  cursor: pointer;
+
+  height: 32px;
+  width: 32px;
+
+  &:hover {
+    border: 1px solid rgba(255, 255, 255, 0.5);
+  }
+
+  @media (min-width: 500px) {
+    display: none;
   }
 `;
 

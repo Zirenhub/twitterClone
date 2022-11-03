@@ -18,7 +18,7 @@ export const ProfilePageResponsiveContainer = styled.div`
   overflow: auto;
   flex-grow: 1;
   flex-shrink: 0;
-  min-width: 60%;
+  min-width: 70%;
 
   @media (min-width: 500px) {
     border-left: 1px solid gray;

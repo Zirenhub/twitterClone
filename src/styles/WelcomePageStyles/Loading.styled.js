@@ -4,7 +4,7 @@ export const LoadingStyled = styled.div`
   display: flex;
   flex-grow: 1;
   flex-shrink: 0;
-  min-width: 60%;
+  min-width: 70%;
   border-left: 1px solid gray;
   justify-content: center;
   align-items: center;

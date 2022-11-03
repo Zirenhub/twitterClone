@@ -2,7 +2,7 @@ import {
   FooterContainer,
   FooterButtonContainer,
   FooterWriteTweet,
-  FooterArrangeButtons,
+  FooterProfile,
 } from '../../styles/utilsStyles/Footer.styled';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ProfileMain } from '../../styles/ProfilePageStyles/ProfilePage.styled';
@@ -45,6 +45,8 @@ const WithFooter = (OriginalComponent) => {
           <FooterWriteTweet onClick={navigateToTweet} text={'Tweet'}>
             <img src={tweetButton} alt="write tweet button"></img>
           </FooterWriteTweet>
+
+          <FooterProfile></FooterProfile>
         </FooterContainer>
       </ProfileMain>
     );
