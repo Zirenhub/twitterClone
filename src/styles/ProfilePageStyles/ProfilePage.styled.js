@@ -8,7 +8,7 @@ export const ProfileMain = styled.div`
   overflow: auto;
   display: flex;
   flex-direction: column;
-  /* overflow: auto; */
+  /* overflow-y: auto; */
 
   @media (min-width: 500px) {
     flex-direction: row-reverse;
@@ -16,9 +16,7 @@ export const ProfileMain = styled.div`
 `;
 
 export const ProfilePageResponsiveContainer = styled.div`
-  overflow: auto;
   flex-grow: 1;
-  flex-shrink: 0;
   min-width: 70%;
 
   @media (min-width: 500px) {
@@ -35,6 +33,7 @@ export const ProfileHeader = styled.div`
   position: fixed;
   backdrop-filter: blur(5px);
   z-index: 20;
+  color: #eff3f4;
   top: 0;
   cursor: pointer;
 `;
@@ -42,7 +41,6 @@ export const ProfileHeader = styled.div`
 export const ProfileHeaderDetails = styled.div`
   display: flex;
   flex-direction: column;
-  color: #eff3f4;
   margin-left: 20px;
   font-weight: 700;
 `;
@@ -97,6 +95,6 @@ export const ProfileFollowsContainer = styled.div`
 export const ProfileTweetFeedContainer = styled.div`
   display: flex;
   flex-direction: column;
-  overflow: auto;
+  overflow-y: auto;
   flex-grow: 1;
 `;

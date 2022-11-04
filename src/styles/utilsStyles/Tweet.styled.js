@@ -90,5 +90,9 @@ export const TweetForm = styled.div`
     border-left: none;
     border-right: none;
     border-bottom: 1px solid rgba(255, 255, 255, 0.5) !important;
+
+    @media (max-width: 400px) {
+      font-size: 1rem;
+    }
   }
 `;

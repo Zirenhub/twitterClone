@@ -6,7 +6,7 @@ export const MainContainer = styled.div`
   flex-direction: column-reverse;
   width: 100%;
   height: 100%;
-  overflow: auto;
+  overflow-y: auto;
 
   @media (min-width: 900px) {
     flex-direction: row;

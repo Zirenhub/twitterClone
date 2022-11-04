@@ -31,46 +31,45 @@ const DisplaySingleTweet = (props) => {
   }, [tweet.user.userName]);
 
   return (
-    <Link to={`/${tweet.user.userName}/${tweetLink}`}>
-      <TweetContainer>
-        <div style={{ display: 'flex' }}>
-          <HomepageTestPP
-            style={{
-              border: '1px solid red',
-              backgroundColor: '#ffffff',
-              minHeight: 48,
-              minWidth: 48,
-              flexGrow: 1,
-            }}
-          ></HomepageTestPP>
-          <TweetContent>
-            <div style={{ display: 'flex' }}>
-              {idLink && (
-                <Link to={`/${idLink}`}>
-                  <TweetOwnerName>{tweet.user.userName}</TweetOwnerName>
-                </Link>
-              )}
-              <TweetGrayText style={{ marginLeft: 10 }}>
-                {tweet.date.toString().slice(0, 21)}
-              </TweetGrayText>
-              {user.displayName === tweet.user.userName && (
-                <TweetOptions onClick={handleToggleDropdown}>
-                  {dropdownActive && (
-                    <TweetDropdown>
-                      <ul>
-                        <li onClick={handleDeleteTweet}>Delete</li>
-                      </ul>
-                    </TweetDropdown>
-                  )}
-                </TweetOptions>
-              )}
-            </div>
+    <TweetContainer>
+      <div style={{ display: 'flex' }}>
+        <HomepageTestPP
+          style={{
+            backgroundColor: '#ffffff',
+            minHeight: 48,
+            minWidth: 48,
+            flexGrow: 1,
+          }}
+        ></HomepageTestPP>
+        <TweetContent>
+          <div style={{ display: 'flex' }}>
+            {idLink && (
+              <Link to={`/${idLink}`}>
+                <TweetOwnerName>{tweet.user.userName}</TweetOwnerName>
+              </Link>
+            )}
+            <TweetGrayText style={{ marginLeft: 10 }}>
+              {tweet.date.toString().slice(0, 21)}
+            </TweetGrayText>
+            {user.displayName === tweet.user.userName && (
+              <TweetOptions onClick={handleToggleDropdown}>
+                {dropdownActive && (
+                  <TweetDropdown>
+                    <ul>
+                      <li onClick={handleDeleteTweet}>Delete</li>
+                    </ul>
+                  </TweetDropdown>
+                )}
+              </TweetOptions>
+            )}
+          </div>
+          <Link to={`/${tweet.user.userName}/${tweetLink}`}>
             <TweetWhite>{tweet.tweet}</TweetWhite>
-            <TweetInteractions></TweetInteractions>
-          </TweetContent>
-        </div>
-      </TweetContainer>
-    </Link>
+          </Link>
+          <TweetInteractions></TweetInteractions>
+        </TweetContent>
+      </div>
+    </TweetContainer>
   );
 };
 

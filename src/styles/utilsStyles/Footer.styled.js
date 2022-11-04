@@ -10,7 +10,8 @@ export const FooterContainer = styled.div`
   height: 65px;
   background-color: #000000;
   border-top: 1px solid gray;
-  height: 100%;
+  position: sticky;
+  bottom: 0%;
 
   @media (min-width: 500px) {
     flex-direction: column;
@@ -22,7 +23,6 @@ export const FooterContainer = styled.div`
   @media (min-width: 840px) {
     max-width: 660px;
     flex-grow: 1;
-    padding-left: 200px;
   }
 `;
 
@@ -33,6 +33,7 @@ export const FooterButtonContainer = styled.div`
   cursor: pointer;
   height: 46px;
   width: 46px;
+  transition: ease-in-out 150ms;
 
   @media (min-width: 840px) {
     &::after {
@@ -151,6 +152,7 @@ export const FooterProfileExtended = styled.div`
     border-radius: 10px;
     padding: 10px 0px;
     font-weight: 700;
+    transition: ease-in-out 150ms;
 
     &:hover {
       background-color: #16181c;

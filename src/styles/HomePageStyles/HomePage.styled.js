@@ -18,9 +18,7 @@ export const HomepageHeader = styled.div`
 export const HomepageTweetFeedContainer = styled.div`
   display: flex;
   flex-direction: column;
-  overflow: auto;
   flex-grow: 1;
-  flex-shrink: 0;
   min-width: 70%;
 
   @media (min-width: 500px) {
