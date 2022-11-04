@@ -20,7 +20,7 @@ export const ProfilePageResponsiveContainer = styled.div`
   min-width: 70%;
 
   @media (min-width: 500px) {
-    border-left: 1px solid gray;
+    border-left: 1px solid #2f3336;
   }
 `;
 

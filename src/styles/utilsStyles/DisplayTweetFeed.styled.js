@@ -27,7 +27,7 @@ export const TweetContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   padding: 10px;
-  border-bottom: 1px solid #71767b;
+  border-bottom: 1px solid #2f3336;
   transition: ease-in-out 100ms;
   cursor: pointer;
   max-width: 600px;
@@ -37,7 +37,7 @@ export const TweetContainer = styled.div`
   }
 
   @media (min-width: 600px) {
-    border-right: 1px solid gray;
+    border-right: 1px solid #2f3336;
   }
 `;
 

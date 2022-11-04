@@ -26,9 +26,9 @@ export const SingleTweetPageContainer = styled.div`
 export const SingleTweetPageProfile = styled.div`
   display: flex;
   align-items: center;
-  padding: 10px 0px;
-  cursor: pointer;
+  padding: 10px 10px;
   transition: ease-in-out 150ms;
+  border-radius: 5px;
 
   &:hover {
     background-color: #16181c;
@@ -51,8 +51,8 @@ export const SingleTweetPageInteractionsContainer = styled.div`
   display: flex;
   gap: 20px;
   padding: 10px;
-  border-top: 1px solid gray;
-  border-bottom: 1px solid gray;
+  border-top: 1px solid #2f3336;
+  border-bottom: 1px solid #2f3336;
   color: #71767b;
 `;
 

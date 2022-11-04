@@ -9,7 +9,7 @@ export const FooterContainer = styled.div`
   padding-bottom: 8px;
   height: 65px;
   background-color: #000000;
-  border-top: 1px solid gray;
+  /* border-top: 1px solid gray; */
   position: sticky;
   bottom: 0%;
 
@@ -18,11 +18,13 @@ export const FooterContainer = styled.div`
     border-top: none;
     padding: 05px 10px;
     gap: 20px;
+    height: 100%;
   }
 
   @media (min-width: 840px) {
     max-width: 660px;
     flex-grow: 1;
+    height: 100%;
   }
 `;
 
