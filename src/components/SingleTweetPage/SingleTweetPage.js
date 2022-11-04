@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import TweetInteractions from '../../utils/TweetInteractions';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { UserAuth } from '../../context/authContext';
 import { HomepageTestPP } from '../../styles/HomePageStyles/HomePage.styled';
 import {
@@ -22,12 +22,16 @@ import getUserID from '../../utils/getUserID';
 import WithFooter from '../HOC/WithFooter';
 import getUserInfo from '../ProfilePage/getUserInfo';
 import getTweet from './getTweet';
+import writeReplyToDB from './writeReplyToDB';
 
 const SingleTweetPage = () => {
   const [tweetData, setTweetData] = useState(null);
+  const [reply, setReply] = useState(null);
+  const [tweetOwnerID, setTweetOwnerID] = useState(null);
 
   const { tweet, username } = useParams();
   const { user } = UserAuth();
+  const navigate = useNavigate();
 
   const handleDeleteTweet = (key) => {};
 
@@ -42,18 +46,31 @@ const SingleTweetPage = () => {
         delete fetchedTweet.tweet.tweet;
         fetchedTweet.user = fetchedUserInfo;
         setTweetData(fetchedTweet);
+        setTweetOwnerID(fetchedUserID);
       }
     };
 
     initialize();
   }, [username, tweet]);
+  console.log(tweetData);
+  const handleGoBack = () => {
+    navigate(-1);
+  };
 
-  const handleGoBack = () => {};
+  const handleGoProfile = () => {
+    navigate(`/${username}`);
+  };
 
-  const handleGoProile = () => {};
+  const handleReply = (e) => {
+    setReply(e.target.value);
+  };
+
+  const handleSubmitReply = async () => {
+    if (reply) await writeReplyToDB(reply, user.uid, tweetOwnerID);
+  };
 
   return (
-    <ProfilePageResponsiveContainer>
+    <ProfilePageResponsiveContainer style={{ flexGrow: 0, height: '100%' }}>
       {tweetData && (
         <div>
           <ProfileHeader style={{ fontWeight: 700, position: 'sticky' }}>
@@ -61,9 +78,10 @@ const SingleTweetPage = () => {
             <p style={{ marginLeft: 20, fontSize: '1.2rem' }}>Tweet</p>
           </ProfileHeader>
           <SingleTweetPageContainer>
-            <SingleTweetPageProfile onClick={handleGoProile}>
+            <SingleTweetPageProfile>
               <HomepageTestPP
                 style={{ height: 42, width: 42 }}
+                onClick={handleGoProfile}
               ></HomepageTestPP>
               <SingleTweetPageProfileText>
                 {tweetData.user.userName}
@@ -85,7 +103,7 @@ const SingleTweetPage = () => {
               style={{
                 display: 'flex',
                 justifyContent: 'center',
-                borderBottom: '1px solid gray',
+                borderBottom: '1px solid #2f3336',
                 paddingBottom: 10,
               }}
             >
@@ -100,14 +118,14 @@ const SingleTweetPage = () => {
                   style={{ resize: 'none' }}
                   maxLength="150"
                   placeholder="Tweet your reply"
-                  // onChange={handleText}
+                  onChange={handleReply}
                 ></textarea>
               </TweetForm>
               <TweetButton
-              // bgColor={canTweet ? '#5dbaec' : '#579bbd'}
-              // color={canTweet ? '#ffffff' : '#9bbecd'}
-              // disabled={canTweet ? false : true}
-              // onClick={handleSubmitTweet}
+                // bgColor={canTweet ? '#5dbaec' : '#579bbd'}
+                // color={canTweet ? '#ffffff' : '#9bbecd'}
+                // disabled={canTweet ? false : true}
+                onClick={handleSubmitReply}
               >
                 Reply
               </TweetButton>

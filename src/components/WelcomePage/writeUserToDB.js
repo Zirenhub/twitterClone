@@ -29,6 +29,8 @@ const writeUserToDB = async (userID, displayName) => {
       tweetsNum: 0,
       followers: {},
       following: {},
+      replies: {},
+      likes: {},
     });
     batch.set(usernameRef, {
       uid: userID,

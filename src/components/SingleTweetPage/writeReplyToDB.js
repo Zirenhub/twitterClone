@@ -8,17 +8,18 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 import { db } from '../Firebase';
 
-const writeTweetToDB = async (userID, tweet) => {
+const writeReplyToDB = async (reply, replyOwnerID, tweetOwnerID) => {
   const key = uuidv4();
-  const userPostsRef = doc(db, 'posts', userID);
-  const userInfoRef = doc(db, 'users', userID);
+  const replyOwnerRef = doc(db, 'users', replyOwnerID);
+  const tweetOwnerRef = doc(db, 'posts', tweetOwnerID);
 
   try {
     await setDoc(
-      userPostsRef,
+      replyOwnerRef,
       {
-        [key]: {
-          tweet: tweet,
+        replies: {
+          reply: reply,
+          key: [key],
           firestoreDate: serverTimestamp(),
           replies: {},
           likes: {},
@@ -27,7 +28,7 @@ const writeTweetToDB = async (userID, tweet) => {
       },
       { merge: true }
     );
-    await updateDoc(userInfoRef, {
+    await updateDoc(replyOwnerRef, {
       tweetsNum: increment(1),
     });
   } catch (error) {
@@ -35,4 +36,4 @@ const writeTweetToDB = async (userID, tweet) => {
   }
 };
 
-export default writeTweetToDB;
+export default writeReplyToDB;
