@@ -26,6 +26,7 @@ import writeReplyToDB from './writeReplyToDB';
 
 const SingleTweetPage = () => {
   const [tweetData, setTweetData] = useState(null);
+  const [tweetReplies, setTweetReplies] = useState(null);
   const [reply, setReply] = useState(null);
   const [tweetOwnerID, setTweetOwnerID] = useState(null);
 
@@ -52,7 +53,7 @@ const SingleTweetPage = () => {
 
     initialize();
   }, [username, tweet]);
-  console.log(tweetData);
+
   const handleGoBack = () => {
     navigate(-1);
   };
@@ -66,7 +67,8 @@ const SingleTweetPage = () => {
   };
 
   const handleSubmitReply = async () => {
-    if (reply) await writeReplyToDB(reply, user.uid, tweetOwnerID);
+    if (reply)
+      await writeReplyToDB(reply, user.uid, tweetOwnerID, tweetData.key);
   };
 
   return (

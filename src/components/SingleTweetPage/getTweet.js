@@ -4,6 +4,7 @@ import { db } from '../../Firebase';
 const getTweet = async (userID, tweet) => {
   if (userID && tweet) {
     const docRef = doc(db, 'posts', userID);
+    const repliesRef = doc(docRef, 'replies', tweet);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
