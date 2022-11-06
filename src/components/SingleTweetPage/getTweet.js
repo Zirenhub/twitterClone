@@ -3,24 +3,25 @@ import { db } from '../../Firebase';
 
 const getTweet = async (userID, tweet) => {
   if (userID && tweet) {
-    const docRef = doc(db, 'posts', userID);
-    const repliesRef = doc(docRef, 'replies', tweet);
-    const docSnap = await getDoc(docRef);
+    const postRef = doc(db, 'posts', userID);
+    const postSnap = await getDoc(postRef);
 
-    if (docSnap.exists()) {
-      let returnData = null;
-
-      const rawData = docSnap.data();
+    let returnData = null;
+    if (postSnap.exists()) {
+      const rawData = postSnap.data();
       const dataArr = Object.entries(rawData);
 
       dataArr.forEach((fetchedTweet) => {
-        const fetchedKey = fetchedTweet[0];
-        if (fetchedKey === tweet) {
-          returnData = { key: fetchedKey, tweet: fetchedTweet[1] };
+        const [tweetKey, tweetData] = fetchedTweet;
+        const date = tweetData.firestoreDate.toDate();
+        const currentTweet = tweetData.tweet;
+        if (tweetKey === tweet) {
+          returnData = { key: tweetKey, tweet: currentTweet, date: date };
         }
       });
-      return returnData;
     }
+
+    return returnData;
   }
 };
 
