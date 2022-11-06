@@ -33,7 +33,7 @@ import { LoadingStyled } from '../../styles/WelcomePageStyles/Loading.styled';
 const SingleTweetPage = () => {
   const [tweetData, setTweetData] = useState(null);
   const [tweetReplies, setTweetReplies] = useState(null);
-  const [reply, setReply] = useState(null);
+  const [reply, setReply] = useState('');
   const [tweetOwnerID, setTweetOwnerID] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -98,6 +98,7 @@ const SingleTweetPage = () => {
     if (reply) {
       await writeReplyToDB(reply, user.uid, tweetOwnerID, tweetData.key);
       fetchReplies(tweetOwnerID);
+      setReply('');
     }
   };
 
@@ -152,6 +153,7 @@ const SingleTweetPage = () => {
                   maxLength="150"
                   placeholder="Tweet your reply"
                   onChange={handleReply}
+                  value={reply}
                 ></textarea>
               </TweetForm>
               <TweetButton
