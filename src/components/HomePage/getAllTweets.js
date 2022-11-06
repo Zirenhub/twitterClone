@@ -1,5 +1,6 @@
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../Firebase';
+import formatFetchedTweets from '../../utils/formatFetchedTweets';
 import getUserInfo from '../ProfilePage/getUserInfo';
 
 const getAllTweets = async () => {
@@ -13,17 +14,11 @@ const getAllTweets = async () => {
     const userInfo = await getUserInfo(doc.id);
 
     dataArr.forEach((tweet) => {
-      const tweetArr = Object.values(tweet);
-      const key = tweetArr[0];
-      const dataTweet = tweetArr[1].tweet;
-      const date = tweetArr[1].firestoreDate.toDate();
+      const tweetsArr = Object.values(tweet);
+      const formatedTweets = formatFetchedTweets(tweetsArr);
+      formatedTweets.user = userInfo;
 
-      returnData.push({
-        key: key,
-        tweet: dataTweet,
-        date: date,
-        user: userInfo,
-      });
+      returnData.push(formatedTweets);
     });
   }
 
