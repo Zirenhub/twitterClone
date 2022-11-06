@@ -17,6 +17,11 @@ export const BackArrow = styled.div`
   }
 `;
 
+export const PostContainer = styled.div`
+  max-width: 600px;
+  border-right: 1px solid #2f3336;
+`;
+
 export const SingleTweetPageContainer = styled.div`
   display: flex;
   flex-direction: column;
