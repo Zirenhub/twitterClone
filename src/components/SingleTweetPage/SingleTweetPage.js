@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import TweetInteractions from '../../utils/TweetInteractions';
 import { useNavigate, useParams } from 'react-router-dom';
 import { UserAuth } from '../../context/authContext';
@@ -15,6 +15,7 @@ import {
   SingleTweetPageTweet,
   SingleTweetPageInteractionsContainer,
   SingleTweetPageReplyContainer,
+  PostContainer,
 } from '../../styles/SingleTweetPageStlyes/SingleTweetPage.styled';
 import { TweetForm, TweetButton } from '../../styles/utilsStyles/Tweet.styled';
 import { TweetOptions } from '../../styles/utilsStyles/DisplayTweetFeed.styled';
@@ -23,36 +24,63 @@ import WithFooter from '../HOC/WithFooter';
 import getUserInfo from '../ProfilePage/getUserInfo';
 import getTweet from './getTweet';
 import writeReplyToDB from './writeReplyToDB';
+import getReplies from './getReplies';
+import DisplaySingleTweet from '../../utils/DisplaySingleTweet';
+import deletReply from './deleteReply';
+import sortTweetByDate from '../../utils/sortTweetsByDate';
+import { LoadingStyled } from '../../styles/WelcomePageStyles/Loading.styled';
 
 const SingleTweetPage = () => {
   const [tweetData, setTweetData] = useState(null);
   const [tweetReplies, setTweetReplies] = useState(null);
   const [reply, setReply] = useState(null);
   const [tweetOwnerID, setTweetOwnerID] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const { tweet, username } = useParams();
   const { user } = UserAuth();
   const navigate = useNavigate();
 
-  const handleDeleteTweet = (key) => {};
+  const handleDeleteTweet = async (replyKey) => {
+    await deletReply(tweetOwnerID, user.uid, tweetData.key, replyKey);
+    setTweetReplies((current) =>
+      current.filter((reply) => reply.key !== replyKey)
+    );
+  };
+
+  const fetchReplies = useCallback(
+    async (fetchedUserID) => {
+      const fetchedReplies = await getReplies(fetchedUserID, tweet);
+
+      if (fetchedReplies) {
+        const sortedTweets = sortTweetByDate(fetchedReplies);
+        setTweetReplies(sortedTweets);
+        setLoading(false);
+      }
+    },
+    [tweet]
+  );
+
+  const fetchTweet = useCallback(async () => {
+    // could have just used firestore uid,
+    // but twitter.com/username_here is more elegant than
+    // twitter.com/sdi0hsadad_8732diuahadh9q2d
+    const fetchedUserID = await getUserID(username);
+    const fetchedUserInfo = await getUserInfo(fetchedUserID);
+    const fetchedTweet = await getTweet(fetchedUserID, tweet);
+    if (fetchedTweet) {
+      fetchedTweet.user = fetchedUserInfo;
+
+      setTweetData(fetchedTweet);
+      setTweetOwnerID(fetchedUserID);
+    }
+  }, [tweet, username]);
 
   useEffect(() => {
-    const initialize = async () => {
-      const fetchedUserID = await getUserID(username);
-      const fetchedUserInfo = await getUserInfo(fetchedUserID);
-      const fetchedTweet = await getTweet(fetchedUserID, tweet);
-      if (fetchedTweet) {
-        fetchedTweet.date = fetchedTweet.tweet.firestoreDate.toDate();
-        fetchedTweet.tweet = fetchedTweet.tweet.tweet;
-        delete fetchedTweet.tweet.tweet;
-        fetchedTweet.user = fetchedUserInfo;
-        setTweetData(fetchedTweet);
-        setTweetOwnerID(fetchedUserID);
-      }
-    };
-
-    initialize();
-  }, [username, tweet]);
+    console.log('fetching single tweet page');
+    fetchTweet();
+    fetchReplies(tweetOwnerID);
+  }, [fetchTweet, fetchReplies, tweetOwnerID]);
 
   const handleGoBack = () => {
     navigate(-1);
@@ -67,14 +95,17 @@ const SingleTweetPage = () => {
   };
 
   const handleSubmitReply = async () => {
-    if (reply)
+    if (reply) {
       await writeReplyToDB(reply, user.uid, tweetOwnerID, tweetData.key);
+      fetchReplies(tweetOwnerID);
+    }
   };
 
   return (
-    <ProfilePageResponsiveContainer style={{ flexGrow: 0, height: '100%' }}>
+    <ProfilePageResponsiveContainer style={{ flexGrow: 1, overflowY: 'auto' }}>
+      {loading && <LoadingStyled>Loading</LoadingStyled>}
       {tweetData && (
-        <div>
+        <PostContainer>
           <ProfileHeader style={{ fontWeight: 700, position: 'sticky' }}>
             <BackArrow onClick={handleGoBack}></BackArrow>
             <p style={{ marginLeft: 20, fontSize: '1.2rem' }}>Tweet</p>
@@ -133,8 +164,19 @@ const SingleTweetPage = () => {
               </TweetButton>
             </SingleTweetPageReplyContainer>
           </SingleTweetPageContainer>
-        </div>
+        </PostContainer>
       )}
+      {tweetReplies &&
+        tweetReplies.map((reply) => {
+          return (
+            <DisplaySingleTweet
+              key={reply.key}
+              tweetLink={`reply/${reply.key}`}
+              tweet={reply}
+              handleDeleteTweet={() => handleDeleteTweet(reply.key)}
+            ></DisplaySingleTweet>
+          );
+        })}
     </ProfilePageResponsiveContainer>
   );
 };
