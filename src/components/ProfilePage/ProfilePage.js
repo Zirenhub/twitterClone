@@ -21,6 +21,7 @@ import WithFooter from '../HOC/WithFooter';
 import { LoadingStyled } from '../../styles/WelcomePageStyles/Loading.styled';
 import DispalyTweetFeed from '../../utils/DispalyTweetFeed';
 import getUserID from '../../utils/getUserID';
+import sortTweetByDate from '../../utils/sortTweetsByDate';
 
 const ProfilePage = () => {
   // if /sdaiad does not match db return error
@@ -35,6 +36,7 @@ const ProfilePage = () => {
   const { username } = useParams();
 
   const fetchUserInfo = useCallback(async () => {
+    console.log('profilepage fetching user info');
     try {
       const userID = await getUserID(username);
       const res = await getUserInfo(userID);
@@ -49,10 +51,11 @@ const ProfilePage = () => {
   }, [username]);
 
   const fetchUserTweets = useCallback(async (userInfo) => {
+    console.log('profilepage fetching user tweets');
     try {
       const res = await getUserTweets(userInfo.ID);
       if (res) {
-        const sortedTweets = [...res].sort((a, b) => b.date - a.date);
+        const sortedTweets = sortTweetByDate(res);
         const insertUserInfo = sortedTweets.map((tweet) => ({
           ...tweet,
           user: userInfo,
@@ -132,7 +135,10 @@ const ProfilePage = () => {
           </ProfileContentInfo>
         </ProfileVisuals>
         <ProfileTweetFeedContainer>
-          <DispalyTweetFeed initialTweets={tweets}></DispalyTweetFeed>
+          <DispalyTweetFeed
+            initialTweets={tweets}
+            setTweets={setTweets}
+          ></DispalyTweetFeed>
         </ProfileTweetFeedContainer>
       </div>
     </ProfilePageResponsiveContainer>

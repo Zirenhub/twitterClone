@@ -12,6 +12,7 @@ import signOut from '../../assets/images/sign-out-svg.svg';
 import getAllTweets from './getAllTweets';
 import WithFooter from '../HOC/WithFooter';
 import DispalyTweetFeed from '../../utils/DispalyTweetFeed';
+import sortTweetByDate from '../../utils/sortTweetsByDate';
 
 const HomePage = () => {
   const [loading, setLoading] = useState(true);
@@ -39,10 +40,11 @@ const HomePage = () => {
   };
 
   const fetchAllTweets = async () => {
+    console.log('homepage fetching all tweets');
     try {
       const res = await getAllTweets();
       if (res) {
-        const sortedTweets = [...res].sort((a, b) => b.date - a.date);
+        const sortedTweets = sortTweetByDate(res);
         setAllTweets(sortedTweets);
       }
     } catch (error) {
@@ -80,7 +82,10 @@ const HomePage = () => {
           <img src={signOut} alt="sign out button"></img>
         </HomepageSignout>
       </HomepageHeader>
-      <DispalyTweetFeed initialTweets={allTweets}></DispalyTweetFeed>
+      <DispalyTweetFeed
+        initialTweets={allTweets}
+        setTweets={setAllTweets}
+      ></DispalyTweetFeed>
     </HomepageTweetFeedContainer>
   );
 };
