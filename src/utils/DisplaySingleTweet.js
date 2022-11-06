@@ -11,12 +11,15 @@ import {
 } from '../styles/utilsStyles/DisplayTweetFeed.styled';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { UserAuth } from '../context/authContext';
 
 const DisplaySingleTweet = (props) => {
-  const { tweetLink, tweet, user, handleDeleteTweet } = props;
+  const { tweetLink, tweet, handleDeleteTweet } = props;
 
   const [dropdownActive, setDropDownActive] = useState(false);
   const [idLink, setIdLink] = useState(null);
+
+  const { user } = UserAuth();
 
   const handleToggleDropdown = () => {
     setDropDownActive(!dropdownActive);
