@@ -32,6 +32,13 @@ const writeReplyToDB = async (reply, replyOwnerID, tweetOwnerID, tweetKey) => {
     await updateDoc(replyOwnerRef, {
       tweetsNum: increment(1),
     });
+    await setDoc(
+      tweetOwnerRef,
+      {
+        [tweetKey]: { numberOfComments: increment(1) },
+      },
+      { merge: true }
+    );
   } catch (error) {
     console.log(error);
   }
