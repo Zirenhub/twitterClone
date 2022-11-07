@@ -96,8 +96,15 @@ const SingleTweetPage = () => {
 
   const handleSubmitReply = async () => {
     if (reply) {
-      await writeReplyToDB(reply, user.uid, tweetOwnerID, tweetData.key);
-      fetchReplies(tweetOwnerID);
+      const promiseReply = await writeReplyToDB(
+        reply,
+        user.uid,
+        tweetOwnerID,
+        tweetData.key
+      );
+      if (promiseReply) {
+        setTweetReplies((current) => [...current, promiseReply]);
+      }
       setReply('');
     }
   };
@@ -170,6 +177,7 @@ const SingleTweetPage = () => {
       )}
       {tweetReplies &&
         tweetReplies.map((reply) => {
+          console.log(reply);
           return (
             <DisplaySingleTweet
               key={reply.key}
