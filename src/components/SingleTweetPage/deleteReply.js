@@ -1,4 +1,10 @@
-import { doc, deleteField, updateDoc, increment } from 'firebase/firestore';
+import {
+  doc,
+  deleteField,
+  updateDoc,
+  increment,
+  setDoc,
+} from 'firebase/firestore';
 import { db } from '../../Firebase';
 
 const deletReply = async (tweetOwnerID, replyOwnerID, postKey, replyKey) => {
@@ -14,6 +20,15 @@ const deletReply = async (tweetOwnerID, replyOwnerID, postKey, replyKey) => {
     await updateDoc(replyOwnerInfoRef, {
       tweetsNum: increment(-1),
     });
+    await setDoc(
+      postRef,
+      {
+        [postKey]: {
+          numberOfComments: increment(-1),
+        },
+      },
+      { merge: true }
+    );
   } catch (error) {
     console.log(error);
   }
