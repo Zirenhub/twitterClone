@@ -25,6 +25,10 @@ const writeReplyToDB = async (reply, replyOwnerID, tweetOwnerID, tweetKey) => {
           reply: reply,
           firestoreDate: serverTimestamp(),
           replyOwner: replyOwnerID,
+          replyingTo: tweetKey,
+          numberOfLikes: 0,
+          numberOfComments: 0,
+          numberOfRetweets: 0,
         },
       },
       { merge: true }

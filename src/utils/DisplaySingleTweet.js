@@ -10,19 +10,24 @@ import {
   TweetDropdown,
 } from '../styles/utilsStyles/DisplayTweetFeed.styled';
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { UserAuth } from '../context/authContext';
 
 const DisplaySingleTweet = (props) => {
-  const { tweetLink, tweet, handleDeleteTweet } = props;
+  const { tweetLink, tweet, handleDeleteTweet, replyingTo } = props;
 
   const [dropdownActive, setDropDownActive] = useState(false);
   const [idLink, setIdLink] = useState(null);
 
   const { user } = UserAuth();
+  const navigate = useNavigate();
 
   const handleToggleDropdown = () => {
     setDropDownActive(!dropdownActive);
+  };
+
+  const navigateToProfile = () => {
+    navigate(`/${replyingTo}`);
   };
 
   useEffect(() => {
@@ -66,10 +71,22 @@ const DisplaySingleTweet = (props) => {
               </TweetOptions>
             )}
           </div>
+          {replyingTo && (
+            <p style={{ color: '#71767b' }}>
+              replying to{' '}
+              <span style={{ color: '#eff3f4' }} onClick={navigateToProfile}>
+                {replyingTo}
+              </span>
+            </p>
+          )}
           <Link to={`/${tweet.user.userName}/${tweetLink}`}>
             <TweetWhite>{tweet.tweet}</TweetWhite>
           </Link>
-          <TweetInteractions></TweetInteractions>
+          <TweetInteractions
+            likes={tweet.numLikes}
+            retweets={tweet.numRetweets}
+            comments={tweet.numComments}
+          ></TweetInteractions>
         </TweetContent>
       </div>
     </TweetContainer>

@@ -3,17 +3,29 @@ import {
   TweetLikeButton,
   TweetRetweetButton,
   TweetInteractContainer,
+  TweetIntButtonContainer,
 } from '../styles/utilsStyles/TweetInteractions.styled';
 import commentIcon from '../assets/images/comment-svgrepo-com.svg';
 import retweetIcon from '../assets/images/retweet-svgrepo-com.svg';
 import likeIcon from '../assets/images/like-svgrepo-com.svg';
 
-const TweetInteractions = () => {
+const TweetInteractions = (props) => {
+  const { likes, retweets, comments } = props;
+
   return (
     <TweetInteractContainer>
-      <TweetCommentButton src={commentIcon}></TweetCommentButton>
-      <TweetRetweetButton src={retweetIcon}></TweetRetweetButton>
-      <TweetLikeButton src={likeIcon}></TweetLikeButton>
+      <TweetIntButtonContainer>
+        <p>{comments}</p>
+        <TweetCommentButton src={commentIcon}></TweetCommentButton>
+      </TweetIntButtonContainer>
+      <TweetIntButtonContainer>
+        <p>{retweets}</p>
+        <TweetRetweetButton src={retweetIcon}></TweetRetweetButton>
+      </TweetIntButtonContainer>
+      <TweetIntButtonContainer>
+        <p>{likes}</p>
+        <TweetLikeButton src={likeIcon}></TweetLikeButton>
+      </TweetIntButtonContainer>
     </TweetInteractContainer>
   );
 };
