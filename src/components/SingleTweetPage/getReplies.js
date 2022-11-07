@@ -1,6 +1,5 @@
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../Firebase';
-import getUserInfo from '../ProfilePage/getUserInfo';
 
 const getReplies = async (userID, tweet) => {
   if (userID && tweet) {
@@ -18,14 +17,12 @@ const getReplies = async (userID, tweet) => {
         const date = replyData.firestoreDate.toDate();
         const currentReply = replyData.reply;
         const replyOwner = replyData.replyOwner;
-
-        const replyOwnerInfo = await getUserInfo(replyOwner);
-
+        //fix this user!
         returnData.push({
           key: replyKey,
           tweet: currentReply,
           date: date,
-          user: replyOwnerInfo,
+          user: replyOwner,
         });
       }
     }
