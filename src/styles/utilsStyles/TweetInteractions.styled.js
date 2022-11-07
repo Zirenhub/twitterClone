@@ -17,6 +17,13 @@ export const TweetInteractContainer = styled.div`
   }
 `;
 
+export const TweetIntButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #eff3f4;
+`;
+
 export const TweetCommentButton = styled.img``;
 
 export const TweetRetweetButton = styled.img``;
