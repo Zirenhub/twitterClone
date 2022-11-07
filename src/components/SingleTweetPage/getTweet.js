@@ -13,9 +13,9 @@ const getTweet = async (userID, tweet) => {
 
       dataArr.forEach((fetchedTweet) => {
         const [tweetKey, tweetData] = fetchedTweet;
-        const date = tweetData.firestoreDate.toDate();
-        const currentTweet = tweetData.tweet;
         if (tweetKey === tweet) {
+          const date = tweetData.firestoreDate.toDate();
+          const currentTweet = tweetData.tweet;
           returnData = { key: tweetKey, tweet: currentTweet, date: date };
         }
       });
