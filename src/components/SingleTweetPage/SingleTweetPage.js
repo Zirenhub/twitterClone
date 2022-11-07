@@ -173,9 +173,10 @@ const SingleTweetPage = () => {
           return (
             <DisplaySingleTweet
               key={reply.key}
-              tweetLink={`reply/${reply.key}`}
+              tweetLink={reply.key}
               tweet={reply}
               handleDeleteTweet={() => handleDeleteTweet(reply.key)}
+              replyingTo={tweetData.user.userName}
             ></DisplaySingleTweet>
           );
         })}
