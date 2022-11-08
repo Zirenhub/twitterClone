@@ -26,7 +26,7 @@ import getTweet from './getTweet';
 import writeReplyToDB from './writeReplyToDB';
 import getReplies from './getReplies';
 import DisplaySingleTweet from '../../utils/DisplaySingleTweet';
-import deletReply from './deleteReply';
+import deleteReply from './deleteReply';
 import sortTweetByDate from '../../utils/sortTweetsByDate';
 import { LoadingStyled } from '../../styles/WelcomePageStyles/Loading.styled';
 
@@ -42,24 +42,11 @@ const SingleTweetPage = () => {
   const navigate = useNavigate();
 
   const handleDeleteTweet = async (replyKey) => {
-    await deletReply(tweetOwnerID, user.uid, tweetData.key, replyKey);
+    await deleteReply(user.uid, replyKey);
     setTweetReplies((current) =>
       current.filter((reply) => reply.key !== replyKey)
     );
   };
-
-  const fetchReplies = useCallback(
-    async (fetchedUserID) => {
-      const fetchedReplies = await getReplies(fetchedUserID, tweet);
-
-      if (fetchedReplies) {
-        const sortedTweets = sortTweetByDate(fetchedReplies);
-        setTweetReplies(sortedTweets);
-        setLoading(false);
-      }
-    },
-    [tweet]
-  );
 
   const fetchTweet = useCallback(async () => {
     // could have just used firestore uid,
@@ -76,11 +63,25 @@ const SingleTweetPage = () => {
     }
   }, [tweet, username]);
 
+  const fetchReplies = useCallback(async () => {
+    const fetchedReplies = await getReplies(tweet);
+
+    if (fetchedReplies) {
+      const sortedTweets = sortTweetByDate(fetchedReplies);
+      setTweetReplies(sortedTweets); // do orderBy instead ?
+      setLoading(false);
+    }
+  }, [tweet]);
+
   useEffect(() => {
     console.log('fetching single tweet page');
-    fetchTweet();
-    fetchReplies(tweetOwnerID);
-  }, [fetchTweet, fetchReplies, tweetOwnerID]);
+    const initialize = async () => {
+      await fetchTweet();
+      await fetchReplies();
+    };
+
+    initialize();
+  }, [fetchTweet, fetchReplies]);
 
   const handleGoBack = () => {
     navigate(-1);
@@ -177,7 +178,6 @@ const SingleTweetPage = () => {
       )}
       {tweetReplies &&
         tweetReplies.map((reply) => {
-          console.log(reply);
           return (
             <DisplaySingleTweet
               key={reply.key}

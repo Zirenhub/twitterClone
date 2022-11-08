@@ -7,7 +7,7 @@ import {
 import { UserAuth } from '../../context/authContext';
 import { LoadingStyled } from '../../styles/WelcomePageStyles/Loading.styled';
 import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import signOut from '../../assets/images/sign-out-svg.svg';
 import getAllTweets from './getAllTweets';
 import WithFooter from '../HOC/WithFooter';
@@ -20,7 +20,6 @@ const HomePage = () => {
 
   const { logout, user } = UserAuth();
   const navigate = useNavigate();
-  const location = useLocation();
 
   const handleLogout = async () => {
     try {
@@ -55,7 +54,7 @@ const HomePage = () => {
 
   useEffect(() => {
     fetchAllTweets();
-  }, [location]);
+  }, []);
 
   if (loading) {
     return <LoadingStyled>Loading</LoadingStyled>;

@@ -11,15 +11,15 @@ const getAllTweets = async () => {
   for (const doc of querySnapshot.docs) {
     const rawData = doc.data();
     const dataArr = Object.entries(rawData);
-    const userInfo = await getUserInfo(doc.id);
 
-    dataArr.forEach((tweet) => {
-      const tweetsArr = Object.values(tweet);
-      const formatedTweets = formatFetchedTweets(tweetsArr);
+    for (const tweet of dataArr) {
+      const tweetInfoArr = Object.values(tweet);
+      const formatedTweets = formatFetchedTweets(tweetInfoArr);
+      const userInfo = await getUserInfo(doc.id);
       formatedTweets.user = userInfo;
 
       returnData.push(formatedTweets);
-    });
+    }
   }
 
   return returnData;

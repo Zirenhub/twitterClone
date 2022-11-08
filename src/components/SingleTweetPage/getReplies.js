@@ -1,31 +1,23 @@
-import { doc, getDoc } from 'firebase/firestore';
+import { collectionGroup, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../../Firebase';
 
-const getReplies = async (userID, tweet) => {
-  if (userID && tweet) {
-    const postRef = doc(db, 'posts', userID);
-    const repliesRef = doc(postRef, 'replies', tweet);
-    const repliesSnap = await getDoc(repliesRef);
+const getReplies = async (tweet) => {
+  if (tweet) {
+    const repliesQuery = query(
+      collectionGroup(db, 'replies'),
+      where('replyingTo', '==', tweet)
+    );
+    const repliesSnap = await getDocs(repliesQuery);
 
     const returnData = [];
-    if (repliesSnap.exists()) {
-      const rawData = repliesSnap.data();
-      const dataArr = Object.entries(rawData);
+    repliesSnap.forEach((doc) => {
+      // console.log(doc.id, '=>', doc.data());
+      const rawData = doc.data();
+      rawData.date = rawData.firestoreDate.toDate();
+      delete rawData.firestoreDate;
+      returnData.push(rawData);
+    });
 
-      for (const reply of dataArr) {
-        const [replyKey, replyData] = reply;
-        const date = replyData.firestoreDate.toDate();
-        const currentReply = replyData.reply;
-        const replyOwner = replyData.replyOwner;
-        //fix this user!
-        returnData.push({
-          key: replyKey,
-          tweet: currentReply,
-          date: date,
-          user: replyOwner,
-        });
-      }
-    }
     return returnData;
   }
 };

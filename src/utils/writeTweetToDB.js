@@ -18,11 +18,12 @@ const writeTweetToDB = async (userID, tweet) => {
       userPostsRef,
       {
         [key]: {
+          key: key,
           tweet: tweet,
           firestoreDate: serverTimestamp(),
-          numberOfLikes: 0,
-          numberOfComments: 0,
-          numberOfRetweets: 0,
+          numOfLikes: 0,
+          numOfComments: 0,
+          numOfRetweets: 0,
         },
       },
       { merge: true }
