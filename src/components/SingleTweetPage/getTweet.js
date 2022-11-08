@@ -19,6 +19,10 @@ const getTweet = async (userID, tweet) => {
           returnData = { key: tweetKey, tweet: currentTweet, date: date };
         }
       });
+    } else {
+      const repliesRef = doc(db, 'posts', userID, 'replies', tweet);
+      const replySnap = await getDoc(repliesRef);
+      console.log(replySnap.data());
     }
 
     return returnData;
