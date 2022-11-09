@@ -34,15 +34,14 @@ const SingleTweetPage = () => {
   const [tweetData, setTweetData] = useState(null);
   const [tweetReplies, setTweetReplies] = useState(null);
   const [reply, setReply] = useState('');
-  const [tweetOwnerID, setTweetOwnerID] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const { tweet, username } = useParams();
   const { user } = UserAuth();
   const navigate = useNavigate();
 
-  const handleDeleteTweet = async (replyKey) => {
-    await deleteReply(user.uid, replyKey);
+  const handleDeleteTweet = async (replyKey, tweetKey) => {
+    await deleteReply(user.uid, replyKey, tweetKey);
     setTweetReplies((current) =>
       current.filter((reply) => reply.key !== replyKey)
     );
@@ -52,16 +51,12 @@ const SingleTweetPage = () => {
     // could have just used firestore uid,
     // but twitter.com/username_here is more elegant than
     // twitter.com/sdi0hsadad_8732diuahadh9q2d
-    const fetchedUserID = await getUserID(username);
-    const fetchedUserInfo = await getUserInfo(fetchedUserID);
-    const fetchedTweet = await getTweet(fetchedUserID, tweet);
-    if (fetchedTweet) {
-      fetchedTweet.user = fetchedUserInfo;
 
+    const fetchedTweet = await getTweet(tweet);
+    if (fetchedTweet) {
       setTweetData(fetchedTweet);
-      setTweetOwnerID(fetchedUserID);
     }
-  }, [tweet, username]);
+  }, [tweet]);
 
   const fetchReplies = useCallback(async () => {
     const fetchedReplies = await getReplies(tweet);
@@ -97,14 +92,11 @@ const SingleTweetPage = () => {
 
   const handleSubmitReply = async () => {
     if (reply) {
-      const promiseReply = await writeReplyToDB(
-        reply,
-        user.uid,
-        tweetOwnerID,
-        tweetData.key
-      );
+      const promiseReply = await writeReplyToDB(reply, user.uid, tweetData.key);
       if (promiseReply) {
-        setTweetReplies((current) => [...current, promiseReply]);
+        const replies = [...tweetReplies, promiseReply];
+        const sortedTweets = sortTweetByDate(replies);
+        setTweetReplies(sortedTweets);
       }
       setReply('');
     }
@@ -183,7 +175,9 @@ const SingleTweetPage = () => {
               key={reply.key}
               tweetLink={reply.key}
               tweet={reply}
-              handleDeleteTweet={() => handleDeleteTweet(reply.key)}
+              handleDeleteTweet={() =>
+                handleDeleteTweet(reply.key, tweetData.key)
+              }
               replyingTo={tweetData.user.userName}
             ></DisplaySingleTweet>
           );

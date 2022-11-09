@@ -7,55 +7,43 @@ import {
 } from 'firebase/firestore';
 import { v4 as uuidv4 } from 'uuid';
 import { db } from '../../Firebase';
-import formatFetchedTweets from '../../utils/formatFetchedTweets';
 import getUserInfo from '../ProfilePage/getUserInfo';
 
-const writeReplyToDB = async (reply, replyOwnerID, tweetOwnerID, tweetKey) => {
+const writeReplyToDB = async (reply, replyOwnerID, tweetKey) => {
   const key = uuidv4();
-  const replySubCol = doc(db, 'posts', replyOwnerID, 'replies', key);
-  const replyOwnerRef = doc(db, 'users', replyOwnerID);
-  const tweetOwnerPosts = doc(db, 'posts', tweetOwnerID);
+  const replyUserRef = doc(db, 'users', replyOwnerID);
+  const postsRef = doc(db, 'posts', key);
+  const tweetRef = doc(db, 'posts', tweetKey);
   // const likesRef = collection(tweetOwnerRef, 'likes');
   // const retweetsRef = collection(tweetOwnerRef, 'retweets');
 
   const userInfo = await getUserInfo(replyOwnerID);
 
   const replyData = {
-    [tweetKey]: {
-      key: key,
-      tweet: reply,
-      firestoreDate: Timestamp.fromDate(new Date()),
-      numOfLikes: 0,
-      numOfComments: 0,
-      numOfRetweets: 0,
-      user: userInfo,
-    },
+    key: key,
+    tweet: reply,
+    firestoreDate: Timestamp.fromDate(new Date()),
+    numOfLikes: 0,
+    numOfComments: 0,
+    numOfRetweets: 0,
+    user: userInfo,
+    userID: replyOwnerID,
+    replyingTo: tweetKey,
   };
 
   try {
-    await setDoc(replySubCol, {
-      key: key,
-      tweet: reply,
-      firestoreDate: Timestamp.fromDate(new Date()),
-      numOfLikes: 0,
-      numOfComments: 0,
-      numOfRetweets: 0,
-      user: userInfo,
-      replyingTo: tweetKey,
-    });
-    await updateDoc(replyOwnerRef, {
+    await setDoc(postsRef, replyData);
+    await updateDoc(replyUserRef, {
       tweetsNum: increment(1),
     });
-    await updateDoc(tweetOwnerPosts, {
-      // [tweetKey]: { numOfComments: increment(1) },
-      [`${tweetKey}.numOfComments`]: increment(1),
+    await updateDoc(tweetRef, {
+      numOfComments: increment(1),
     });
   } catch (error) {
     console.log(error);
   } finally {
-    const replyDataArr = Object.entries(replyData);
-    const fomratedData = formatFetchedTweets(replyDataArr[0]);
-    return fomratedData;
+    replyData.date = replyData.firestoreDate.toDate();
+    return replyData;
   }
 };
 

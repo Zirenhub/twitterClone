@@ -1,25 +1,20 @@
-import { doc, getDoc } from 'firebase/firestore';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../../Firebase';
-import formatFetchedTweets from '../../utils/formatFetchedTweets';
 
 const getUserTweets = async (userID) => {
-  const returnData = [];
-
   if (userID) {
-    const docRef = doc(db, 'posts', userID);
-    const docSnap = await getDoc(docRef);
+    const returnData = [];
+    const postsQuery = query(
+      collection(db, 'posts'),
+      where('userID', '==', userID)
+    );
+    const postsSnap = await getDocs(postsQuery);
 
-    if (docSnap.exists()) {
-      const rawData = docSnap.data();
-      const dataArr = Object.entries(rawData);
-
-      dataArr.forEach((tweet) => {
-        const tweetsArr = Object.values(tweet);
-        const formatedTweets = formatFetchedTweets(tweetsArr);
-
-        returnData.push(formatedTweets);
-      });
-    }
+    postsSnap.forEach((doc) => {
+      const rawData = doc.data();
+      rawData.date = rawData.firestoreDate.toDate();
+      returnData.push(rawData);
+    });
 
     return returnData;
   }

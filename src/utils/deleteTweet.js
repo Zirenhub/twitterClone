@@ -1,22 +1,12 @@
-import {
-  doc,
-  deleteField,
-  updateDoc,
-  increment,
-  deleteDoc,
-} from 'firebase/firestore';
+import { doc, updateDoc, increment, deleteDoc } from 'firebase/firestore';
 import { db } from '../Firebase';
 
-const deleteTweet = async (user, tweet) => {
-  const tweetRef = doc(db, 'posts', user);
-  const repliesRef = doc(tweetRef, 'replies', tweet);
-  const userInfoRef = doc(db, 'users', user);
+const deleteTweet = async (userID, tweet) => {
+  const tweetRef = doc(db, 'posts', tweet);
+  const userInfoRef = doc(db, 'users', userID);
 
   try {
-    await updateDoc(tweetRef, {
-      [tweet]: deleteField(),
-    });
-    await deleteDoc(repliesRef);
+    await deleteDoc(tweetRef);
     await updateDoc(userInfoRef, {
       tweetsNum: increment(-1),
     });

@@ -83,9 +83,9 @@ const DisplaySingleTweet = (props) => {
             <TweetWhite>{tweet.tweet}</TweetWhite>
           </Link>
           <TweetInteractions
-            likes={tweet.numLikes}
-            retweets={tweet.numRetweets}
-            comments={tweet.numComments}
+            likes={tweet.numOfLikes}
+            retweets={tweet.numOfRetweets}
+            comments={tweet.numOfComments}
           ></TweetInteractions>
         </TweetContent>
       </div>
