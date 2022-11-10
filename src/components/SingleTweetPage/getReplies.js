@@ -8,6 +8,7 @@ const getReplies = async (tweet) => {
       where('replyingTo', '==', tweet)
     );
     const repliesSnap = await getDocs(repliesQuery);
+
     const returnData = [];
     repliesSnap.forEach((doc) => {
       // console.log(doc.id, '=>', doc.data());

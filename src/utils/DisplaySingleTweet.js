@@ -1,17 +1,17 @@
-import { HomepageTestPP } from '../styles/HomePageStyles/HomePage.styled';
-import TweetInteractions from './TweetInteractions';
 import {
   TweetGrayText,
-  TweetContainer,
   TweetContent,
   TweetOptions,
   TweetWhite,
   TweetOwnerName,
   TweetDropdown,
+  StyledLink,
 } from '../styles/utilsStyles/DisplayTweetFeed.styled';
+import { HomepageTestPP } from '../styles/HomePageStyles/HomePage.styled';
 import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { UserAuth } from '../context/authContext';
+import { DisplayFlex } from '../styles/utilsStyles/Tweet.styled';
 
 const DisplaySingleTweet = (props) => {
   const { tweetLink, tweet, handleDeleteTweet, replyingTo } = props;
@@ -39,57 +39,50 @@ const DisplaySingleTweet = (props) => {
   }, [tweet.user.userName]);
 
   return (
-    <TweetContainer>
-      <div style={{ display: 'flex' }}>
-        <HomepageTestPP
-          style={{
-            backgroundColor: '#ffffff',
-            minHeight: 48,
-            minWidth: 48,
-            flexGrow: 1,
-          }}
-        ></HomepageTestPP>
-        <TweetContent>
-          <div style={{ display: 'flex' }}>
-            {idLink && (
-              <Link to={`/${idLink}`}>
-                <TweetOwnerName>{tweet.user.userName}</TweetOwnerName>
-              </Link>
-            )}
-            <TweetGrayText style={{ marginLeft: 10 }}>
-              {tweet.date.toString().slice(0, 21)}
-            </TweetGrayText>
-            {user.displayName === tweet.user.userName && (
-              <TweetOptions onClick={handleToggleDropdown}>
-                {dropdownActive && (
-                  <TweetDropdown>
-                    <ul>
-                      <li onClick={handleDeleteTweet}>Delete</li>
-                    </ul>
-                  </TweetDropdown>
-                )}
-              </TweetOptions>
-            )}
-          </div>
-          {replyingTo && (
-            <p style={{ color: '#71767b' }}>
-              replying to{' '}
-              <span style={{ color: '#eff3f4' }} onClick={navigateToProfile}>
-                {replyingTo}
-              </span>
-            </p>
+    <>
+      <HomepageTestPP
+        style={{
+          backgroundColor: '#ffffff',
+          minHeight: 48,
+          minWidth: 48,
+        }}
+      ></HomepageTestPP>
+
+      <TweetContent>
+        <DisplayFlex>
+          {idLink && (
+            <StyledLink to={`/${idLink}`}>
+              <TweetOwnerName>{tweet.user.userName}</TweetOwnerName>
+            </StyledLink>
           )}
-          <Link to={`/${tweet.user.userName}/${tweetLink}`}>
-            <TweetWhite>{tweet.tweet}</TweetWhite>
-          </Link>
-          <TweetInteractions
-            likes={tweet.numOfLikes}
-            retweets={tweet.numOfRetweets}
-            comments={tweet.numOfComments}
-          ></TweetInteractions>
-        </TweetContent>
-      </div>
-    </TweetContainer>
+          <TweetGrayText style={{ marginLeft: 10 }}>
+            {tweet.date.toString().slice(0, 21)}
+          </TweetGrayText>
+          {user.displayName === tweet.user.userName && (
+            <TweetOptions onClick={handleToggleDropdown}>
+              {dropdownActive && (
+                <TweetDropdown>
+                  <ul>
+                    <li onClick={handleDeleteTweet}>Delete</li>
+                  </ul>
+                </TweetDropdown>
+              )}
+            </TweetOptions>
+          )}
+        </DisplayFlex>
+        {replyingTo && (
+          <p style={{ color: '#71767b' }}>
+            replying to{' '}
+            <span style={{ color: '#eff3f4' }} onClick={navigateToProfile}>
+              {replyingTo}
+            </span>
+          </p>
+        )}
+        <StyledLink to={`/${tweet.user.userName}/${tweetLink}`}>
+          <TweetWhite>{tweet.tweet}</TweetWhite>
+        </StyledLink>
+      </TweetContent>
+    </>
   );
 };
 

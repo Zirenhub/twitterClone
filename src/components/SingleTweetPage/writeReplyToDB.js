@@ -39,11 +39,10 @@ const writeReplyToDB = async (reply, replyOwnerID, tweetKey) => {
     await updateDoc(tweetRef, {
       numOfComments: increment(1),
     });
-  } catch (error) {
-    console.log(error);
-  } finally {
     replyData.date = replyData.firestoreDate.toDate();
     return replyData;
+  } catch (error) {
+    console.log(error);
   }
 };
 

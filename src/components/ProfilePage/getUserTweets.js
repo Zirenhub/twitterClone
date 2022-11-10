@@ -6,7 +6,8 @@ const getUserTweets = async (userID) => {
     const returnData = [];
     const postsQuery = query(
       collection(db, 'posts'),
-      where('userID', '==', userID)
+      where('userID', '==', userID),
+      where('replyingTo', '==', null)
     );
     const postsSnap = await getDocs(postsQuery);
 

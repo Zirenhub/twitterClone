@@ -13,6 +13,7 @@ const deleteReply = async (replyOwnerID, replyKey, tweetKey) => {
     await updateDoc(tweetRef, {
       numOfComments: increment(-1),
     });
+    return true;
   } catch (error) {
     console.log(error);
   }

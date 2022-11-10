@@ -96,3 +96,12 @@ export const TweetForm = styled.div`
     }
   }
 `;
+
+export const DisplayFlex = styled.div`
+  display: flex;
+`;
+
+export const DisplayFlexColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+`;

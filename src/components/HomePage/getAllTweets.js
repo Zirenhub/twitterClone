@@ -1,12 +1,15 @@
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../../Firebase';
 
 const getAllTweets = async () => {
+  const postsQuery = query(
+    collection(db, 'posts'),
+    where('replyingTo', '==', null)
+  );
+  const postsSnap = await getDocs(postsQuery);
+
   const returnData = [];
-
-  const querySnapshot = await getDocs(collection(db, 'posts'));
-
-  for (const doc of querySnapshot.docs) {
+  for (const doc of postsSnap.docs) {
     const rawData = doc.data();
     rawData.date = rawData.firestoreDate.toDate();
     returnData.push(rawData);

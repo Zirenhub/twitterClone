@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import optionsSVG from '../../assets/images/options-svgrepo-com.svg';
 
@@ -24,13 +25,12 @@ export const TweetGrayText = styled.p`
 `;
 export const TweetContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   padding: 10px;
   border-bottom: 1px solid #2f3336;
   transition: ease-in-out 100ms;
   cursor: pointer;
   max-width: 600px;
+  /* flex-wrap: wrap; */
 
   &:hover {
     background-color: rgba(255, 255, 255, 0.05);
@@ -79,5 +79,13 @@ export const TweetDropdown = styled.div`
       background-color: #d90e0a;
       cursor: pointer;
     }
+  }
+`;
+
+export const StyledLink = styled(Link)`
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
   }
 `;

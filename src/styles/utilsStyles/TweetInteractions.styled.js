@@ -5,30 +5,39 @@ export const TweetInteractContainer = styled.div`
   justify-content: flex-start;
   gap: 90px;
   margin-top: 10px;
-
-  img {
-    filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(31deg)
-      brightness(110%) contrast(102%);
-
-    height: 24px;
-    width: 24px;
-
-    cursor: pointer;
-  }
 `;
 
 export const TweetIntButtonContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #eff3f4;
+
+  height: 35px;
+  width: 35px;
+
+  &:hover {
+    p {
+      color: ${(props) => props.hoverColor};
+    }
+
+    svg {
+      background-color: ${(props) => props.hoverColor};
+    }
+  }
 `;
 
-export const TweetCommentButton = styled.img``;
+export const TweetInteractText = styled.p`
+  padding-left: 5px;
+  color: #71767b;
+  font-weight: 700;
+`;
 
-export const TweetRetweetButton = styled.img``;
+export const InteractIcon = styled.svg`
+  cursor: pointer;
 
-export const TweetLikeButton = styled.img`
-  // for some reason like svg is bigger than the others
-  width: 18px !important;
+  height: 20px;
+  width: 20px;
+
+  background-color: #ffff;
+  mask: ${({ src }) => `url(${src}) no-repeat center`};
 `;

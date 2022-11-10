@@ -24,6 +24,7 @@ const writeTweetToDB = async (userID, tweet) => {
       numOfLikes: 0,
       numOfComments: 0,
       numOfRetweets: 0,
+      replyingTo: null,
       userID: userID,
       user: userInfo,
     });
