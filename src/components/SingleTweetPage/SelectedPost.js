@@ -2,9 +2,9 @@ import { TweetForm, TweetButton } from '../../styles/utilsStyles/Tweet.styled';
 import { HomepageTestPP } from '../../styles/HomePageStyles/HomePage.styled';
 import { TweetOptions } from '../../styles/utilsStyles/DisplayTweetFeed.styled';
 import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { UserAuth } from '../../context/authContext';
-import TweetInteractions from '../../utils/TweetInteractions';
+import TweetInteractions from '../TweetInteractions/TweetInteractions';
 import writeReplyToDB from './writeReplyToDB';
 import sortTweetByDate from '../../utils/sortTweetsByDate';
 import {
@@ -16,32 +16,13 @@ import {
   SingleTweetPageReplyContainer,
   PostContainer,
 } from '../../styles/SingleTweetPageStlyes/SingleTweetPage.styled';
-import likeTweet from '../../utils/likeTweet';
 
 const SelectedPost = (props) => {
   const { username, tweetData, tweetReplies, setTweetReplies } = props;
   const [reply, setReply] = useState('');
-  const [likes, setLikes] = useState(null);
 
   const { user } = UserAuth();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    setLikes(tweetData.numOfLikes);
-  }, [tweetData]);
-
-  const handleLike = async () => {
-    const promiseLike = await likeTweet(tweetData.key, user.uid);
-    if (promiseLike) {
-      setLikes(likes + 1);
-    } else {
-      setLikes(likes - 1);
-    }
-  };
-
-  const handleComment = () => {};
-
-  const handleRetweet = () => {};
 
   const handleGoProfile = () => {
     navigate(`/${username}`);
@@ -85,7 +66,7 @@ const SelectedPost = (props) => {
         <SingleTweetPageInteractionsContainer>
           <p>Retweet</p>
           <p>Quote Tweet</p>
-          <p>{likes} Likes</p>
+          <p>Likes</p>
         </SingleTweetPageInteractionsContainer>
         <div
           style={{
@@ -95,12 +76,9 @@ const SelectedPost = (props) => {
             paddingBottom: 10,
           }}
         >
-          <TweetInteractions
-            handleLike={handleLike}
-            handleComment={handleComment}
-            handleRetweet={handleRetweet}
-          ></TweetInteractions>
+          <TweetInteractions tweet={tweetData}></TweetInteractions>
         </div>
+
         <SingleTweetPageReplyContainer>
           <HomepageTestPP
             style={{ minHeight: 42, minWidth: 42 }}
