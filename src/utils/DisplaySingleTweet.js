@@ -12,6 +12,8 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserAuth } from '../context/authContext';
 import { DisplayFlex } from '../styles/utilsStyles/Tweet.styled';
+import TweetInteractions from '../components/TweetInteractions/TweetInteractions';
+import { TweetContainer } from '../styles/utilsStyles/DisplayTweetFeed.styled';
 
 const DisplaySingleTweet = (props) => {
   const { tweetLink, tweet, handleDeleteTweet, replyingTo } = props;
@@ -39,7 +41,7 @@ const DisplaySingleTweet = (props) => {
   }, [tweet.user.userName]);
 
   return (
-    <>
+    <TweetContainer>
       <HomepageTestPP
         style={{
           backgroundColor: '#ffffff',
@@ -81,8 +83,10 @@ const DisplaySingleTweet = (props) => {
         <StyledLink to={`/${tweet.user.userName}/${tweetLink}`}>
           <TweetWhite>{tweet.tweet}</TweetWhite>
         </StyledLink>
+
+        {tweet && <TweetInteractions tweet={tweet}></TweetInteractions>}
       </TweetContent>
-    </>
+    </TweetContainer>
   );
 };
 
