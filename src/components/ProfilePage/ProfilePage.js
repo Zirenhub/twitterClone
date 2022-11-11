@@ -12,6 +12,8 @@ import {
   ProfileFollowsContainer,
   ProfileTweetFeedContainer,
   ProfilePageResponsiveContainer,
+  ProfileInteractionsContrainer,
+  ProfileInteractionButton,
 } from '../../styles/ProfilePageStyles/ProfilePage.styled';
 import { CloseButton } from '../../styles/WelcomePageStyles/SignUp.styled';
 import getUserInfo from './getUserInfo';
@@ -97,7 +99,12 @@ const ProfilePage = () => {
           <p>{userInfo.tweetsNum} Tweets</p>
         </ProfileHeaderDetails>
       </ProfileHeader>
-      <div style={{ marginTop: 50 }}>
+      <div
+        style={{
+          marginTop: 50,
+          maxWidth: 600,
+        }}
+      >
         <ProfileVisuals>
           <div
             style={{
@@ -133,6 +140,20 @@ const ProfilePage = () => {
               <p>Follwers</p>
             </ProfileFollowsContainer>
           </ProfileContentInfo>
+          <ProfileInteractionsContrainer>
+            <ProfileInteractionButton>
+              <p>Tweets</p>
+            </ProfileInteractionButton>
+            <ProfileInteractionButton>
+              <p>Replies</p>
+            </ProfileInteractionButton>
+            <ProfileInteractionButton>
+              <p>Media</p>
+            </ProfileInteractionButton>
+            <ProfileInteractionButton>
+              <p>Likes</p>
+            </ProfileInteractionButton>
+          </ProfileInteractionsContrainer>
         </ProfileVisuals>
         <ProfileTweetFeedContainer>
           <DispalyTweetFeed
