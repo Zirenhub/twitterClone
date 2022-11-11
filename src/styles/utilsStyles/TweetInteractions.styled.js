@@ -32,12 +32,34 @@ export const TweetInteractText = styled.p`
   font-weight: 700;
 `;
 
-export const InteractIcon = styled.svg`
+export const LikeIcon = styled.svg`
+  cursor: pointer;
+
+  height: 15px;
+  width: 15px;
+
+  background-color: ${(props) => (props.isLiked ? '#FF5C5C' : '#ffff')};
+  mask: ${({ src }) => `url(${src}) no-repeat center`};
+`;
+
+export const CommentIcon = styled.svg`
   cursor: pointer;
 
   height: 20px;
   width: 20px;
 
+  /* background-color: ${(props) => (props.isLiked ? '#FF5C5C' : '#ffff')}; */
+  background-color: #ffff;
+  mask: ${({ src }) => `url(${src}) no-repeat center`};
+`;
+
+export const RetweetIcon = styled.svg`
+  cursor: pointer;
+
+  height: 20px;
+  width: 20px;
+
+  /* background-color: ${(props) => (props.isLiked ? '#FF5C5C' : '#ffff')}; */
   background-color: #ffff;
   mask: ${({ src }) => `url(${src}) no-repeat center`};
 `;

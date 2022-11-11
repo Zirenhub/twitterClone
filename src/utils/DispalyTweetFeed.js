@@ -1,12 +1,6 @@
 import { UserAuth } from '../context/authContext';
-import TweetInteractions from './TweetInteractions';
 import DisplaySingleTweet from './DisplaySingleTweet';
-import deleteTweet from './deleteTweet';
-import { TweetContainer } from '../styles/utilsStyles/DisplayTweetFeed.styled';
-import {
-  DisplayFlex,
-  DisplayFlexColumn,
-} from '../styles/utilsStyles/Tweet.styled';
+import deleteTweet from '../components/TweetInteractions/deleteTweet';
 
 const DispalyTweetFeed = (props) => {
   const { initialTweets, setTweets } = props;
@@ -28,20 +22,12 @@ const DispalyTweetFeed = (props) => {
     <>
       {initialTweets.map((tweet) => {
         return (
-          <TweetContainer>
-            <DisplaySingleTweet
-              key={tweet.key}
-              tweetLink={tweet.key}
-              tweet={tweet}
-              handleDeleteTweet={() => handleDeleteTweet(tweet.key)}
-            ></DisplaySingleTweet>
-            <TweetInteractions
-              likes={tweet.numOfLikes}
-              retweets={tweet.numOfRetweets}
-              comments={tweet.numOfComments}
-            ></TweetInteractions>
-            {/* fix this */}
-          </TweetContainer>
+          <DisplaySingleTweet
+            key={tweet.key}
+            tweetLink={tweet.key}
+            tweet={tweet}
+            handleDeleteTweet={() => handleDeleteTweet(tweet.key)}
+          ></DisplaySingleTweet>
         );
       })}
     </>

@@ -17,7 +17,6 @@ export const ProfileMain = styled.div`
 
 export const ProfilePageResponsiveContainer = styled.div`
   flex-grow: 1;
-  min-width: 70%;
 
   @media (min-width: 500px) {
     border-left: 1px solid #2f3336;
@@ -34,6 +33,8 @@ export const ProfileHeader = styled.div`
   backdrop-filter: blur(5px);
   z-index: 20;
   color: #eff3f4;
+  max-width: 600px;
+  border-right: 1px solid #2f3336;
   top: 0;
   cursor: pointer;
 `;
@@ -45,7 +46,9 @@ export const ProfileHeaderDetails = styled.div`
   font-weight: 700;
 `;
 
-export const ProfileVisuals = styled.div``;
+export const ProfileVisuals = styled.div`
+  border-right: 1px solid #2f3336;
+`;
 
 export const ProfileBackground = styled.div`
   background-image: url(${background});
@@ -97,4 +100,23 @@ export const ProfileTweetFeedContainer = styled.div`
   flex-direction: column;
   overflow-y: auto;
   flex-grow: 1;
+`;
+
+export const ProfileInteractionsContrainer = styled.div`
+  display: flex;
+  border-bottom: 1px solid #2f3336;
+`;
+
+export const ProfileInteractionButton = styled.div`
+  cursor: pointer;
+  color: #71767b;
+  font-weight: 700;
+  text-align: center;
+  flex-grow: 1;
+  padding: 10px 0px;
+  transition: ease-in-out 100ms;
+
+  &:hover {
+    background-color: rgba(231, 233, 234, 0.1);
+  }
 `;

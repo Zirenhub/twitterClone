@@ -12,6 +12,8 @@ export const HomepageHeader = styled.div`
   align-items: center;
   color: #e7e9ea;
   padding: 15px;
+  max-width: 600px;
+  border-right: 1px solid #2f3336;
   justify-content: space-between;
 `;
 
@@ -19,7 +21,6 @@ export const HomepageTweetFeedContainer = styled.div`
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  min-width: 70%;
 
   @media (min-width: 500px) {
     border-left: 1px solid #2f3336;

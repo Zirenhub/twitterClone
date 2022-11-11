@@ -3,8 +3,6 @@ import styled from 'styled-components';
 export const LoadingStyled = styled.div`
   display: flex;
   flex-grow: 1;
-  flex-shrink: 0;
-  min-width: 70%;
   border-left: 1px solid #2f3336;
   justify-content: center;
   align-items: center;

@@ -9,7 +9,6 @@ export const FooterContainer = styled.div`
   padding-bottom: 8px;
   height: 65px;
   background-color: #000000;
-  /* border-top: 1px solid gray; */
   position: sticky;
   bottom: 0%;
 
@@ -21,10 +20,10 @@ export const FooterContainer = styled.div`
     height: 100%;
   }
 
-  @media (min-width: 840px) {
-    max-width: 660px;
-    flex-grow: 1;
+  @media (min-width: 740px) {
     height: 100%;
+    flex: 1;
+    max-width: 585px;
   }
 `;
 
@@ -37,17 +36,15 @@ export const FooterButtonContainer = styled.div`
   width: 46px;
   transition: ease-in-out 150ms;
 
-  @media (min-width: 840px) {
+  @media (min-width: 740px) {
     &::after {
       content: '${(props) => props.text}';
       color: #eff3f4;
       font-weight: 700;
       margin-left: 10px;
-      /* margin-right: auto; */
     }
     width: 200px;
     border-radius: 10px;
-    /* padding-left: 10px; */
     justify-content: flex-start;
     &:hover {
       background-color: #16181c;
@@ -86,7 +83,7 @@ export const FooterWriteTweet = styled.div`
     height: 46px;
   }
 
-  @media (min-width: 840px) {
+  @media (min-width: 740px) {
     border-radius: 5px;
     width: 200px;
     margin-bottom: 10px;
@@ -134,7 +131,7 @@ export const FooterProfile = styled.div`
     margin-top: auto;
   }
 
-  @media (min-width: 840px) {
+  @media (min-width: 740px) {
     display: none;
   }
 `;
@@ -142,7 +139,7 @@ export const FooterProfile = styled.div`
 export const FooterProfileExtended = styled.div`
   display: none;
 
-  @media (min-width: 840px) {
+  @media (min-width: 740px) {
     cursor: pointer;
     display: flex;
     justify-content: center;
