@@ -18,12 +18,14 @@ import {
 import { CloseButton } from '../../styles/WelcomePageStyles/SignUp.styled';
 import getUserInfo from './getUserInfo';
 import getUserTweets from './getUserTweets';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import WithFooter from '../HOC/WithFooter';
 import { LoadingStyled } from '../../styles/WelcomePageStyles/Loading.styled';
 import DispalyTweetFeed from '../../utils/DispalyTweetFeed';
 import getUserID from '../../utils/getUserID';
-import sortTweetByDate from '../../utils/sortTweetsByDate';
+import getUserReplies from './getUserReplies';
+import getUserLikes from './getUserLikes';
+import sortTweetsByDate from '../../utils/sortTweetsByDate';
 
 const ProfilePage = () => {
   // if /sdaiad does not match db return error
@@ -36,6 +38,7 @@ const ProfilePage = () => {
   const { user } = UserAuth();
   const navigate = useNavigate();
   const { username } = useParams();
+  const location = useLocation();
 
   const fetchUserInfo = useCallback(async () => {
     console.log('profilepage fetching user info');
@@ -52,23 +55,32 @@ const ProfilePage = () => {
     }
   }, [username]);
 
-  const fetchUserTweets = useCallback(async (userInfo) => {
+  const fetchUserTweets = useCallback(async () => {
     console.log('profilepage fetching user tweets');
     try {
-      const res = await getUserTweets(userInfo.ID);
+      const res = await getUserTweets(user.uid);
       if (res) {
-        const sortedTweets = sortTweetByDate(res);
-        const insertUserInfo = sortedTweets.map((tweet) => ({
-          ...tweet,
-          user: userInfo,
-        }));
-        setTweets(insertUserInfo);
+        setTweets(sortTweetsByDate(res));
         setLoading(false);
       }
     } catch (error) {
       console.log(error);
     }
-  }, []);
+  }, [user.uid]);
+
+  const handleSwitchToReplies = async () => {
+    const userReplies = await getUserReplies(user.uid);
+    if (userReplies) {
+      setTweets(userReplies);
+    }
+  };
+
+  const handleSwitchToLikes = async () => {
+    const userLikes = await getUserLikes(user.uid);
+    if (userLikes) {
+      setTweets(userLikes);
+    }
+  };
 
   const handleCloseProfile = () => {
     navigate('/homepage');
@@ -79,12 +91,22 @@ const ProfilePage = () => {
   };
 
   useEffect(() => {
-    fetchUserInfo();
-  }, [fetchUserInfo]);
+    const sentTweet = JSON.parse(sessionStorage.getItem('tweetSent'));
+    if (sentTweet) {
+      sentTweet.date = new Date(sentTweet.date);
+      setTweets((currentTweets) => [sentTweet, ...currentTweets]);
+      sessionStorage.removeItem('tweetSent');
+    }
+  }, [location]);
 
   useEffect(() => {
-    if (userInfo !== null) fetchUserTweets(userInfo);
-  }, [fetchUserTweets, userInfo]);
+    const initialize = async () => {
+      await fetchUserInfo();
+      await fetchUserTweets();
+    };
+
+    initialize();
+  }, [fetchUserInfo, fetchUserTweets]);
 
   if (loading) {
     return <LoadingStyled>Loading</LoadingStyled>;
@@ -141,16 +163,16 @@ const ProfilePage = () => {
             </ProfileFollowsContainer>
           </ProfileContentInfo>
           <ProfileInteractionsContrainer>
-            <ProfileInteractionButton>
+            <ProfileInteractionButton onClick={fetchUserTweets}>
               <p>Tweets</p>
             </ProfileInteractionButton>
-            <ProfileInteractionButton>
+            <ProfileInteractionButton onClick={handleSwitchToReplies}>
               <p>Replies</p>
             </ProfileInteractionButton>
             <ProfileInteractionButton>
               <p>Media</p>
             </ProfileInteractionButton>
-            <ProfileInteractionButton>
+            <ProfileInteractionButton onClick={handleSwitchToLikes}>
               <p>Likes</p>
             </ProfileInteractionButton>
           </ProfileInteractionsContrainer>
