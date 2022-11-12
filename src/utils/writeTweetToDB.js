@@ -15,7 +15,7 @@ const writeTweetToDB = async (userID, tweet) => {
   const postsRef = doc(db, 'posts', key);
   const userInfoRef = doc(db, 'users', userID);
 
-  const userInfo = await getUserInfo(userID);
+  const { userName, numFollowers, numFollowing } = await getUserInfo(userID);
 
   const tweetData = {
     key: key,
@@ -26,7 +26,9 @@ const writeTweetToDB = async (userID, tweet) => {
     numOfRetweets: 0,
     replyingTo: null,
     userID: userID,
-    user: userInfo,
+    userName: userName,
+    numFollowers: numFollowers,
+    numFollowing: numFollowing,
   };
 
   try {

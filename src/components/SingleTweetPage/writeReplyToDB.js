@@ -14,10 +14,10 @@ const writeReplyToDB = async (reply, replyOwnerID, tweetKey) => {
   const replyUserRef = doc(db, 'users', replyOwnerID);
   const postsRef = doc(db, 'posts', key);
   const tweetRef = doc(db, 'posts', tweetKey);
-  // const likesRef = collection(tweetOwnerRef, 'likes');
-  // const retweetsRef = collection(tweetOwnerRef, 'retweets');
 
-  const userInfo = await getUserInfo(replyOwnerID);
+  const { userName, numFollowers, numFollowing } = await getUserInfo(
+    replyOwnerID
+  );
 
   const replyData = {
     key: key,
@@ -26,7 +26,9 @@ const writeReplyToDB = async (reply, replyOwnerID, tweetKey) => {
     numOfLikes: 0,
     numOfComments: 0,
     numOfRetweets: 0,
-    user: userInfo,
+    userName: userName,
+    numFollowers: numFollowers,
+    numFollowing: numFollowing,
     userID: replyOwnerID,
     replyingTo: tweetKey,
   };

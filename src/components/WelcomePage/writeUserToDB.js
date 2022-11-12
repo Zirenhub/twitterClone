@@ -10,27 +10,13 @@ const writeUserToDB = async (userID, displayName) => {
   const usernameRef = doc(db, 'usernames', displayName);
 
   try {
-    // await setDoc(doc(db, 'users', userID), {
-    //   userName: displayName,
-    //   key: key,
-    //   firestoreDate: serverTimestamp(),
-    //   tweetsNum: 0,
-    //   followers: {},
-    //   following: {},
-    // });
-    // await setDoc(doc(db, 'usernames', displayName), {
-    //   exists: true,
-    // });
-
     batch.set(userRef, {
       userName: displayName,
       key: key,
       firestoreDate: serverTimestamp(),
       tweetsNum: 0,
-      followers: {},
-      following: {},
-      replies: {},
-      likes: {},
+      numFollowers: {},
+      numFollowing: {},
     });
     batch.set(usernameRef, {
       uid: userID,

@@ -11,8 +11,8 @@ const getUserInfo = async (userID) => {
     if (docSnap.exists()) {
       returnData.joinDate = docSnap.data().firestoreDate.toDate();
       returnData.tweetsNum = docSnap.data().tweetsNum;
-      returnData.following = docSnap.data().following;
-      returnData.followers = docSnap.data().followers;
+      returnData.numFollowing = docSnap.data().numFollowing;
+      returnData.numFollowers = docSnap.data().numFollowers;
       returnData.userName = docSnap.data().userName;
     }
     return returnData;
