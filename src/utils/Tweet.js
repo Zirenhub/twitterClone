@@ -14,13 +14,11 @@ import { useEffect, useState } from 'react';
 import { UserAuth } from '../context/authContext';
 import writeTweetToDB from './writeTweetToDB';
 import { useNavigate } from 'react-router-dom';
-import { LoadingStyled } from '../styles/WelcomePageStyles/Loading.styled';
 
 const Tweet = () => {
   const [text, setText] = useState('');
   const [canTweet, setCanTweet] = useState(false);
   const [tweetTooLong, setTweetTooLong] = useState(false);
-  const [loading, setLoading] = useState(false);
 
   const { user } = UserAuth();
   const navigate = useNavigate();
@@ -32,11 +30,14 @@ const Tweet = () => {
   const handleSubmitTweet = async () => {
     if (canTweet && !tweetTooLong) {
       try {
-        await writeTweetToDB(user.uid, text);
+        const tweet = await writeTweetToDB(user.uid, text);
+        if (tweet) {
+          sessionStorage.setItem('tweetSent', JSON.stringify(tweet));
+        }
+        handleCloseTweet();
       } catch (error) {
         console.log(error);
       }
-      handleCloseTweet();
     }
   };
 
@@ -54,10 +55,6 @@ const Tweet = () => {
       setTweetTooLong(false);
     }
   }, [text]);
-
-  if (loading) {
-    return <LoadingStyled>Loading</LoadingStyled>;
-  }
 
   return (
     <>

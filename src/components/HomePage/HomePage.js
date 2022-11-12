@@ -7,12 +7,12 @@ import {
 import { UserAuth } from '../../context/authContext';
 import { LoadingStyled } from '../../styles/WelcomePageStyles/Loading.styled';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import signOut from '../../assets/images/sign-out-svg.svg';
 import getAllTweets from './getAllTweets';
 import WithFooter from '../HOC/WithFooter';
 import DispalyTweetFeed from '../../utils/DispalyTweetFeed';
-import sortTweetByDate from '../../utils/sortTweetsByDate';
+import sortTweetsByDate from '../../utils/sortTweetsByDate';
 
 const HomePage = () => {
   const [loading, setLoading] = useState(true);
@@ -20,6 +20,7 @@ const HomePage = () => {
 
   const { logout, user } = UserAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogout = async () => {
     try {
@@ -43,14 +44,25 @@ const HomePage = () => {
     try {
       const res = await getAllTweets();
       if (res) {
-        const sortedTweets = sortTweetByDate(res);
-        setAllTweets(sortedTweets);
+        setAllTweets(sortTweetsByDate(res));
       }
     } catch (error) {
       console.log(error);
     }
     setLoading(false);
   };
+
+  useEffect(() => {
+    // if we are coming back from /tweet and if the client sent a tweet,
+    // then add that sent tweet to the state
+    // doing this to save a fetch 😀
+    const sentTweet = JSON.parse(sessionStorage.getItem('tweetSent'));
+    if (sentTweet) {
+      sentTweet.date = new Date(sentTweet.date);
+      setAllTweets((currentTweets) => [sentTweet, ...currentTweets]);
+      sessionStorage.removeItem('tweetSent');
+    }
+  }, [location]);
 
   useEffect(() => {
     fetchAllTweets();
