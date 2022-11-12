@@ -4,15 +4,18 @@ import deleteTweet from '../components/TweetInteractions/deleteTweet';
 
 const DispalyTweetFeed = (props) => {
   const { initialTweets, setTweets } = props;
+
   const { user } = UserAuth();
 
   const handleDeleteTweet = async (key) => {
     try {
-      await deleteTweet(user.uid, key);
-      const updatedTweets = initialTweets.filter((tweet) => {
-        return tweet.key !== key;
-      });
-      setTweets(updatedTweets);
+      const promiseDelete = await deleteTweet(user.uid, key);
+      if (promiseDelete) {
+        const updatedTweets = initialTweets.filter((tweet) => {
+          return tweet.key !== key;
+        });
+        setTweets(updatedTweets);
+      }
     } catch (error) {
       console.log(error);
     }

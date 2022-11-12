@@ -10,6 +10,7 @@ const deleteTweet = async (userID, tweet) => {
     await updateDoc(userInfoRef, {
       tweetsNum: increment(-1),
     });
+    return true;
   } catch (error) {
     console.log(error);
   }
