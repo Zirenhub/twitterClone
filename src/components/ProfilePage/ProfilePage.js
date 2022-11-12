@@ -32,6 +32,7 @@ const ProfilePage = () => {
   const [loading, setLoading] = useState(true);
   const [userInfo, setUserInfo] = useState(null);
   const [tweets, setTweets] = useState(null);
+  const [userID, setUserID] = useState(null);
   // const [followers, setFollowers] = useState(null);
   // const [following, setFollowing] = useState(null);
 
@@ -44,6 +45,7 @@ const ProfilePage = () => {
     console.log('profilepage fetching user info');
     try {
       const userID = await getUserID(username);
+      setUserID(userID);
       const res = await getUserInfo(userID);
       if (res) {
         res.joinDate = res.joinDate.toLocaleDateString();
@@ -58,7 +60,7 @@ const ProfilePage = () => {
   const fetchUserTweets = useCallback(async () => {
     console.log('profilepage fetching user tweets');
     try {
-      const res = await getUserTweets(user.uid);
+      const res = await getUserTweets(userID);
       if (res) {
         setTweets(sortTweetsByDate(res));
         setLoading(false);
@@ -66,17 +68,17 @@ const ProfilePage = () => {
     } catch (error) {
       console.log(error);
     }
-  }, [user.uid]);
+  }, [userID]);
 
   const handleSwitchToReplies = async () => {
-    const userReplies = await getUserReplies(user.uid);
+    const userReplies = await getUserReplies(userID);
     if (userReplies) {
       setTweets(userReplies);
     }
   };
 
   const handleSwitchToLikes = async () => {
-    const userLikes = await getUserLikes(user.uid);
+    const userLikes = await getUserLikes(userID);
     if (userLikes) {
       setTweets(userLikes);
     }
@@ -136,9 +138,13 @@ const ProfilePage = () => {
             }}
           >
             <ProfileBackground></ProfileBackground>
-            {user.uid === username && (
+            {user.displayName === userInfo.userName ? (
               <ProfileEditContainer>
                 <ProfileEditButton>Edit Profile</ProfileEditButton>
+              </ProfileEditContainer>
+            ) : (
+              <ProfileEditContainer>
+                <ProfileEditButton>Follow</ProfileEditButton>
               </ProfileEditContainer>
             )}
             <HomepageTestPP
