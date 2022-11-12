@@ -4,6 +4,7 @@ import {
   serverTimestamp,
   updateDoc,
   setDoc,
+  Timestamp,
 } from 'firebase/firestore';
 import { v4 as uuidv4 } from 'uuid';
 import getUserInfo from '../components/ProfilePage/getUserInfo';
@@ -16,21 +17,25 @@ const writeTweetToDB = async (userID, tweet) => {
 
   const userInfo = await getUserInfo(userID);
 
+  const tweetData = {
+    key: key,
+    tweet: tweet,
+    firestoreDate: Timestamp.fromDate(new Date()),
+    numOfLikes: 0,
+    numOfComments: 0,
+    numOfRetweets: 0,
+    replyingTo: null,
+    userID: userID,
+    user: userInfo,
+  };
+
   try {
-    await setDoc(postsRef, {
-      key: key,
-      tweet: tweet,
-      firestoreDate: serverTimestamp(),
-      numOfLikes: 0,
-      numOfComments: 0,
-      numOfRetweets: 0,
-      replyingTo: null,
-      userID: userID,
-      user: userInfo,
-    });
+    await setDoc(postsRef, tweetData);
     await updateDoc(userInfoRef, {
       tweetsNum: increment(1),
     });
+    tweetData.date = tweetData.firestoreDate.toDate();
+    return tweetData;
   } catch (error) {
     console.log(error);
   }
