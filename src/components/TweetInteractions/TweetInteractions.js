@@ -41,7 +41,7 @@ const TweetInteractions = (props) => {
       }
     }
   };
-
+  //disable like button until like operation is finsihed
   useEffect(() => {
     const checkIsTweetLiked = async () => {
       const promise = await isTweetIsLiked(tweet.key, user.uid);
