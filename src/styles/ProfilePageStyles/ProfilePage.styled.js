@@ -93,6 +93,13 @@ export const ProfileContentInfo = styled.div`
 export const ProfileFollowsContainer = styled.div`
   display: flex;
   gap: 15px;
+
+  & > p {
+    cursor: pointer;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 `;
 
 export const ProfileTweetFeedContainer = styled.div`
@@ -119,4 +126,15 @@ export const ProfileInteractionButton = styled.div`
   &:hover {
     background-color: rgba(231, 233, 234, 0.1);
   }
+`;
+
+export const ProfileWhiteSpan = styled.span`
+  color: #eff3f4;
+  font-weight: 700;
+`;
+
+export const FollowersContainer = styled.div`
+  position: relative;
+  background-color: #0000;
+  z-index: 245;
 `;
