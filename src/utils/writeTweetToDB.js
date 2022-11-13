@@ -5,6 +5,7 @@ import {
   updateDoc,
   setDoc,
   Timestamp,
+  writeBatch,
 } from 'firebase/firestore';
 import { v4 as uuidv4 } from 'uuid';
 import getUserInfo from '../components/ProfilePage/getUserInfo';
@@ -26,16 +27,22 @@ const writeTweetToDB = async (userID, tweet) => {
     numOfRetweets: 0,
     replyingTo: null,
     userID: userID,
-    userName: userName,
-    numFollowers: numFollowers,
-    numFollowing: numFollowing,
+    user: {
+      userName: userName,
+      numFollowers: numFollowers,
+      numFollowing: numFollowing,
+    },
   };
 
+  const batch = writeBatch(db);
+
   try {
-    await setDoc(postsRef, tweetData);
-    await updateDoc(userInfoRef, {
+    batch.set(postsRef, tweetData);
+    batch.update(userInfoRef, {
       tweetsNum: increment(1),
     });
+    await batch.commit();
+
     tweetData.date = tweetData.firestoreDate.toDate();
     return tweetData;
   } catch (error) {

@@ -1,15 +1,19 @@
-import { doc, updateDoc, increment, deleteDoc } from 'firebase/firestore';
+import { doc, increment, writeBatch } from 'firebase/firestore';
 import { db } from '../../Firebase';
 
 const unlikeTweet = async (tweet, userID) => {
   const tweetRef = doc(db, 'posts', tweet);
   const likesRef = doc(tweetRef, 'likes', userID);
 
+  const batch = writeBatch(db);
+
   try {
-    await updateDoc(tweetRef, {
+    batch.delete(likesRef);
+    batch.update(tweetRef, {
       numOfLikes: increment(-1),
     });
-    await deleteDoc(likesRef);
+    await batch.commit();
+
     return true;
   } catch (error) {
     console.log(error);

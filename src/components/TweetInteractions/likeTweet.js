@@ -11,14 +11,14 @@ const likeTweet = async (tweet, userID) => {
   const batch = writeBatch(db);
 
   try {
-    batch.update(tweetRef, {
-      numOfLikes: increment(1),
-    });
     batch.set(likesRef, {
       userName: userName,
       numFollowers: numFollowers,
       numFollowing: numFollowing,
       userID: userID,
+    });
+    batch.update(tweetRef, {
+      numOfLikes: increment(1),
     });
     await batch.commit();
 

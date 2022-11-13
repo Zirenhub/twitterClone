@@ -4,6 +4,7 @@ import {
   updateDoc,
   Timestamp,
   setDoc,
+  writeBatch,
 } from 'firebase/firestore';
 import { v4 as uuidv4 } from 'uuid';
 import { db } from '../../Firebase';
@@ -19,6 +20,8 @@ const writeReplyToDB = async (reply, replyOwnerID, tweetKey) => {
     replyOwnerID
   );
 
+  const batch = writeBatch(db);
+
   const replyData = {
     key: key,
     tweet: reply,
@@ -26,21 +29,25 @@ const writeReplyToDB = async (reply, replyOwnerID, tweetKey) => {
     numOfLikes: 0,
     numOfComments: 0,
     numOfRetweets: 0,
-    userName: userName,
-    numFollowers: numFollowers,
-    numFollowing: numFollowing,
-    userID: replyOwnerID,
     replyingTo: tweetKey,
+    userID: replyOwnerID,
+    user: {
+      userName: userName,
+      numFollowers: numFollowers,
+      numFollowing: numFollowing,
+    },
   };
 
   try {
-    await setDoc(postsRef, replyData);
-    await updateDoc(replyUserRef, {
+    batch.set(postsRef, replyData);
+    batch.update(replyUserRef, {
       tweetsNum: increment(1),
     });
-    await updateDoc(tweetRef, {
+    batch.update(tweetRef, {
       numOfComments: increment(1),
     });
+    await batch.commit();
+
     replyData.date = replyData.firestoreDate.toDate();
     return replyData;
   } catch (error) {
