@@ -19,6 +19,7 @@ const TweetInteractions = (props) => {
   const { tweet } = props;
   const [likes, setLikes] = useState(null);
   const [isLiked, setIsLiked] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const { user } = UserAuth();
 
@@ -27,6 +28,7 @@ const TweetInteractions = (props) => {
   const handleRetweet = () => {};
 
   const handleLike = async () => {
+    setLoading(true);
     if (!isLiked) {
       const like = await likeTweet(tweet.key, user.uid);
       if (like) {
@@ -40,8 +42,11 @@ const TweetInteractions = (props) => {
         setIsLiked(false);
       }
     }
+    // playing with loading to prevent spam clicking
+    // and breaking likes
+    setLoading(false);
   };
-  //disable like button until like operation is finsihed
+
   useEffect(() => {
     const checkIsTweetLiked = async () => {
       const promise = await isTweetIsLiked(tweet.key, user.uid);
@@ -49,6 +54,7 @@ const TweetInteractions = (props) => {
     };
     checkIsTweetLiked();
     setLikes(tweet.numOfLikes);
+    setLoading(false);
   }, [tweet, user]);
 
   return (
@@ -61,10 +67,12 @@ const TweetInteractions = (props) => {
         <RetweetIcon src={RetweetTweetIcon} />
         <TweetInteractText>{tweet.numOfRetweets}</TweetInteractText>
       </TweetIntButtonContainer>
-      <TweetIntButtonContainer hoverColor="#FF5C5C" onClick={handleLike}>
-        <LikeIcon src={LikeTweetIcon} isLiked={isLiked} />
-        <TweetInteractText>{likes}</TweetInteractText>
-      </TweetIntButtonContainer>
+      {!loading && (
+        <TweetIntButtonContainer hoverColor="#FF5C5C" onClick={handleLike}>
+          <LikeIcon src={LikeTweetIcon} isLiked={isLiked} />
+          <TweetInteractText>{likes}</TweetInteractText>
+        </TweetIntButtonContainer>
+      )}
     </TweetInteractContainer>
   );
 };
