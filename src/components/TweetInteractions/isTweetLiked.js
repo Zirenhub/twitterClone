@@ -1,7 +1,7 @@
 import { doc, getDoc } from 'firebase/firestore';
-import { db } from '../Firebase';
+import { db } from '../../Firebase';
 
-const isTweetIsLiked = async (tweet, userID) => {
+const isTweetLiked = async (tweet, userID) => {
   const tweetRef = doc(db, 'posts', tweet);
   const likesRef = doc(tweetRef, 'likes', userID);
 
@@ -14,4 +14,4 @@ const isTweetIsLiked = async (tweet, userID) => {
   return false;
 };
 
-export default isTweetIsLiked;
+export default isTweetLiked;

@@ -21,7 +21,8 @@ const likeTweet = async (tweet, userID) => {
       numOfLikes: increment(1),
     });
     await batch.commit();
-
+    // firestore cloud functions are a possibility however
+    // i don't have enough knowledge as of now ...
     return true;
   } catch (error) {
     console.log(error);

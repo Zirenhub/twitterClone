@@ -15,8 +15,8 @@ const writeUserToDB = async (userID, displayName) => {
       key: key,
       firestoreDate: serverTimestamp(),
       tweetsNum: 0,
-      numFollowers: {},
-      numFollowing: {},
+      numFollowers: 0,
+      numFollowing: 0,
     });
     batch.set(usernameRef, {
       uid: userID,

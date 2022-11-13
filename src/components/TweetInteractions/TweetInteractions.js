@@ -12,7 +12,7 @@ import CommentTweetIcon from '../../assets/images/comment-svgrepo-com.svg';
 import { useEffect, useState } from 'react';
 import likeTweet from './likeTweet';
 import { UserAuth } from '../../context/authContext';
-import isTweetIsLiked from '../../utils/isTweetIsLiked';
+import isTweetLiked from './isTweetLiked';
 import unlikeTweet from './unlikeTweet';
 
 const TweetInteractions = (props) => {
@@ -42,16 +42,16 @@ const TweetInteractions = (props) => {
         setIsLiked(false);
       }
     }
-    // playing with loading to prevent spam clicking
-    // and breaking likes
+
     setLoading(false);
   };
 
   useEffect(() => {
     const checkIsTweetLiked = async () => {
-      const promise = await isTweetIsLiked(tweet.key, user.uid);
+      const promise = await isTweetLiked(tweet.key, user.uid);
       setIsLiked(promise);
     };
+
     checkIsTweetLiked();
     setLikes(tweet.numOfLikes);
     setLoading(false);
