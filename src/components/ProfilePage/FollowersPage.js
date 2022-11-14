@@ -16,12 +16,13 @@ import {
 import { DisplayFlex } from '../../styles/utilsStyles/Tweet.styled';
 import { CloseButton } from '../../styles/WelcomePageStyles/SignUp.styled';
 import getProfileFollowers from './getProfileFollowers';
+import getProfileFollowing from './getProfileFollowing';
 
 const FollowersPage = (props) => {
   const { profileInfo, activePage, setActivePage } = props;
 
   const [currentPage, setCurrentPage] = useState(null);
-  const [followers, setFollowers] = useState(null);
+  const [profiles, setProfiles] = useState(null);
 
   const { user } = UserAuth();
 
@@ -37,15 +38,15 @@ const FollowersPage = (props) => {
     const getFollowers = async () => {
       const promiseFollowers = await getProfileFollowers(profileInfo.ID);
       if (promiseFollowers) {
-        setFollowers(promiseFollowers);
+        setProfiles(promiseFollowers);
       }
     };
 
     const getFollowing = async () => {
-      // const promiseFollowers = await getProfileFollowers(profileInfo.ID);
-      // if (promiseFollowers) {
-      //   setFollowers(promiseFollowers);
-      // }
+      const promiseFollowing = await getProfileFollowing(profileInfo.ID);
+      if (promiseFollowing) {
+        setProfiles(promiseFollowing);
+      }
     };
 
     if (currentPage === 'followers') {
@@ -85,16 +86,16 @@ const FollowersPage = (props) => {
             </FollowingButton>
           </FollowersPageButtonContainer>
         </ProfileFollowersPageHeader>
-        {followers &&
-          followers.map((follower) => {
+        {profiles &&
+          profiles.map((profile) => {
             return (
-              <FollowersProfileContainer key={follower.userName}>
+              <FollowersProfileContainer key={profile.id}>
                 <HomepageTestPP></HomepageTestPP>
-                {follower.userName}
-                {follower.id !== user.uid && (
+                {profile.userName}
+                {profile.id !== user.uid && (
                   <ProfileEditButton
                     style={{ marginLeft: 'auto' }}
-                    onClick={() => handleFollow(follower)}
+                    onClick={() => handleFollow(profile)}
                   >
                     work in progress
                   </ProfileEditButton>
