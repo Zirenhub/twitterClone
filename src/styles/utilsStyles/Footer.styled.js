@@ -46,6 +46,8 @@ export const FooterButtonContainer = styled.div`
     width: 200px;
     border-radius: 10px;
     justify-content: flex-start;
+    padding: 0px 15px;
+
     &:hover {
       background-color: #16181c;
     }

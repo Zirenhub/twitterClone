@@ -138,7 +138,10 @@ export const ProfileModalBackground = styled.div`
   height: 100%;
   width: 100%;
   z-index: 200;
-  background-color: #000000;
+
+  @media (min-width: 600px) {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
 `;
 
 export const ProfileFollowersPageHeader = styled.div`
@@ -160,6 +163,19 @@ export const ProfileFollowersPageHeader = styled.div`
 export const FollowersContainer = styled.div`
   display: flex;
   flex-direction: column;
+  height: 100%;
+  width: 100%;
+  background-color: #000000;
+
+  @media (min-width: 600px) {
+    height: 500px;
+    width: 600px;
+
+    transform: translate(100%, 50%);
+    border-radius: 15px;
+    overflow-y: auto;
+    max-width: 600px;
+  }
 `;
 
 export const FollowersPageButtonContainer = styled.div`
