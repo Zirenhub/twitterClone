@@ -163,15 +163,18 @@ export const ProfileFollowersPageHeader = styled.div`
 export const FollowersContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: 99.9%;
   width: 100%;
   background-color: #000000;
 
   @media (min-width: 600px) {
     height: 500px;
     width: 600px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
 
-    transform: translate(100%, 50%);
+    transform: translate(-50%, -50%);
     border-radius: 15px;
     overflow-y: auto;
     max-width: 600px;
@@ -220,4 +223,11 @@ export const FollowersProfileContainer = styled.div`
   font-weight: 700;
   padding: 10px 15px;
   gap: 20px;
+  align-items: center;
+  border-bottom: 1px solid #2f3336;
+
+  &:hover {
+    background-color: #2f3336;
+    cursor: pointer;
+  }
 `;

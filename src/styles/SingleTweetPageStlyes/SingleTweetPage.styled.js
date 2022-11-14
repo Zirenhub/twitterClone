@@ -7,6 +7,7 @@ export const BackArrow = styled.div`
   background-repeat: no-repeat;
   background-size: contain;
 
+  cursor: pointer;
   width: 32px;
   height: 32px;
   background-color: #ffff;
