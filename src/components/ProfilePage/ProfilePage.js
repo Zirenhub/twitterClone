@@ -19,7 +19,7 @@ import {
 import { CloseButton } from '../../styles/WelcomePageStyles/SignUp.styled';
 import getProfileInfo from './getProfileInfo';
 import getProfileTweets from './getProfileTweets';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import WithFooter from '../HOC/WithFooter';
 import { LoadingStyled } from '../../styles/WelcomePageStyles/Loading.styled';
 import DispalyTweetFeed from '../../utils/DispalyTweetFeed';
@@ -42,7 +42,7 @@ const ProfilePage = () => {
   const { user } = UserAuth();
   const navigate = useNavigate();
   const { username } = useParams();
-  const location = useLocation();
+  // const location = useLocation();
   const followRef = useRef();
 
   const fetchUserInfo = useCallback(async () => {
@@ -122,19 +122,19 @@ const ProfilePage = () => {
           }));
         }
       }
+      followRef.current.disabled = false;
     };
     updateFollowStatus();
-    followRef.current.disabled = false;
   };
 
-  useEffect(() => {
-    const sentTweet = JSON.parse(sessionStorage.getItem('tweetSent'));
-    if (sentTweet) {
-      sentTweet.date = new Date(sentTweet.date);
-      setTweets((currentTweets) => [sentTweet, ...currentTweets]);
-      sessionStorage.removeItem('tweetSent');
-    }
-  }, [location]);
+  // useEffect(() => {
+  //   const sentTweet = JSON.parse(sessionStorage.getItem('tweetSent'));
+  //   if (sentTweet) {
+  //     sentTweet.date = new Date(sentTweet.date);
+  //     setTweets((currentTweets) => [sentTweet, ...currentTweets]);
+  //     sessionStorage.removeItem('tweetSent');
+  //   }
+  // }, [location]);
 
   useEffect(() => {
     const initialize = async () => {
