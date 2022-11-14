@@ -1,14 +1,7 @@
-import {
-  doc,
-  increment,
-  updateDoc,
-  Timestamp,
-  setDoc,
-  writeBatch,
-} from 'firebase/firestore';
+import { doc, increment, Timestamp, writeBatch } from 'firebase/firestore';
 import { v4 as uuidv4 } from 'uuid';
 import { db } from '../../Firebase';
-import getUserInfo from '../ProfilePage/getUserInfo';
+import getProfileInfo from '../ProfilePage/getProfileInfo';
 
 const writeReplyToDB = async (reply, replyOwnerID, tweetKey) => {
   const key = uuidv4();
@@ -16,7 +9,7 @@ const writeReplyToDB = async (reply, replyOwnerID, tweetKey) => {
   const postsRef = doc(db, 'posts', key);
   const tweetRef = doc(db, 'posts', tweetKey);
 
-  const { userName, numFollowers, numFollowing } = await getUserInfo(
+  const { userName, numFollowers, numFollowing } = await getProfileInfo(
     replyOwnerID
   );
 

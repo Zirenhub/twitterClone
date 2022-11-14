@@ -1,5 +1,5 @@
 import { doc, increment, writeBatch } from 'firebase/firestore';
-import getUserInfo from '../ProfilePage/getUserInfo';
+import getUserInfo from '../ProfilePage/getProfileInfo';
 import { db } from '../../Firebase';
 
 const likeTweet = async (tweet, userID) => {

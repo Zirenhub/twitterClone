@@ -21,8 +21,9 @@ const writeUserToDB = async (userID, displayName) => {
     batch.set(usernameRef, {
       uid: userID,
     });
-
     await batch.commit();
+
+    return true;
   } catch (error) {
     console.log(error);
   }

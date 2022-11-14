@@ -1,17 +1,17 @@
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from '../../Firebase';
 
-const getUserReplies = async (userID) => {
-  if (userID) {
+const getProfileTweets = async (profileID) => {
+  if (profileID) {
     const returnData = [];
-    const repliesQuery = query(
+    const postsQuery = query(
       collection(db, 'posts'),
-      where('userID', '==', userID),
-      where('replyingTo', '!=', null)
+      where('userID', '==', profileID),
+      where('replyingTo', '==', null)
     );
-    const repliesSnap = await getDocs(repliesQuery);
+    const postsSnap = await getDocs(postsQuery);
 
-    repliesSnap.forEach((doc) => {
+    postsSnap.forEach((doc) => {
       const rawData = doc.data();
       rawData.date = rawData.firestoreDate.toDate();
       returnData.push(rawData);
@@ -21,4 +21,4 @@ const getUserReplies = async (userID) => {
   }
 };
 
-export default getUserReplies;
+export default getProfileTweets;

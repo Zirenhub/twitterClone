@@ -17,19 +17,19 @@ import {
   ProfileWhiteSpan,
 } from '../../styles/ProfilePageStyles/ProfilePage.styled';
 import { CloseButton } from '../../styles/WelcomePageStyles/SignUp.styled';
-import getUserInfo from './getUserInfo';
-import getUserTweets from './getUserTweets';
+import getProfileInfo from './getProfileInfo';
+import getProfileTweets from './getProfileTweets';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import WithFooter from '../HOC/WithFooter';
 import { LoadingStyled } from '../../styles/WelcomePageStyles/Loading.styled';
 import DispalyTweetFeed from '../../utils/DispalyTweetFeed';
-import getUserID from '../../utils/getUserID';
-import getUserReplies from './getUserReplies';
-import getUserLikes from './getUserLikes';
+import getProfileID from '../../utils/getUserID';
+import getProfileReplies from './getProfileReplies';
+import getProfileLikes from './getProfileLikes';
 import sortTweetsByDate from '../../utils/sortTweetsByDate';
-import followUser from './followUser';
+import followProfile from './followProfile';
 import isProfileFollowed from './isProfileFollowed';
-import unfollowUser from './unfollowUser';
+import unfollowProfile from './unfollowProfile';
 import FollowersPage from './FollowersPage';
 
 const ProfilePage = () => {
@@ -37,8 +37,7 @@ const ProfilePage = () => {
   const [loading, setLoading] = useState(true);
   const [profileInfo, setProfileInfo] = useState(null);
   const [tweets, setTweets] = useState(null);
-  const [showFollowers, setShowFollowers] = useState(false);
-  const [showFollowing, setShowFollowing] = useState(false);
+  const [activeFollowPage, setActiveFollowPage] = useState(null);
 
   const { user } = UserAuth();
   const navigate = useNavigate();
@@ -49,8 +48,8 @@ const ProfilePage = () => {
   const fetchUserInfo = useCallback(async () => {
     console.log('profilepage fetching user info');
     try {
-      const userID = await getUserID(username);
-      const res = await getUserInfo(userID);
+      const userID = await getProfileID(username);
+      const res = await getProfileInfo(userID);
       if (res) {
         res.joinDate = res.joinDate.toLocaleDateString();
         res.ID = userID;
@@ -65,7 +64,7 @@ const ProfilePage = () => {
   const fetchUserTweets = useCallback(async (profileInfo) => {
     console.log('profilepage fetching user tweets');
     try {
-      const res = await getUserTweets(profileInfo.ID);
+      const res = await getProfileTweets(profileInfo.ID);
       if (res) {
         setTweets(sortTweetsByDate(res));
       }
@@ -79,14 +78,14 @@ const ProfilePage = () => {
   };
 
   const handleSwitchToReplies = async () => {
-    const userReplies = await getUserReplies(profileInfo.ID);
+    const userReplies = await getProfileReplies(profileInfo.ID);
     if (userReplies) {
       setTweets(userReplies);
     }
   };
 
   const handleSwitchToLikes = async () => {
-    const userLikes = await getUserLikes(profileInfo.ID);
+    const userLikes = await getProfileLikes(profileInfo.ID);
     if (userLikes) {
       setTweets(userLikes);
     }
@@ -105,7 +104,7 @@ const ProfilePage = () => {
     const updateFollowStatus = async () => {
       const isAlreadyFollowed = profileInfo.isFollowed;
       if (isAlreadyFollowed) {
-        const promiseUnfollow = await unfollowUser(profileInfo.ID, user.uid);
+        const promiseUnfollow = await unfollowProfile(profileInfo.ID, user.uid);
         if (promiseUnfollow) {
           setProfileInfo((prevState) => ({
             ...prevState,
@@ -114,7 +113,7 @@ const ProfilePage = () => {
           }));
         }
       } else {
-        const promiseFollow = await followUser(profileInfo.ID, user.uid);
+        const promiseFollow = await followProfile(profileInfo, user.uid);
         if (promiseFollow) {
           setProfileInfo((prevState) => ({
             ...prevState,
@@ -123,16 +122,10 @@ const ProfilePage = () => {
           }));
         }
       }
-      followRef.current.disabled = false;
     };
     updateFollowStatus();
+    followRef.current.disabled = false;
   };
-
-  const handleShowFollowers = () => {
-    setShowFollowers(true);
-  };
-
-  const handleShowFollowing = () => {};
 
   useEffect(() => {
     const sentTweet = JSON.parse(sessionStorage.getItem('tweetSent'));
@@ -147,16 +140,10 @@ const ProfilePage = () => {
     const initialize = async () => {
       const promiseProfileInfo = await fetchUserInfo();
       await fetchUserTweets(promiseProfileInfo);
-    };
 
-    initialize();
-  }, [fetchUserInfo, fetchUserTweets]);
-
-  useEffect(() => {
-    const checkFollowStatus = async () => {
-      if (profileInfo.ID !== user.uid) {
+      if (promiseProfileInfo.ID !== user.uid) {
         const promiseIsFollowed = await isProfileFollowed(
-          profileInfo.ID,
+          promiseProfileInfo.ID,
           user.uid
         );
         setProfileInfo((prevState) => ({
@@ -167,99 +154,111 @@ const ProfilePage = () => {
       setLoading(false);
     };
 
-    if (profileInfo && tweets) checkFollowStatus();
-  }, [profileInfo, user, tweets]);
+    initialize();
+  }, [fetchUserInfo, fetchUserTweets, user]);
 
   if (loading) {
     return <LoadingStyled>Loading</LoadingStyled>;
   }
 
   return (
-    <ProfilePageResponsiveContainer id="scroll">
-      <ProfileHeader onClick={handleScrollUp}>
-        <CloseButton onClick={handleCloseProfile}></CloseButton>
-        <ProfileHeaderDetails>
-          <p>{profileInfo.userName}</p>
-          <p>{profileInfo.tweetsNum} Tweets</p>
-        </ProfileHeaderDetails>
-      </ProfileHeader>
-      <div
-        style={{
-          marginTop: 50,
-          maxWidth: 600,
-        }}
-      >
-        <ProfileVisuals>
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              position: 'relative',
-            }}
-          >
-            <ProfileBackground></ProfileBackground>
-            {user.displayName === profileInfo.userName ? (
-              <ProfileEditContainer>
-                <ProfileEditButton>Edit Profile</ProfileEditButton>
-              </ProfileEditContainer>
-            ) : (
-              <ProfileEditContainer>
-                <ProfileEditButton ref={followRef} onClick={handleFollow}>
-                  {profileInfo.isFollowed ? 'UnFollow' : 'Follow'}
-                </ProfileEditButton>
-              </ProfileEditContainer>
-            )}
-            <HomepageTestPP
+    <>
+      <ProfilePageResponsiveContainer id="scroll">
+        <ProfileHeader onClick={handleScrollUp}>
+          <CloseButton onClick={handleCloseProfile}></CloseButton>
+          <ProfileHeaderDetails>
+            <p>{profileInfo.userName}</p>
+            <p>{profileInfo.tweetsNum} Tweets</p>
+          </ProfileHeaderDetails>
+        </ProfileHeader>
+        <div
+          style={{
+            marginTop: 50,
+            maxWidth: 600,
+          }}
+        >
+          <ProfileVisuals>
+            <div
               style={{
-                height: 90,
-                width: 90,
-                position: 'absolute',
-                left: 15,
-                bottom: 0,
-                backgroundColor: '#ffffff',
+                display: 'flex',
+                flexDirection: 'column',
+                position: 'relative',
               }}
-            ></HomepageTestPP>
-          </div>
-          <ProfileContentInfo>
-            <p style={{ fontWeight: 'bold', color: '#e7e9ea' }}>
-              {profileInfo.userName}
-            </p>
-            <p>Joined {profileInfo.joinDate}</p>
-            <ProfileFollowsContainer>
-              <p onClick={handleShowFollowing}>
-                <ProfileWhiteSpan>{profileInfo.numFollowing}</ProfileWhiteSpan>{' '}
-                Following
+            >
+              <ProfileBackground></ProfileBackground>
+              {user.displayName === profileInfo.userName ? (
+                <ProfileEditContainer>
+                  <ProfileEditButton>Edit Profile</ProfileEditButton>
+                </ProfileEditContainer>
+              ) : (
+                <ProfileEditContainer>
+                  <ProfileEditButton ref={followRef} onClick={handleFollow}>
+                    {profileInfo.isFollowed ? 'UnFollow' : 'Follow'}
+                  </ProfileEditButton>
+                </ProfileEditContainer>
+              )}
+              <HomepageTestPP
+                style={{
+                  height: 90,
+                  width: 90,
+                  position: 'absolute',
+                  left: 15,
+                  bottom: 0,
+                  backgroundColor: '#ffffff',
+                }}
+              ></HomepageTestPP>
+            </div>
+            <ProfileContentInfo>
+              <p style={{ fontWeight: 'bold', color: '#e7e9ea' }}>
+                {profileInfo.userName}
               </p>
-              <p onClick={handleShowFollowers}>
-                <ProfileWhiteSpan>{profileInfo.numFollowers}</ProfileWhiteSpan>{' '}
-                Followers
-              </p>
-            </ProfileFollowsContainer>
-          </ProfileContentInfo>
-          <ProfileInteractionsContrainer>
-            <ProfileInteractionButton onClick={handleSwitchToTweets}>
-              <p>Tweets</p>
-            </ProfileInteractionButton>
-            <ProfileInteractionButton onClick={handleSwitchToReplies}>
-              <p>Replies</p>
-            </ProfileInteractionButton>
-            <ProfileInteractionButton>
-              <p>Media</p>
-            </ProfileInteractionButton>
-            <ProfileInteractionButton onClick={handleSwitchToLikes}>
-              <p>Likes</p>
-            </ProfileInteractionButton>
-          </ProfileInteractionsContrainer>
-        </ProfileVisuals>
-        <ProfileTweetFeedContainer>
-          <DispalyTweetFeed
-            initialTweets={tweets}
-            setTweets={setTweets}
-          ></DispalyTweetFeed>
-        </ProfileTweetFeedContainer>
-      </div>
-      {showFollowers && <FollowersPage profileInfo={profileInfo} />}
-    </ProfilePageResponsiveContainer>
+              <p>Joined {profileInfo.joinDate}</p>
+              <ProfileFollowsContainer>
+                <p onClick={() => setActiveFollowPage('following')}>
+                  <ProfileWhiteSpan>
+                    {profileInfo.numFollowing}
+                  </ProfileWhiteSpan>{' '}
+                  Following
+                </p>
+                <p onClick={() => setActiveFollowPage('followers')}>
+                  <ProfileWhiteSpan>
+                    {profileInfo.numFollowers}
+                  </ProfileWhiteSpan>{' '}
+                  Followers
+                </p>
+              </ProfileFollowsContainer>
+            </ProfileContentInfo>
+            <ProfileInteractionsContrainer>
+              <ProfileInteractionButton onClick={handleSwitchToTweets}>
+                <p>Tweets</p>
+              </ProfileInteractionButton>
+              <ProfileInteractionButton onClick={handleSwitchToReplies}>
+                <p>Replies</p>
+              </ProfileInteractionButton>
+              <ProfileInteractionButton>
+                <p>Media</p>
+              </ProfileInteractionButton>
+              <ProfileInteractionButton onClick={handleSwitchToLikes}>
+                <p>Likes</p>
+              </ProfileInteractionButton>
+            </ProfileInteractionsContrainer>
+          </ProfileVisuals>
+          <ProfileTweetFeedContainer>
+            <DispalyTweetFeed
+              initialTweets={tweets}
+              setTweets={setTweets}
+            ></DispalyTweetFeed>
+          </ProfileTweetFeedContainer>
+        </div>
+      </ProfilePageResponsiveContainer>
+      {activeFollowPage && (
+        <FollowersPage
+          profileInfo={profileInfo}
+          activePage={activeFollowPage}
+          setActivePage={setActiveFollowPage}
+        />
+      )}
+    </>
   );
 };
 

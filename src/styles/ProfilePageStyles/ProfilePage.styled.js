@@ -133,8 +133,75 @@ export const ProfileWhiteSpan = styled.span`
   font-weight: 700;
 `;
 
+export const ProfileModalBackground = styled.div`
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  z-index: 200;
+  background-color: #000000;
+`;
+
+export const ProfileFollowersPageHeader = styled.div`
+  width: 100%;
+  padding: 13px 15px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  position: sticky;
+  backdrop-filter: blur(5px);
+  z-index: 20;
+  color: #eff3f4;
+  max-width: 600px;
+  border-right: 1px solid #2f3336;
+  cursor: pointer;
+  border-bottom: 1px solid #2f3336;
+`;
+
 export const FollowersContainer = styled.div`
-  position: relative;
-  background-color: #0000;
-  z-index: 245;
+  display: flex;
+  flex-direction: column;
+`;
+
+export const FollowersPageButtonContainer = styled.div`
+  display: flex;
+  font-weight: 700;
+  text-align: center;
+  margin-top: 20px;
+`;
+
+export const FollowersButton = styled.div`
+  flex-grow: 1;
+
+  ${(props) => {
+    if (props.active) {
+      return `
+        text-decoration: underline;
+        text-decoration-color: #1d9bf0;
+        text-decoration-thickness: 3px;
+        text-underline-offset: 5px;
+      `;
+    }
+  }}
+`;
+export const FollowingButton = styled.div`
+  flex-grow: 1;
+
+  ${(props) => {
+    if (props.active) {
+      return `
+        text-decoration: underline;
+        text-decoration-color: #1d9bf0;
+        text-decoration-thickness: 3px;
+        text-underline-offset: 5px;
+      `;
+    }
+  }}
+`;
+
+export const FollowersProfileContainer = styled.div`
+  color: #eff3f4;
+  display: flex;
+  font-weight: 700;
+  padding: 10px 15px;
+  gap: 20px;
 `;

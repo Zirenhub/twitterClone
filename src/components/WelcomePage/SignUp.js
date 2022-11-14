@@ -88,8 +88,10 @@ const SignUp = (props) => {
         const userID = newUser.user.uid;
         const displayName = newUser.user.displayName;
 
-        await writeUserToDB(userID, displayName);
-        navigate('/homepage');
+        const promiseUser = await writeUserToDB(userID, displayName);
+        if (promiseUser) {
+          navigate('/homepage');
+        }
       } catch (error) {
         setCurrentError(error.code);
       }

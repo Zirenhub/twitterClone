@@ -7,13 +7,13 @@ import {
 } from 'firebase/firestore';
 import { db } from '../../Firebase';
 
-const getUserLikes = async (userID) => {
-  if (userID) {
+const getProfileLikes = async (profileID) => {
+  if (profileID) {
     const returnData = [];
 
     const repliesQuery = query(
       collectionGroup(db, 'likes'),
-      where('userID', '==', userID)
+      where('userID', '==', profileID)
     );
     const repliesSnap = await getDocs(repliesQuery);
 
@@ -38,4 +38,4 @@ const getUserLikes = async (userID) => {
   }
 };
 
-export default getUserLikes;
+export default getProfileLikes;
