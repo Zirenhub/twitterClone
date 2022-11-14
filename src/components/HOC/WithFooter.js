@@ -33,6 +33,10 @@ const WithFooter = (OriginalComponent) => {
       navigate(`/${user.displayName}`);
     };
 
+    const navigateToMessages = () => {
+      navigate('/messages');
+    };
+
     return (
       <ProfileMain>
         <OriginalComponent />
@@ -46,7 +50,7 @@ const WithFooter = (OriginalComponent) => {
           <FooterButtonContainer text={'Notifications'}>
             <img src={notificationButton} alt="notification button"></img>
           </FooterButtonContainer>
-          <FooterButtonContainer text={'Messages'}>
+          <FooterButtonContainer onClick={navigateToMessages} text={'Messages'}>
             <img src={messagesButton} alt="messages button"></img>
           </FooterButtonContainer>
 

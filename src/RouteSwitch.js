@@ -7,6 +7,7 @@ import Tweet from './utils/Tweet';
 import ProfilePage from './components/ProfilePage/ProfilePage';
 import ProtectedRoute from './utils/ProtectedRoute';
 import SingleTweetPage from './components/SingleTweetPage/SingleTweetPage';
+import MessagesPage from './components/MessagesPage/MessagesPage';
 
 const RouteSwitch = () => {
   const location = useLocation();
@@ -46,6 +47,14 @@ const RouteSwitch = () => {
           element={
             <ProtectedRoute>
               <SingleTweetPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/messages"
+          element={
+            <ProtectedRoute>
+              <MessagesPage />
             </ProtectedRoute>
           }
         />
