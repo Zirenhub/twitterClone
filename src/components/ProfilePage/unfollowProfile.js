@@ -5,13 +5,13 @@ const unfollowProfile = async (profileID, userID) => {
   if (profileID && userID) {
     const profileRef = doc(db, 'users', profileID);
     const userRef = doc(db, 'users', userID);
+    const profileFollowersRef = doc(profileRef, 'followers', userID);
     const userFollowingRef = doc(userRef, 'following', profileID);
-    const profileFollowerRef = doc(profileRef, 'followers', userID);
 
     const batch = writeBatch(db);
 
     try {
-      batch.delete(profileFollowerRef);
+      batch.delete(profileFollowersRef);
       batch.delete(userFollowingRef);
       batch.update(profileRef, {
         numFollowers: increment(-1),

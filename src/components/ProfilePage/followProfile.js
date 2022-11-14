@@ -18,11 +18,13 @@ const followProfile = async (profile, userID) => {
     try {
       batch.set(profileFollowersRef, {
         userName,
-        numFollowers,
+        numFollowers, // increment num followers when following ????
         numFollowing,
       });
       batch.set(userFollowingRef, {
-        profileID,
+        userName: profile.userName,
+        numFollowers: profile.numFollowers,
+        numFollowing: profile.numFollowing,
       });
       batch.update(profileRef, {
         numFollowers: increment(1),
