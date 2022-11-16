@@ -21,27 +21,36 @@ import {
   TweetButton,
 } from '../../styles/utilsStyles/Tweet.styled';
 import { BackArrow } from '../../styles/SingleTweetPageStlyes/SingleTweetPage.styled';
+import writeMessage from './writeMessage';
 
 function MessagesPage() {
   const [profiles, setProfiles] = useState(null);
   const [openChat, setOpenChat] = useState(null);
   const [chatMessages, setChatMessages] = useState(null);
-  const [reply, setReply] = useState(null);
+  const [message, setMessage] = useState(null);
 
   const { user } = UserAuth();
   const navigate = useNavigate();
 
   const handleOpenChat = async (profile) => {
-    console.log(profile);
-    const promiseMessages = await getUserMessages(profile.id, user.uid);
-    if (promiseMessages) {
-      setChatMessages(promiseMessages);
-    }
+    // const promiseMessages = await getUserMessages(profile.id, user.uid);
+    // setChatMessages(promiseMessages);
     setOpenChat(profile);
   };
 
-  const handleReply = (e) => {
-    setReply(e.target.value);
+  const handleMessage = (e) => {
+    setMessage(e.target.value);
+  };
+
+  const handleSendMessage = async () => {
+    if (message) {
+      const promiseMessage = await writeMessage(
+        user.uid,
+        openChat.id,
+        message,
+        user.displayName
+      );
+    }
   };
 
   const navigateToProfile = () => {
@@ -76,8 +85,8 @@ function MessagesPage() {
             </ChatContentContainer>
 
             <DisplayFlex>
-              <ChatReplyArea onChange={handleReply} />
-              <TweetButton>Reply</TweetButton>
+              <ChatReplyArea onChange={handleMessage} />
+              <TweetButton onClick={handleSendMessage}>Reply</TweetButton>
             </DisplayFlex>
           </ChatMessagesContainer>
         ) : (
