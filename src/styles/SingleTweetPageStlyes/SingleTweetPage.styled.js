@@ -26,19 +26,12 @@ export const PostContainer = styled.div`
 export const SingleTweetPageContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 15px;
+  padding: 10px 10px;
 `;
 
 export const SingleTweetPageProfile = styled.div`
   display: flex;
-  align-items: center;
-  padding: 10px 10px;
-  transition: ease-in-out 150ms;
-  border-radius: 5px;
-
-  &:hover {
-    background-color: #16181c;
-  }
+  padding: 10px 0px;
 `;
 
 export const SingleTweetPageProfileText = styled.p`
@@ -68,4 +61,11 @@ export const SingleTweetPageReplyContainer = styled.div`
   justify-content: space-between;
   padding-top: 10px;
   width: 100%;
+  border-bottom: 1px solid #2f3336;
+`;
+
+export const PostLine = styled.div`
+  border-left: 6px solid green;
+  height: 100%;
+  align-self: center;
 `;

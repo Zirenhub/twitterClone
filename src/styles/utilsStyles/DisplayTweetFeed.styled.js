@@ -25,7 +25,7 @@ export const TweetGrayText = styled.p`
 `;
 export const TweetContainer = styled.div`
   display: flex;
-  padding: 10px;
+  padding: 0px 10px;
   border-bottom: 1px solid #2f3336;
   transition: ease-in-out 100ms;
   cursor: pointer;

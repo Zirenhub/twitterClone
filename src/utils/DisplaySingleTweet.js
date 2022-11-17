@@ -9,27 +9,25 @@ import {
 } from '../styles/utilsStyles/DisplayTweetFeed.styled';
 import { HomepageTestPP } from '../styles/HomePageStyles/HomePage.styled';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { UserAuth } from '../context/authContext';
-import { DisplayFlex } from '../styles/utilsStyles/Tweet.styled';
+import {
+  DisplayFlex,
+  DisplayFlexColumn,
+} from '../styles/utilsStyles/Tweet.styled';
 import TweetInteractions from '../components/TweetInteractions/TweetInteractions';
 import { TweetContainer } from '../styles/utilsStyles/DisplayTweetFeed.styled';
+import { PostLine } from '../styles/SingleTweetPageStlyes/SingleTweetPage.styled';
 
 const DisplaySingleTweet = (props) => {
-  const { tweetLink, tweet, handleDeleteTweet, replyingTo } = props;
+  const { tweetLink, tweet, handleDeleteTweet, replyingTo, topTweet } = props;
 
   const [dropdownActive, setDropDownActive] = useState(false);
   const [idLink, setIdLink] = useState(null);
 
   const { user } = UserAuth();
-  const navigate = useNavigate();
 
   const handleToggleDropdown = () => {
     setDropDownActive(!dropdownActive);
-  };
-
-  const navigateToProfile = () => {
-    navigate(`/${replyingTo}`);
   };
 
   useEffect(() => {
@@ -42,13 +40,16 @@ const DisplaySingleTweet = (props) => {
 
   return (
     <TweetContainer>
-      <HomepageTestPP
-        style={{
-          backgroundColor: '#ffffff',
-          minHeight: 48,
-          minWidth: 48,
-        }}
-      ></HomepageTestPP>
+      <DisplayFlexColumn>
+        <HomepageTestPP
+          style={{
+            backgroundColor: '#ffffff',
+            minHeight: 42,
+            minWidth: 42,
+          }}
+        ></HomepageTestPP>
+        {topTweet && <PostLine style={{ height: 50 }} />}
+      </DisplayFlexColumn>
 
       <TweetContent>
         <DisplayFlex>
@@ -74,10 +75,7 @@ const DisplaySingleTweet = (props) => {
         </DisplayFlex>
         {replyingTo && (
           <p style={{ color: '#71767b' }}>
-            replying to{' '}
-            <span style={{ color: '#eff3f4' }} onClick={navigateToProfile}>
-              {replyingTo}
-            </span>
+            replying to <span style={{ color: '#eff3f4' }}>{replyingTo}</span>
           </p>
         )}
         <StyledLink to={`/tweet/${tweetLink}`}>

@@ -67,7 +67,11 @@ const SingleTweetPage = () => {
       let currentTweet = tweetData;
       while (currentTweet.replyingTo) {
         currentTweet = await getTweet(currentTweet.replyingTo);
-        setTopTweets((current) => [currentTweet, ...current]);
+        if (currentTweet) {
+          setTopTweets((current) => [currentTweet, ...current]);
+        } else {
+          setTopTweets((current) => ['deleted', ...current]);
+        }
       }
     };
 
@@ -96,24 +100,34 @@ const SingleTweetPage = () => {
         <p style={{ marginLeft: 20, fontSize: '1.2rem' }}>Tweet</p>
       </ProfileHeader>
 
-      {topTweets &&
-        topTweets.map((tweet) => {
-          return (
-            <DisplaySingleTweet
-              key={tweet.key}
-              tweetLink={tweet.key}
-              tweet={tweet}
-              // handleDeleteTweet={() =>
-              //   handleDeleteReply(tweet.key, tweetData.key)
-              // } TODO
-            ></DisplaySingleTweet>
-          );
+      {topTweets.length > 0 &&
+        topTweets.map((tweet, index) => {
+          if (tweet !== 'deleted') {
+            return (
+              <DisplaySingleTweet
+                key={tweet.key}
+                tweetLink={tweet.key}
+                tweet={tweet}
+                // handleDeleteTweet={() =>
+                //   handleDeleteReply(tweet.key, tweetData.key)
+                // } TODO
+                topTweet={true}
+              ></DisplaySingleTweet>
+            );
+          } else {
+            return (
+              <p key={index} style={{ color: '#cf3838', paddingLeft: 15 }}>
+                Tweet is deleted
+              </p>
+            );
+          }
         })}
 
       <SelectedPost
         tweetData={tweetData}
         tweetReplies={tweetReplies}
         setTweetReplies={setTweetReplies}
+        replyingTo={topTweets[topTweets.length - 1]}
       />
 
       {tweetReplies &&

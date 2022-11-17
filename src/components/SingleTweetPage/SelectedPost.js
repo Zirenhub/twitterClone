@@ -1,4 +1,9 @@
-import { TweetForm, TweetButton } from '../../styles/utilsStyles/Tweet.styled';
+import {
+  TweetForm,
+  TweetButton,
+  DisplayFlex,
+  DisplayFlexColumn,
+} from '../../styles/utilsStyles/Tweet.styled';
 import { HomepageTestPP } from '../../styles/HomePageStyles/HomePage.styled';
 import { TweetOptions } from '../../styles/utilsStyles/DisplayTweetFeed.styled';
 import { useNavigate } from 'react-router-dom';
@@ -15,10 +20,11 @@ import {
   SingleTweetPageInteractionsContainer,
   SingleTweetPageReplyContainer,
   PostContainer,
+  PostLine,
 } from '../../styles/SingleTweetPageStlyes/SingleTweetPage.styled';
 
 const SelectedPost = (props) => {
-  const { tweetData, tweetReplies, setTweetReplies } = props;
+  const { tweetData, tweetReplies, setTweetReplies, replyingTo } = props;
   const [reply, setReply] = useState('');
 
   const { user } = UserAuth();
@@ -48,17 +54,29 @@ const SelectedPost = (props) => {
     <PostContainer>
       <SingleTweetPageContainer>
         <SingleTweetPageProfile>
-          <HomepageTestPP
-            style={{ height: 42, width: 42 }}
-            onClick={handleGoProfile}
-          ></HomepageTestPP>
-          <SingleTweetPageProfileText>
-            {tweetData.user.userName}
-          </SingleTweetPageProfileText>
-          {user.displayName === tweetData.user.userName && (
-            <TweetOptions style={{ height: 32 }}></TweetOptions>
-          )}
+          <DisplayFlex style={{ alignItems: 'center' }}>
+            <DisplayFlexColumn>
+              {replyingTo && <PostLine />}
+              <HomepageTestPP
+                style={{ height: 42, width: 42 }}
+                onClick={handleGoProfile}
+              ></HomepageTestPP>
+            </DisplayFlexColumn>
+            <SingleTweetPageProfileText>
+              {tweetData.user.userName}
+            </SingleTweetPageProfileText>
+            {user.displayName === tweetData.user.userName && (
+              <TweetOptions style={{ height: 32 }}></TweetOptions>
+            )}
+          </DisplayFlex>
         </SingleTweetPageProfile>
+
+        {replyingTo && (
+          <p style={{ color: '#71767b' }}>
+            replying to{' '}
+            <span style={{ color: '#eff3f4' }}>{replyingTo.user.userName}</span>
+          </p>
+        )}
         <SingleTweetPageTweet>{tweetData.tweet}</SingleTweetPageTweet>
         <p style={{ color: '#71767b', marginTop: 20, marginBottom: 10 }}>
           {tweetData.date.toString().slice(0, 21)}

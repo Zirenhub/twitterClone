@@ -11,6 +11,8 @@ const getTweet = async (tweet) => {
       rawData.date = rawData.firestoreDate.toDate();
 
       return rawData;
+    } else {
+      return false;
     }
   }
 };
