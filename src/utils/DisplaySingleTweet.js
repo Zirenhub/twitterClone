@@ -80,7 +80,7 @@ const DisplaySingleTweet = (props) => {
             </span>
           </p>
         )}
-        <StyledLink to={`/${tweet.user.userName}/${tweetLink}`}>
+        <StyledLink to={`/tweet/${tweetLink}`}>
           <TweetWhite>{tweet.tweet}</TweetWhite>
         </StyledLink>
 

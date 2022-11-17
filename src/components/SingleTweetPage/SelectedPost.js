@@ -18,14 +18,14 @@ import {
 } from '../../styles/SingleTweetPageStlyes/SingleTweetPage.styled';
 
 const SelectedPost = (props) => {
-  const { username, tweetData, tweetReplies, setTweetReplies } = props;
+  const { tweetData, tweetReplies, setTweetReplies } = props;
   const [reply, setReply] = useState('');
 
   const { user } = UserAuth();
   const navigate = useNavigate();
 
   const handleGoProfile = () => {
-    navigate(`/${username}`);
+    navigate(`/${tweetData.user.userName}`);
   };
 
   const handleReply = (e) => {

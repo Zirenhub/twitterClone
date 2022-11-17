@@ -9,7 +9,6 @@ const getTweet = async (tweet) => {
     if (postSnap.exists()) {
       const rawData = postSnap.data();
       rawData.date = rawData.firestoreDate.toDate();
-      // get tweet replying to tweet
 
       return rawData;
     }

@@ -43,7 +43,7 @@ const RouteSwitch = () => {
           }
         />
         <Route
-          path="/:username/:tweet"
+          path="tweet/:tweet"
           element={
             <ProtectedRoute>
               <SingleTweetPage />
