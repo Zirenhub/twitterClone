@@ -25,12 +25,11 @@ export const TweetGrayText = styled.p`
 `;
 export const TweetContainer = styled.div`
   display: flex;
-  padding: 0px 10px;
+  padding: ${(props) => (props.removePadding ? '0px 10px' : '10px 10px')};
   border-bottom: 1px solid #2f3336;
   transition: ease-in-out 100ms;
   cursor: pointer;
   max-width: 600px;
-  /* flex-wrap: wrap; */
 
   &:hover {
     background-color: rgba(255, 255, 255, 0.05);

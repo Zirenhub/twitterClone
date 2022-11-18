@@ -26,12 +26,12 @@ export const PostContainer = styled.div`
 export const SingleTweetPageContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 10px 10px;
+  padding: 0px 10px;
 `;
 
 export const SingleTweetPageProfile = styled.div`
   display: flex;
-  padding: 10px 0px;
+  align-items: center;
 `;
 
 export const SingleTweetPageProfileText = styled.p`
@@ -61,11 +61,10 @@ export const SingleTweetPageReplyContainer = styled.div`
   justify-content: space-between;
   padding-top: 10px;
   width: 100%;
-  border-bottom: 1px solid #2f3336;
 `;
 
 export const PostLine = styled.div`
-  border-left: 6px solid green;
-  height: 100%;
+  border-left: 2px solid gray;
+  flex-grow: 1;
   align-self: center;
 `;

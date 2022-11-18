@@ -39,7 +39,7 @@ const DisplaySingleTweet = (props) => {
   }, [tweet.user.userName]);
 
   return (
-    <TweetContainer>
+    <TweetContainer removePadding={topTweet}>
       <DisplayFlexColumn>
         <HomepageTestPP
           style={{
@@ -48,7 +48,7 @@ const DisplaySingleTweet = (props) => {
             minWidth: 42,
           }}
         ></HomepageTestPP>
-        {topTweet && <PostLine style={{ height: 50 }} />}
+        {topTweet && <PostLine />}
       </DisplayFlexColumn>
 
       <TweetContent>
