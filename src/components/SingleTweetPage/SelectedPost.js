@@ -1,7 +1,6 @@
 import {
   TweetForm,
   TweetButton,
-  DisplayFlex,
   DisplayFlexColumn,
 } from '../../styles/utilsStyles/Tweet.styled';
 import { HomepageTestPP } from '../../styles/HomePageStyles/HomePage.styled';
@@ -54,27 +53,29 @@ const SelectedPost = (props) => {
     <PostContainer>
       <SingleTweetPageContainer>
         <SingleTweetPageProfile>
-          <DisplayFlex style={{ alignItems: 'center' }}>
-            <DisplayFlexColumn>
-              {replyingTo && <PostLine />}
-              <HomepageTestPP
-                style={{ height: 42, width: 42 }}
-                onClick={handleGoProfile}
-              ></HomepageTestPP>
-            </DisplayFlexColumn>
-            <SingleTweetPageProfileText>
-              {tweetData.user.userName}
-            </SingleTweetPageProfileText>
-            {user.displayName === tweetData.user.userName && (
-              <TweetOptions style={{ height: 32 }}></TweetOptions>
-            )}
-          </DisplayFlex>
+          <DisplayFlexColumn>
+            {replyingTo && <PostLine style={{ height: 10 }} />}
+            <HomepageTestPP
+              style={{ height: 42, width: 42 }}
+              onClick={handleGoProfile}
+            ></HomepageTestPP>
+          </DisplayFlexColumn>
+
+          <SingleTweetPageProfileText>
+            {tweetData.user.userName}
+          </SingleTweetPageProfileText>
+          {user.displayName === tweetData.user.userName && (
+            <TweetOptions style={{ height: 32 }}></TweetOptions>
+          )}
         </SingleTweetPageProfile>
 
         {replyingTo && (
           <p style={{ color: '#71767b' }}>
             replying to{' '}
-            <span style={{ color: '#eff3f4' }}>{replyingTo.user.userName}</span>
+            <span style={{ color: '#eff3f4' }}>
+              {/* replyingTo.user will be undefined if tweet is deleted */}
+              {replyingTo?.user?.userName || replyingTo}
+            </span>
           </p>
         )}
         <SingleTweetPageTweet>{tweetData.tweet}</SingleTweetPageTweet>
