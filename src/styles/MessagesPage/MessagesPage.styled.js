@@ -47,3 +47,17 @@ export const ChatReplyArea = styled.input`
   color: #eff3f4;
   background-color: black;
 `;
+
+export const MessageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  color: #eff3f4;
+  padding: 5px;
+`;
+
+export const MessageContent = styled.div`
+  background-color: #48aaad;
+  font-weight: 700;
+  border-radius: 5px;
+  padding: 5px 15px;
+`;

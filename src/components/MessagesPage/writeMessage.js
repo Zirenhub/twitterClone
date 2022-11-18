@@ -4,26 +4,20 @@ import { db } from '../../Firebase';
 
 const writeMessage = async (userID, profileID, message, userDisplayName) => {
   if (userID && profileID && message) {
-    const chatRef = doc(db, 'chats', userID, profileID);
     const key = uuidv4();
+    const chatRef = doc(db, 'users', userID, 'chats', profileID);
 
     const messageData = {
       [key]: {
-        name: userDisplayName,
+        sender: userDisplayName,
         message: message,
         date: Timestamp.fromDate(new Date()),
         key: key,
       },
     };
+
     try {
-      await setDoc(
-        chatRef,
-        {
-          messages: { ...messageData },
-          participants: [userID, profileID],
-        },
-        { merge: true }
-      );
+      await setDoc(chatRef, messageData, { merge: true });
 
       return messageData;
     } catch (error) {
