@@ -5,24 +5,18 @@ import { db } from '../../Firebase';
 const writeMessage = async (userID, profile, message, userDisplayName) => {
   if (userID && profile && message && userDisplayName) {
     const key = uuidv4();
-    let chatRef;
-    if (profile.status !== 'request') {
-      chatRef = doc(db, 'users', userID, 'chats', key);
-    } else {
-      chatRef = doc(db, 'users', profile.id, 'chats', key);
-    }
+    const messagesRef = doc(db, 'users', userID, 'messages', key);
 
     const messageData = {
-      senderUserName: userDisplayName,
+      userName: userDisplayName,
       sendTo: profile.id,
-      senderID: userID,
       message: message,
       date: Timestamp.fromDate(new Date()),
       key: key,
     };
 
     try {
-      await setDoc(chatRef, messageData);
+      await setDoc(messagesRef, messageData);
 
       return messageData;
     } catch (error) {
