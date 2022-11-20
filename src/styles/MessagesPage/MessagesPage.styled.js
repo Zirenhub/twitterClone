@@ -13,7 +13,8 @@ export const MessagesPageContainer = styled.div`
 
 export const MessagesPageHeader = styled.div`
   width: 100%;
-  height: 60px;
+  max-height: 60px;
+  height: 100%;
   border-bottom: 1px solid #2f3336;
   display: flex;
   align-items: center;
