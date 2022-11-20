@@ -19,6 +19,8 @@ import { HomepageTestPP } from '../../styles/HomePageStyles/HomePage.styled';
 import { FollowersProfileContainer } from '../../styles/ProfilePageStyles/ProfilePage.styled';
 import { useNavigate } from 'react-router-dom';
 import getMessages from './getMessages';
+import { collection, onSnapshot, query, where } from 'firebase/firestore';
+import { db } from '../../Firebase';
 import {
   DisplayFlex,
   TweetButton,
@@ -37,14 +39,38 @@ function MessagesPage() {
   const { user } = UserAuth();
   const navigate = useNavigate();
 
-  const handleOpenChat = async (profile) => {
-    const promiseMessages = await getMessages(profile, user.uid);
-
-    if (promiseMessages) {
-      setChatMessages(promiseMessages);
-    }
+  const handleOpenChat = (profile) => {
     setOpenChat(profile);
   };
+
+  useEffect(() => {
+    const listenToChat = async () => {
+      const userChatRef = query(
+        collection(db, 'users', user.uid, 'messages'),
+        where('sendTo', '==', openChat.id)
+      );
+      const profileChatRef = query(
+        collection(db, 'users', user.uid, 'messages'),
+        where('sendTo', '==', openChat.id)
+      );
+
+      const unsubscribeUserChat = onSnapshot(userChatRef, (querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          console.log(doc.data());
+        });
+      });
+      const unsubscribeProfileChat = onSnapshot(
+        profileChatRef,
+        (querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            console.log(doc.data());
+          });
+        }
+      );
+    };
+
+    if (openChat) listenToChat();
+  }, [openChat, user.uid]);
 
   const handleMessage = (e) => {
     setMessage(e.target.value);
@@ -60,10 +86,8 @@ function MessagesPage() {
       );
       if (promiseMessage) {
         promiseMessage.date = promiseMessage.date.toDate();
-        setChatMessages((current) => [...current, promiseMessage]);
       }
     }
-    // setMessage('');
   };
 
   const handleGoBack = () => {
