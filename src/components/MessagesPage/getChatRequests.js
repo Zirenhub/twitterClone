@@ -1,4 +1,4 @@
-import { collection, doc, getDocs } from 'firebase/firestore';
+import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../../Firebase';
 
 const getChatRequests = async (userID) => {
@@ -12,6 +12,7 @@ const getChatRequests = async (userID) => {
     userRef.forEach((doc) => {
       const modifiedData = doc.data();
       modifiedData.id = doc.id;
+      modifiedData.status = 'request';
       requestData.push(modifiedData);
     });
 

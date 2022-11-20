@@ -39,9 +39,12 @@ function MessagesPage() {
 
   const handleOpenChat = async (profile) => {
     // make state for request and check state before requesting ??
-    await sendChatRequest(profile.id, user.uid, user.displayName);
-    // was here
-    const promiseMessages = await getMessages(profile.id, user.uid);
+    if (profile.status !== 'request') {
+      // // if the chat we are opening is not requested, then we send a requst.
+      await sendChatRequest(profile.id, user.uid, user.displayName);
+    }
+    const promiseMessages = await getMessages(profile, user.uid);
+
     if (promiseMessages) {
       setChatMessages(promiseMessages);
     }
@@ -52,28 +55,25 @@ function MessagesPage() {
     setMessage(e.target.value);
   };
 
-  const handleOpenRequest = async (profile) => {
-    // changed position on userID and profileID
-    const promiseMessages = await getMessages(user.uid, profile.id);
-    if (promiseMessages) {
-      setChatMessages(promiseMessages);
-    }
-    setOpenChat(profile);
-  };
-
   const handleSendMessage = async () => {
     if (message) {
       const promiseMessage = await writeMessage(
         user.uid,
-        openChat.id,
+        openChat,
         message,
         user.displayName
       );
+      if (promiseMessage) {
+        promiseMessage.date = promiseMessage.date.toDate();
+        // setChatMessages((current) => [...current, promiseMessage]);
+      }
     }
+    // setMessage('');
   };
 
   const handleGoBack = () => {
-    setOpenChat(false);
+    setOpenChat(null);
+    setChatMessages(null);
   };
 
   const navigateToProfile = () => {
@@ -82,17 +82,26 @@ function MessagesPage() {
 
   useEffect(() => {
     const initialize = async () => {
-      const promiseFollowing = await getProfileFollowing(user.uid);
+      let promiseFollowing = await getProfileFollowing(user.uid);
       if (promiseFollowing) {
+        promiseFollowing = promiseFollowing.map((x) => ({
+          ...x,
+          status: 'following',
+        }));
         setProfiles(promiseFollowing);
       }
-      const promiseRequests = await getChatRequests(user.uid);
+      let promiseRequests = await getChatRequests(user.uid);
       if (promiseRequests) {
         setRequests(promiseRequests);
       }
     };
 
     initialize();
+
+    // check if profile we are opening is following me,                  | if not following send him a request
+    // if so, don't send request i already appear on his messages page.  |
+
+    //
 
     return () => {
       setProfiles(null);
@@ -110,6 +119,7 @@ function MessagesPage() {
           <HomepageTestPP onClick={navigateToProfile} />
           <p>Messages</p>
         </MessagesPageHeader>
+
         {openChat ? (
           <ChatMessagesContainer>
             <ChatContentContainer>
@@ -120,11 +130,22 @@ function MessagesPage() {
               </MessagesPageHeader>
               {chatMessages &&
                 chatMessages.map((message) => {
-                  if (message.sender === user.displayName) {
+                  if (message.senderUserName === user.displayName) {
                     return (
                       <MessageContainer
                         key={message.key}
                         style={{ alignItems: 'flex-end' }}
+                      >
+                        <MessageContent style={{ backgroundColor: 'gray' }}>
+                          <p>{message.message}</p>
+                        </MessageContent>
+                      </MessageContainer>
+                    );
+                  } else {
+                    return (
+                      <MessageContainer
+                        key={message.key}
+                        style={{ alignItems: 'flex-start' }}
                       >
                         <MessageContent>
                           <p>{message.message}</p>
@@ -159,7 +180,7 @@ function MessagesPage() {
                 return (
                   <FollowersProfileContainer
                     key={request.id}
-                    onClick={() => handleOpenRequest(request)}
+                    onClick={() => handleOpenChat(request)}
                   >
                     <HomepageTestPP />
                     {request.userName}
