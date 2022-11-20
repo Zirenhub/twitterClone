@@ -14,6 +14,7 @@ import {
 import { ProfilePageResponsiveContainer } from '../../styles/ProfilePageStyles/ProfilePage.styled';
 import WithFooter from '../HOC/WithFooter';
 import getProfileFollowing from '../ProfilePage/getProfileFollowing';
+import getProfileFollowers from '../ProfilePage/getProfileFollowers';
 import { HomepageTestPP } from '../../styles/HomePageStyles/HomePage.styled';
 import { FollowersProfileContainer } from '../../styles/ProfilePageStyles/ProfilePage.styled';
 import { useNavigate } from 'react-router-dom';
@@ -24,25 +25,19 @@ import {
 } from '../../styles/utilsStyles/Tweet.styled';
 import { BackArrow } from '../../styles/SingleTweetPageStlyes/SingleTweetPage.styled';
 import writeMessage from './writeMessage';
-import sendChatRequest from './sendChatRequest';
-import getChatRequests from './getChatRequests';
+import { LoadingStyled } from '../../styles/WelcomePageStyles/Loading.styled';
 
 function MessagesPage() {
   const [profiles, setProfiles] = useState(null);
-  const [requests, setRequests] = useState(null);
   const [openChat, setOpenChat] = useState(null);
   const [chatMessages, setChatMessages] = useState(null);
   const [message, setMessage] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const { user } = UserAuth();
   const navigate = useNavigate();
 
   const handleOpenChat = async (profile) => {
-    // make state for request and check state before requesting ??
-    if (profile.status !== 'request') {
-      // // if the chat we are opening is not requested, then we send a requst.
-      await sendChatRequest(profile.id, user.uid, user.displayName);
-    }
     const promiseMessages = await getMessages(profile, user.uid);
 
     if (promiseMessages) {
@@ -65,7 +60,7 @@ function MessagesPage() {
       );
       if (promiseMessage) {
         promiseMessage.date = promiseMessage.date.toDate();
-        // setChatMessages((current) => [...current, promiseMessage]);
+        setChatMessages((current) => [...current, promiseMessage]);
       }
     }
     // setMessage('');
@@ -76,47 +71,58 @@ function MessagesPage() {
     setChatMessages(null);
   };
 
-  const navigateToProfile = () => {
-    navigate(`/${user.displayName}`);
+  const navigateToProfile = (link) => {
+    navigate(`/${link}`);
   };
 
   useEffect(() => {
     const initialize = async () => {
-      let promiseFollowing = await getProfileFollowing(user.uid);
-      if (promiseFollowing) {
-        promiseFollowing = promiseFollowing.map((x) => ({
-          ...x,
-          status: 'following',
-        }));
+      const promiseFollowing = await getProfileFollowing(user.uid);
+      if (promiseFollowing.length) {
         setProfiles(promiseFollowing);
       }
-      let promiseRequests = await getChatRequests(user.uid);
-      if (promiseRequests) {
-        setRequests(promiseRequests);
+
+      const promiseFollowers = await getProfileFollowers(user.uid);
+      if (promiseFollowers.length && promiseFollowing.length) {
+        // remove duplicate users that might exits on both followers and followings list
+        const combined = promiseFollowers.concat(promiseFollowing);
+        const uniqueUserNames = [];
+        const uniqueCombined = combined.filter((user) => {
+          const isDuplicate = uniqueUserNames.includes(user.userName);
+
+          if (!isDuplicate) {
+            uniqueUserNames.push(user.userName);
+            return true;
+          }
+
+          return false;
+        });
+        setProfiles(uniqueCombined);
+      } else if (promiseFollowers.length) {
+        setProfiles(promiseFollowers);
       }
+      setLoading(false);
     };
 
-    initialize();
-
-    // check if profile we are opening is following me,                  | if not following send him a request
-    // if so, don't send request i already appear on his messages page.  |
-
-    //
+    if (user.uid) initialize();
 
     return () => {
       setProfiles(null);
-      setRequests(null);
       setOpenChat(null);
       setChatMessages(null);
       setMessage(null);
     };
-  }, [user]);
+  }, [user.uid]);
+
+  if (loading) {
+    return <LoadingStyled>Loading</LoadingStyled>;
+  }
 
   return (
     <ProfilePageResponsiveContainer style={{ zIndex: 9999 }}>
       <MessagesPageContainer>
         <MessagesPageHeader>
-          <HomepageTestPP onClick={navigateToProfile} />
+          <HomepageTestPP onClick={() => navigateToProfile(user.displayName)} />
           <p>Messages</p>
         </MessagesPageHeader>
 
@@ -130,7 +136,7 @@ function MessagesPage() {
               </MessagesPageHeader>
               {chatMessages &&
                 chatMessages.map((message) => {
-                  if (message.senderUserName === user.displayName) {
+                  if (message.userName === user.displayName) {
                     return (
                       <MessageContainer
                         key={message.key}
@@ -170,20 +176,10 @@ function MessagesPage() {
                     key={profile.id}
                     onClick={() => handleOpenChat(profile)}
                   >
-                    <HomepageTestPP />
+                    <HomepageTestPP
+                      onClick={() => navigateToProfile(profile.userName)}
+                    />
                     {profile.userName}
-                  </FollowersProfileContainer>
-                );
-              })}
-            {requests &&
-              requests.map((request) => {
-                return (
-                  <FollowersProfileContainer
-                    key={request.id}
-                    onClick={() => handleOpenChat(request)}
-                  >
-                    <HomepageTestPP />
-                    {request.userName}
                   </FollowersProfileContainer>
                 );
               })}
