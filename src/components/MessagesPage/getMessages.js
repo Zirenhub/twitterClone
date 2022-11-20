@@ -3,28 +3,31 @@ import { db } from '../../Firebase';
 
 const getMessages = async (profile, userID) => {
   if (profile && userID) {
-    let chatRef;
-    if (profile.status !== 'request') {
-      chatRef = query(
-        collection(db, 'users', userID, 'chats'),
-        where('sendTo', '==', profile.id),
-        orderBy('date')
-      );
-    } else {
-      chatRef = query(
-        collection(db, 'users', profile.id, 'chats'),
-        where('sendTo', '==', userID),
-        orderBy('date')
-      );
-    }
+    const userChatRef = query(
+      collection(db, 'users', userID, 'messages'),
+      where('sendTo', '==', profile.id),
+      orderBy('date')
+    );
+    const profileChatRef = query(
+      collection(db, 'users', profile.id, 'messages'),
+      where('sendTo', '==', userID),
+      orderBy('date')
+    );
 
-    const chatSnap = await getDocs(chatRef);
+    const userChatSnap = await getDocs(userChatRef);
+    const profileChatSnap = await getDocs(profileChatRef);
 
     const returnData = [];
-    chatSnap.forEach((doc) => {
-      const data = doc.data();
-      returnData.push(data);
+    userChatSnap.forEach((doc) => {
+      returnData.push(doc.data());
     });
+    profileChatSnap.forEach((doc) => {
+      returnData.push(doc.data());
+    });
+
+    if (returnData) {
+      returnData.sort((a, b) => a.date.toDate() - b.date.toDate());
+    }
 
     return returnData;
   }
