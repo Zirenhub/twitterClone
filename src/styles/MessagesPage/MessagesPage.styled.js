@@ -37,6 +37,7 @@ export const ChatMessagesContainer = styled.div`
 
 export const ChatContentContainer = styled.div`
   flex-grow: 1;
+  overflow-y: auto;
 `;
 
 export const ChatReplyArea = styled.input`

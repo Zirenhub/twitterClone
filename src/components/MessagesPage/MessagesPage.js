@@ -18,9 +18,6 @@ import getProfileFollowers from '../ProfilePage/getProfileFollowers';
 import { HomepageTestPP } from '../../styles/HomePageStyles/HomePage.styled';
 import { FollowersProfileContainer } from '../../styles/ProfilePageStyles/ProfilePage.styled';
 import { useNavigate } from 'react-router-dom';
-import getMessages from './getMessages';
-import { collection, onSnapshot, query, where } from 'firebase/firestore';
-import { db } from '../../Firebase';
 import {
   DisplayFlex,
   TweetButton,
@@ -28,49 +25,84 @@ import {
 import { BackArrow } from '../../styles/SingleTweetPageStlyes/SingleTweetPage.styled';
 import writeMessage from './writeMessage';
 import { LoadingStyled } from '../../styles/WelcomePageStyles/Loading.styled';
+import {
+  collection,
+  onSnapshot,
+  orderBy,
+  query,
+  where,
+} from 'firebase/firestore';
+import { db } from '../../Firebase';
 
 function MessagesPage() {
   const [profiles, setProfiles] = useState(null);
   const [openChat, setOpenChat] = useState(null);
-  const [chatMessages, setChatMessages] = useState(null);
+  const [chatMessages, setChatMessages] = useState([]);
+  const [userMessages, setUserMessages] = useState([]);
+  const [profileMessages, setProfileMessages] = useState([]);
   const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [unsubProfile, setUnsubProfile] = useState(null);
+  const [unsubUser, setUnsubUser] = useState(null);
 
   const { user } = UserAuth();
   const navigate = useNavigate();
 
-  const handleOpenChat = (profile) => {
-    setOpenChat(profile);
-  };
+  useEffect(() => {
+    if (openChat) {
+      const initialize = async () => {
+        const userChatRef = query(
+          collection(db, 'users', user.uid, 'messages'),
+          where('sendTo', '==', openChat.id),
+          orderBy('date', 'desc')
+        );
+
+        const profileChatRef = query(
+          collection(db, 'users', openChat.id, 'messages'),
+          where('sendTo', '==', user.uid),
+          orderBy('date', 'desc')
+        );
+
+        const userChatListener = onSnapshot(userChatRef, (querySnapshot) => {
+          const messages = [];
+          querySnapshot.forEach((doc) => {
+            messages.push(doc.data());
+          });
+          setUserMessages(messages);
+        });
+
+        const profileChatListener = onSnapshot(
+          profileChatRef,
+          (querySnapshot) => {
+            const messages = [];
+            querySnapshot.forEach((doc) => {
+              messages.push(doc.data());
+            });
+            setProfileMessages(messages);
+          }
+        );
+
+        setUnsubProfile(() => profileChatListener);
+        setUnsubUser(() => userChatListener);
+      };
+
+      initialize();
+    } else {
+      if (unsubProfile && unsubUser) {
+        unsubProfile();
+        unsubUser();
+      }
+      setChatMessages([]);
+    }
+  }, [openChat, user.uid]);
 
   useEffect(() => {
-    const listenToChat = async () => {
-      const userChatRef = query(
-        collection(db, 'users', user.uid, 'messages'),
-        where('sendTo', '==', openChat.id)
-      );
-      const profileChatRef = query(
-        collection(db, 'users', user.uid, 'messages'),
-        where('sendTo', '==', openChat.id)
-      );
-
-      const unsubscribeUserChat = onSnapshot(userChatRef, (querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-          console.log(doc.data());
-        });
-      });
-      const unsubscribeProfileChat = onSnapshot(
-        profileChatRef,
-        (querySnapshot) => {
-          querySnapshot.forEach((doc) => {
-            console.log(doc.data());
-          });
-        }
-      );
-    };
-
-    if (openChat) listenToChat();
-  }, [openChat, user.uid]);
+    setChatMessages(
+      [...profileMessages, ...userMessages].sort(
+        (a, b) => a.date.toDate() - b.date.toDate()
+      )
+    );
+  }, [profileMessages, userMessages]);
 
   const handleMessage = (e) => {
     setMessage(e.target.value);
@@ -92,7 +124,6 @@ function MessagesPage() {
 
   const handleGoBack = () => {
     setOpenChat(null);
-    setChatMessages(null);
   };
 
   const navigateToProfile = (link) => {
@@ -130,12 +161,12 @@ function MessagesPage() {
 
     if (user.uid) initialize();
 
-    return () => {
-      setProfiles(null);
-      setOpenChat(null);
-      setChatMessages(null);
-      setMessage(null);
-    };
+    // return () => {
+    //   setProfiles(null);
+    //   setOpenChat(null);
+    //   setChatMessages(null);
+    //   setMessage(null);
+    // };
   }, [user.uid]);
 
   if (loading) {
@@ -198,7 +229,7 @@ function MessagesPage() {
                 return (
                   <FollowersProfileContainer
                     key={profile.id}
-                    onClick={() => handleOpenChat(profile)}
+                    onClick={() => setOpenChat(profile)}
                   >
                     <HomepageTestPP
                       onClick={() => navigateToProfile(profile.userName)}
