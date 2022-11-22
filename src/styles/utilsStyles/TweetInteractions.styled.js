@@ -42,18 +42,17 @@ export const LikeIcon = styled.svg`
   mask: ${({ src }) => `url(${src}) no-repeat center`};
 `;
 
-export const CommentIcon = styled.svg`
+export const RetweetIcon = styled.svg`
   cursor: pointer;
 
   height: 20px;
   width: 20px;
 
-  /* background-color: ${(props) => (props.isLiked ? '#FF5C5C' : '#ffff')}; */
-  background-color: #ffff;
+  background-color: ${(props) => (props.isRetweeted ? '#32CD32' : '#ffff')};
   mask: ${({ src }) => `url(${src}) no-repeat center`};
 `;
 
-export const RetweetIcon = styled.svg`
+export const CommentIcon = styled.svg`
   cursor: pointer;
 
   height: 20px;

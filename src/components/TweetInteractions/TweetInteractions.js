@@ -14,18 +14,39 @@ import likeTweet from './likeTweet';
 import { UserAuth } from '../../context/authContext';
 import isTweetLiked from './isTweetLiked';
 import unlikeTweet from './unlikeTweet';
+import retweetTweet from './retweetTweet';
+import isTweetRetweeted from './isTweetRetweeted';
+import removeRetweet from './removeRetweet';
 
 const TweetInteractions = (props) => {
   const { tweet } = props;
   const [likes, setLikes] = useState(null);
+  const [retweets, setRetweets] = useState(null);
   const [isLiked, setIsLiked] = useState(false);
+  const [isRetweeted, setIsRetweeted] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const { user } = UserAuth();
 
   const handleComment = () => {};
 
-  const handleRetweet = () => {};
+  const handleRetweet = async () => {
+    setLoading(true);
+    if (!isRetweeted) {
+      const retweet = await retweetTweet(tweet.key, user.uid);
+      if (retweet) {
+        setRetweets(retweets + 1);
+        setIsRetweeted(true);
+      }
+    } else {
+      const undoRetweet = await removeRetweet(tweet.key, user.uid);
+      if (undoRetweet) {
+        setRetweets(retweets - 1);
+        setIsRetweeted(false);
+      }
+    }
+    setLoading(false);
+  };
 
   const handleLike = async () => {
     setLoading(true);
@@ -48,12 +69,20 @@ const TweetInteractions = (props) => {
 
   useEffect(() => {
     const checkIsTweetLiked = async () => {
-      const promise = await isTweetLiked(tweet.key, user.uid);
-      setIsLiked(promise);
+      const promiseLike = await isTweetLiked(tweet.key, user.uid);
+      setIsLiked(promiseLike);
+    };
+    const checkIsTweetRetweeted = async () => {
+      const promiseRetweet = await isTweetRetweeted(tweet.key, user.uid);
+      setIsRetweeted(promiseRetweet);
     };
 
     checkIsTweetLiked();
+    checkIsTweetRetweeted();
+
     setLikes(tweet.numOfLikes);
+    setRetweets(tweet.numOfRetweets);
+
     setLoading(false);
   }, [tweet, user]);
 
@@ -63,15 +92,17 @@ const TweetInteractions = (props) => {
         <CommentIcon src={CommentTweetIcon} />
         <TweetInteractText>{tweet.numOfComments}</TweetInteractText>
       </TweetIntButtonContainer>
-      <TweetIntButtonContainer hoverColor="#32CD32" onClick={handleRetweet}>
-        <RetweetIcon src={RetweetTweetIcon} />
-        <TweetInteractText>{tweet.numOfRetweets}</TweetInteractText>
-      </TweetIntButtonContainer>
       {!loading && (
-        <TweetIntButtonContainer hoverColor="#FF5C5C" onClick={handleLike}>
-          <LikeIcon src={LikeTweetIcon} isLiked={isLiked} />
-          <TweetInteractText>{likes}</TweetInteractText>
-        </TweetIntButtonContainer>
+        <>
+          <TweetIntButtonContainer hoverColor="#32CD32" onClick={handleRetweet}>
+            <RetweetIcon src={RetweetTweetIcon} isRetweeted={isRetweeted} />
+            <TweetInteractText>{retweets}</TweetInteractText>
+          </TweetIntButtonContainer>
+          <TweetIntButtonContainer hoverColor="#FF5C5C" onClick={handleLike}>
+            <LikeIcon src={LikeTweetIcon} isLiked={isLiked} />
+            <TweetInteractText>{likes}</TweetInteractText>
+          </TweetIntButtonContainer>
+        </>
       )}
     </TweetInteractContainer>
   );

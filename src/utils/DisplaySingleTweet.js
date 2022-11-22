@@ -17,6 +17,7 @@ import {
 import TweetInteractions from '../components/TweetInteractions/TweetInteractions';
 import { TweetContainer } from '../styles/utilsStyles/DisplayTweetFeed.styled';
 import { PostLine } from '../styles/SingleTweetPageStlyes/SingleTweetPage.styled';
+import RetweetTweetIcon from '../assets/images/retweet-svgrepo-com.svg';
 
 const DisplaySingleTweet = (props) => {
   const { tweetLink, tweet, handleDeleteTweet, replyingTo, topTweet } = props;
@@ -39,52 +40,64 @@ const DisplaySingleTweet = (props) => {
   }, [tweet.user.userName]);
 
   return (
-    <TweetContainer removePadding={topTweet}>
-      <DisplayFlexColumn>
-        <HomepageTestPP
-          style={{
-            backgroundColor: '#ffffff',
-            minHeight: 42,
-            minWidth: 42,
-          }}
-        ></HomepageTestPP>
-        {topTweet && <PostLine />}
-      </DisplayFlexColumn>
-
-      <TweetContent>
-        <DisplayFlex>
-          {idLink && (
-            <StyledLink to={`/${idLink}`}>
-              <TweetOwnerName>{tweet.user.userName}</TweetOwnerName>
-            </StyledLink>
-          )}
-          <TweetGrayText style={{ marginLeft: 10 }}>
-            {tweet.date.toString().slice(0, 21)}
-          </TweetGrayText>
-          {user.displayName === tweet.user.userName && (
-            <TweetOptions onClick={handleToggleDropdown}>
-              {dropdownActive && (
-                <TweetDropdown>
-                  <ul>
-                    <li onClick={handleDeleteTweet}>Delete</li>
-                  </ul>
-                </TweetDropdown>
-              )}
-            </TweetOptions>
-          )}
+    <>
+      {tweet.retweet && (
+        <DisplayFlex style={{ fontWeight: 700, fontSize: '0.5rem' }}>
+          <img
+            alt="retweet icon"
+            src={RetweetTweetIcon}
+            style={{ height: 16, marginLeft: 20 }}
+          ></img>
+          <TweetGrayText>{tweet.retweet} Retweeted</TweetGrayText>
         </DisplayFlex>
-        {replyingTo && (
-          <p style={{ color: '#71767b' }}>
-            replying to <span style={{ color: '#eff3f4' }}>{replyingTo}</span>
-          </p>
-        )}
-        <StyledLink to={`/tweet/${tweetLink}`}>
-          <TweetWhite>{tweet.tweet}</TweetWhite>
-        </StyledLink>
+      )}
+      <TweetContainer removePadding={topTweet}>
+        <DisplayFlexColumn>
+          <HomepageTestPP
+            style={{
+              backgroundColor: '#ffffff',
+              minHeight: 42,
+              minWidth: 42,
+            }}
+          ></HomepageTestPP>
+          {topTweet && <PostLine />}
+        </DisplayFlexColumn>
 
-        {tweet && <TweetInteractions tweet={tweet}></TweetInteractions>}
-      </TweetContent>
-    </TweetContainer>
+        <TweetContent>
+          <DisplayFlex>
+            {idLink && (
+              <StyledLink to={`/${idLink}`}>
+                <TweetOwnerName>{tweet.user.userName}</TweetOwnerName>
+              </StyledLink>
+            )}
+            <TweetGrayText style={{ marginLeft: 10 }}>
+              {tweet.date.toString().slice(0, 21)}
+            </TweetGrayText>
+            {user.displayName === tweet.user.userName && (
+              <TweetOptions onClick={handleToggleDropdown}>
+                {dropdownActive && (
+                  <TweetDropdown>
+                    <ul>
+                      <li onClick={handleDeleteTweet}>Delete</li>
+                    </ul>
+                  </TweetDropdown>
+                )}
+              </TweetOptions>
+            )}
+          </DisplayFlex>
+          {replyingTo && (
+            <p style={{ color: '#71767b' }}>
+              replying to <span style={{ color: '#eff3f4' }}>{replyingTo}</span>
+            </p>
+          )}
+          <StyledLink to={`/tweet/${tweetLink}`}>
+            <TweetWhite>{tweet.tweet}</TweetWhite>
+          </StyledLink>
+
+          {tweet && <TweetInteractions tweet={tweet}></TweetInteractions>}
+        </TweetContent>
+      </TweetContainer>
+    </>
   );
 };
 
