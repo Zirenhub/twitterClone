@@ -7,7 +7,7 @@ import {
 import { UserAuth } from '../../context/authContext';
 import { LoadingStyled } from '../../styles/WelcomePageStyles/Loading.styled';
 import { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import signOut from '../../assets/images/sign-out-svg.svg';
 import getAllTweets from './getAllTweets';
 import WithFooter from '../HOC/WithFooter';
@@ -20,7 +20,6 @@ const HomePage = () => {
 
   const { logout, user } = UserAuth();
   const navigate = useNavigate();
-  const location = useLocation();
 
   const handleLogout = async () => {
     try {
@@ -51,18 +50,6 @@ const HomePage = () => {
     }
     setLoading(false);
   };
-
-  useEffect(() => {
-    // if we are coming back from /tweet and if the client sent a tweet,
-    // then add that sent tweet to the state
-    // doing this to save a fetch 😀
-    const sentTweet = JSON.parse(sessionStorage.getItem('tweetSent'));
-    if (sentTweet) {
-      sentTweet.date = new Date(sentTweet.date);
-      setAllTweets((currentTweets) => [sentTweet, ...currentTweets]);
-      sessionStorage.removeItem('tweetSent');
-    }
-  }, [location]);
 
   useEffect(() => {
     fetchAllTweets();
