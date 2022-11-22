@@ -30,10 +30,7 @@ const Tweet = () => {
   const handleSubmitTweet = async () => {
     if (canTweet && !tweetTooLong) {
       try {
-        const tweet = await writeTweetToDB(user.uid, text);
-        if (tweet) {
-          sessionStorage.setItem('tweetSent', JSON.stringify(tweet));
-        }
+        await writeTweetToDB(user.uid, text);
         handleCloseTweet();
       } catch (error) {
         console.log(error);
