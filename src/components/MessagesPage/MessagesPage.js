@@ -161,12 +161,12 @@ function MessagesPage() {
 
     if (user.uid) initialize();
 
-    // return () => {
-    //   setProfiles(null);
-    //   setOpenChat(null);
-    //   setChatMessages(null);
-    //   setMessage(null);
-    // };
+    return () => {
+      setProfiles(null);
+      setOpenChat(null);
+      setChatMessages([]);
+      setMessage(null);
+    };
   }, [user.uid]);
 
   if (loading) {
@@ -238,6 +238,11 @@ function MessagesPage() {
                   </FollowersProfileContainer>
                 );
               })}
+            {!profiles && (
+              <p style={{ textAlign: 'center', color: '#eff3f4' }}>
+                You can message those who follow you, or those who you follow.
+              </p>
+            )}
           </div>
         )}
       </MessagesPageContainer>
