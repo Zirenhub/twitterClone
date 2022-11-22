@@ -31,6 +31,7 @@ import followProfile from './followProfile';
 import isProfileFollowed from './isProfileFollowed';
 import unfollowProfile from './unfollowProfile';
 import FollowersPage from './FollowersPage';
+import getProfileRetweets from './getProfileRetweets';
 
 const ProfilePage = () => {
   // if /sdaiad does not match db return error
@@ -64,9 +65,19 @@ const ProfilePage = () => {
   const fetchUserTweets = useCallback(async (profileInfo) => {
     console.log('profilepage fetching user tweets');
     try {
-      const res = await getProfileTweets(profileInfo.ID);
-      if (res) {
-        setTweets(sortTweetsByDate(res));
+      const promiseProfileTweets = await getProfileTweets(profileInfo.ID);
+      if (promiseProfileTweets) {
+        setTweets(sortTweetsByDate(promiseProfileTweets));
+      }
+      const promiseProfileRetweets = await getProfileRetweets(profileInfo.ID);
+      if (promiseProfileRetweets) {
+        const modifiedRetweets = promiseProfileRetweets.map((retweet) => ({
+          ...retweet,
+          retweet: profileInfo.userName,
+        }));
+        setTweets(
+          sortTweetsByDate([...promiseProfileTweets, ...modifiedRetweets])
+        );
       }
     } catch (error) {
       console.log(error);
@@ -102,8 +113,7 @@ const ProfilePage = () => {
   const handleFollow = () => {
     followRef.current.disabled = true;
     const updateFollowStatus = async () => {
-      const isAlreadyFollowed = profileInfo.isFollowed;
-      if (isAlreadyFollowed) {
+      if (profileInfo.isFollowed) {
         const promiseUnfollow = await unfollowProfile(profileInfo.ID, user.uid);
         if (promiseUnfollow) {
           setProfileInfo((prevState) => ({
@@ -113,6 +123,7 @@ const ProfilePage = () => {
           }));
         }
       } else {
+        // need full profile information not just the id
         const promiseFollow = await followProfile(profileInfo, user.uid);
         if (promiseFollow) {
           setProfileInfo((prevState) => ({
@@ -126,15 +137,6 @@ const ProfilePage = () => {
     };
     updateFollowStatus();
   };
-
-  // useEffect(() => {
-  //   const sentTweet = JSON.parse(sessionStorage.getItem('tweetSent'));
-  //   if (sentTweet) {
-  //     sentTweet.date = new Date(sentTweet.date);
-  //     setTweets((currentTweets) => [sentTweet, ...currentTweets]);
-  //     sessionStorage.removeItem('tweetSent');
-  //   }
-  // }, [location]);
 
   useEffect(() => {
     const initialize = async () => {
