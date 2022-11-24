@@ -34,7 +34,7 @@ const SignUp = (props) => {
   };
 
   useEffect(() => {
-    if (name.length <= 12 && name.length >= 5 && name.toLowerCase() === name) {
+    if (name.length <= 12 && name.length >= 5) {
       setIsNameValid(true);
     } else {
       setIsNameValid(false);
@@ -128,11 +128,6 @@ const SignUp = (props) => {
           {name.length > 12 && (
             <ErrorMessage>
               <p>Name can't be longer than 12 characters</p>
-            </ErrorMessage>
-          )}
-          {name.toLowerCase() !== name && (
-            <ErrorMessage>
-              <p>Name has to be lowercase</p>
             </ErrorMessage>
           )}
           <label>
