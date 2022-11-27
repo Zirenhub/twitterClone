@@ -30,8 +30,11 @@ const getProfileRetweets = async (profileID) => {
     const arrOfParentsDocumentSnaps = await Promise.all(parentsPromises);
     arrOfParentsDocumentSnaps.forEach((doc) => {
       const rawData = doc.data();
-      rawData.date = rawData.firestoreDate.toDate();
-      returnData.push(rawData);
+      if (rawData) {
+        // rawData will be undefined if a retweeted tweet is deleted
+        rawData.date = rawData.firestoreDate.toDate();
+        returnData.push(rawData);
+      }
     });
 
     return returnData;
