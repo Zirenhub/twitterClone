@@ -1,14 +1,12 @@
 # twitterClone
 
 Preview:
-![ksnip_20221127-164016(2)](https://user-images.githubusercontent.com/85786109/204141073-687823f1-eaf2-44a7-ba3d-63d0cb919e6b.png)
-![ksnip_20221127-164016](https://user-images.githubusercontent.com/85786109/204141081-32310d55-15ba-421c-a8cf-1c6911bee0d5.png)
-![ksnip_20221127-164016(3)](https://user-images.githubusercontent.com/85786109/204141084-10b4582a-9500-44b8-823b-125463bea978.png)
-![ksnip_20221127-164017](https://user-images.githubusercontent.com/85786109/204141087-dee1703d-999b-4344-966a-4158f925d948.png)
-![ksnip_20221127-164017(2)](https://user-images.githubusercontent.com/85786109/204141091-8c01955c-b935-47b2-ab58-eab189205499.png)
-![ksnip_20221127-164017(3)](https://user-images.githubusercontent.com/85786109/204141093-8efa970f-84fe-48af-b6ed-f6648ccd55b4.png)
-![ksnip_20221127-164017(4)](https://user-images.githubusercontent.com/85786109/204141094-07b52516-54c1-4adb-a0bd-558ba2f5fe74.png)
-
+![image](https://user-images.githubusercontent.com/85786109/204141160-71dcd2a8-b4f6-4d9d-b669-f8ad952f2e6b.png)
+![image](https://user-images.githubusercontent.com/85786109/204141173-2557def0-65de-4b0d-a1d2-1f86c940be4f.png)
+![image](https://user-images.githubusercontent.com/85786109/204141206-0853727a-f803-464f-a1cb-517d99398446.png)
+![image](https://user-images.githubusercontent.com/85786109/204141223-289dada0-4a9c-464f-b7e5-713a41cabbf0.png)
+![image](https://user-images.githubusercontent.com/85786109/204141231-f066429a-f805-497d-ac75-5c53f63e9c26.png)
+![image](https://user-images.githubusercontent.com/85786109/204141259-d2151697-dfc2-4ca3-a0eb-4dc99db1a576.png)
 
 
 see live at: https://twitter-clone-a79a8.web.app/
