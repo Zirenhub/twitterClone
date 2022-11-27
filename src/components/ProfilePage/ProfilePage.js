@@ -38,6 +38,7 @@ const ProfilePage = () => {
   const [loading, setLoading] = useState(true);
   const [profileInfo, setProfileInfo] = useState(null);
   const [tweets, setTweets] = useState(null);
+  const [activeProfilePage, setActiveProfilePage] = useState(null);
   const [activeFollowPage, setActiveFollowPage] = useState(null);
 
   const { user } = UserAuth();
@@ -68,6 +69,7 @@ const ProfilePage = () => {
       const promiseProfileTweets = await getProfileTweets(profileInfo.ID);
       if (promiseProfileTweets) {
         setTweets(sortTweetsByDate(promiseProfileTweets));
+        setActiveProfilePage('tweets');
       }
       const promiseProfileRetweets = await getProfileRetweets(profileInfo.ID);
       if (promiseProfileRetweets) {
@@ -91,6 +93,7 @@ const ProfilePage = () => {
   const handleSwitchToReplies = async () => {
     const userReplies = await getProfileReplies(profileInfo.ID);
     if (userReplies) {
+      setActiveProfilePage('replies');
       setTweets(userReplies);
     }
   };
@@ -98,6 +101,7 @@ const ProfilePage = () => {
   const handleSwitchToLikes = async () => {
     const userLikes = await getProfileLikes(profileInfo.ID);
     if (userLikes) {
+      setActiveProfilePage('likes');
       setTweets(userLikes);
     }
   };
@@ -232,16 +236,40 @@ const ProfilePage = () => {
             </ProfileContentInfo>
             <ProfileInteractionsContrainer>
               <ProfileInteractionButton onClick={handleSwitchToTweets}>
-                <p>Tweets</p>
+                <p>
+                  {activeProfilePage === 'tweets' ? (
+                    <span style={{ borderBottom: '1px solid #1d9bf0' }}>
+                      Tweets
+                    </span>
+                  ) : (
+                    'Tweets'
+                  )}
+                </p>
               </ProfileInteractionButton>
               <ProfileInteractionButton onClick={handleSwitchToReplies}>
-                <p>Replies</p>
+                <p>
+                  {activeProfilePage === 'replies' ? (
+                    <span style={{ borderBottom: '1px solid #1d9bf0' }}>
+                      Replies
+                    </span>
+                  ) : (
+                    'Replies'
+                  )}
+                </p>
               </ProfileInteractionButton>
               <ProfileInteractionButton>
                 <p>Media</p>
               </ProfileInteractionButton>
               <ProfileInteractionButton onClick={handleSwitchToLikes}>
-                <p>Likes</p>
+                <p>
+                  {activeProfilePage === 'likes' ? (
+                    <span style={{ borderBottom: '1px solid #1d9bf0' }}>
+                      Likes
+                    </span>
+                  ) : (
+                    'Likes'
+                  )}
+                </p>
               </ProfileInteractionButton>
             </ProfileInteractionsContrainer>
           </ProfileVisuals>
